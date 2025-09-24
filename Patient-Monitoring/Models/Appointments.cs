@@ -4,11 +4,29 @@ namespace Patient_Monitoring.Models
 {
     public class Appointments
     {
-        [Required] public required string AppointmentID { get; set; } // Primary Key
-        [Required] public required string PatientID { get; set; } // Foreign Key to Patient_Details
-        [Required] public required string DoctorID { get; set; } // Foreign Key to Doctor_Details
-        [Required] public required DateTime Appointment_Date_Time { get; set; }
-        [Required] public required string Reason { get; set; }
+        [Key]
+        [Required]
+        [StringLength(50, ErrorMessage = "AppointmentID cannot exceed 50 characters.")]
+        public required string AppointmentID { get; set; } // Primary Key
+
+        [Required]
+        [StringLength(50, ErrorMessage = "PatientID cannot exceed 50 characters.")]
+        public required string PatientID { get; set; } // Foreign Key to Patient_Details
+
+        [Required]
+        [StringLength(50, ErrorMessage = "DoctorID cannot exceed 50 characters.")]
+        public required string DoctorID { get; set; } // Foreign Key to Doctor_Details
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Appointment Date & Time")]
+        public DateTime Appointment_Date_Time { get; set; }
+
+        [Required]
+        [StringLength(200, ErrorMessage = "Reason cannot exceed 200 characters.")]
+        public required string Reason { get; set; }
+
+        [StringLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
         public string? Notes { get; set; } // Nullable for optional notes
     }
 }
