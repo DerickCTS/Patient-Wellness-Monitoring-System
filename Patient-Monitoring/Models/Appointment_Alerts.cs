@@ -1,10 +1,18 @@
-﻿namespace Patient_Monitoring.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Patient_Monitoring.Models
 {
     public class Appointment_Alerts
     {
+        [Key]
+        [Required]
+        [StringLength(50, ErrorMessage = "AlertID cannot exceed 50 characters.")]
         public required string AlertID { get; set; } // Primary Key
-        public required string AppointmentID { get; set; } // Foreign Key to Appointments
 
-        /*public required string AlertType { get; set; } // e.g., "Reminder", "Follow-up", "Cancellation"*/
+        [Required]
+        [StringLength(50, ErrorMessage = "AppointmentID cannot exceed 50 characters.")]
+        public required string AppointmentID { get; set; } // Foreign Key to Appointments
     }
 }
+
+
