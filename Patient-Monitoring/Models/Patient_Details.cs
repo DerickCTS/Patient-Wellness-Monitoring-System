@@ -20,9 +20,10 @@ namespace Patient_Monitoring.Models
             [Required] public required string ContactNumber { get; set; }
             [Required] public required string Email { get; set; }
             [Required] public required string Address { get; set; }
+            [Required] public required string Password { get; set; }
 
         // Emergency Contact
-            [Required] public required string EmergencyContact { get; set; }
+        [Required] public required string EmergencyContact { get; set; }
 
 /*            // Physical Metrics
             public decimal HeightCm { get; set; }
