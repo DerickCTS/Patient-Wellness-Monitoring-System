@@ -7,6 +7,7 @@ namespace Patient_Monitoring.Models
         [Required(ErrorMessage = "Medication ID is required.")]
         [StringLength(10, ErrorMessage = "Medication ID cannot exceed 10 characters.")]
         [Display(Name = "Medication ID")]
+        [Key]
         public required string MedicationID { get; set; } // Primary Key
 
         [Required(ErrorMessage = "Patient ID is required.")]

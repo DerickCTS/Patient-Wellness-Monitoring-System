@@ -7,6 +7,7 @@ namespace Patient_Monitoring.Models
         [Required(ErrorMessage = "Assignment ID is required.")]
         [StringLength(10, ErrorMessage = "Assignment ID cannot exceed 10 characters.")]
         [Display(Name = "Assignment ID")]
+        [Key]
         public required string AssignmentID { get; set; } // Primary Key
 
         [Required(ErrorMessage = "Patient ID is required.")]

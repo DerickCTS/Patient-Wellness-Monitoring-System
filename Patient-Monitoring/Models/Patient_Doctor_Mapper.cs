@@ -7,6 +7,7 @@ namespace Patient_Monitoring.Models
         [Required]
         [StringLength(10, ErrorMessage = "Patient ID cannot exceed 10 characters.")]
         [Display(Name = "Patient ID")]
+        [Key]
         public required string PatientID { get; set; } // Foreign Key to Patient_Details
 
         [Required]

@@ -2,12 +2,13 @@
 
 namespace Patient_Monitoring.Models
 {
-    public class Doctor_Details
+    public class Doctor_Detail
     {
 
 
         [Required]
         [Display(Name = "Doctor ID")]
+        [Key]
         public required string DoctorID { get; set; } // Primary Key
 
 
