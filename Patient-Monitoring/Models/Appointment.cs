@@ -2,7 +2,7 @@
 
 namespace Patient_Monitoring.Models
 {
-    public class Appointments
+    public class Appointment
     {
         [Key]
         [Required]
