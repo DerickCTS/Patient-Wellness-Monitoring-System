@@ -35,5 +35,8 @@ namespace Patient_Monitoring.Models
         [Required] public required string ContactNumber { get; set; }
         [EmailAddress(ErrorMessage = "Invalid email address format.")]
         [Required] public required string Email { get; set; }
+
+        [Required]
+        public required string Password { get; set; }
     }
 }

@@ -60,6 +60,9 @@ namespace Patient_Monitoring.Models
         // System Info
         [Display(Name = "Registration Date")]
         public DateTime RegistrationDate { get; set; }
+
+        [Required]
+        public required string Password { get; set; }
     }
 
 }
