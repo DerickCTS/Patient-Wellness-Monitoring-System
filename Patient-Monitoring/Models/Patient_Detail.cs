@@ -3,9 +3,10 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Patient_Monitoring.Models
 {
-    public class Patient_Details
+    public class Patient_Detail
     {
         [Display(Name = "Patient ID")]
+        [Key]
         [Required] public required string PatientID { get; set; } // Primary Key
 
         // Personal Info
