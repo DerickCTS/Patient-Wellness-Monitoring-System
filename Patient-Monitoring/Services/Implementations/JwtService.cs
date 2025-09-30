@@ -1,9 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Patient_Monitoring.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Patient_Monitoring.Services
+namespace Patient_Monitoring.Services.Implementations
 {
     public class JwtService : IJwtService
     {
@@ -14,8 +15,8 @@ namespace Patient_Monitoring.Services
         public JwtService(IConfiguration config)
         {
             _key = config["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key");
-            _issuer = config["Jwt:Issuer"];
-            _audience = config["Jwt:Audience"];
+            _issuer = config["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer"); ;
+            _audience = config["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience"); ;
             _expiryMinutes = int.Parse(config["Jwt:ExpiryMinutes"] ?? "60");
         }
         public string GenerateToken(string id, string email, string role)

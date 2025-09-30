@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\" />
+    <Folder Include="Controllers\MVC\" />
   </ItemGroup>
 
 </Project>

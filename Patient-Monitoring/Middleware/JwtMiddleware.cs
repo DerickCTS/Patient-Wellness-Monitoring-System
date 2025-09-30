@@ -1,4 +1,4 @@
-﻿using Patient_Monitoring.Services;
+﻿using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Middleware
 {

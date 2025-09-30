@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Services;
 using Patient_Monitoring.Utils;
 using Patient_Monitoring.Data;
+using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Controllers
 {
+    [Route("[controller]")]
+    [ApiController]
     public class AuthController : Controller
     {
         private readonly PatientMonitoringDbContext _db;
@@ -19,7 +21,14 @@ namespace Patient_Monitoring.Controllers
         }
         // GET: /Auth/RegisterPatient
         [HttpGet]
-        public IActionResult RegisterPatient() => View();
+      
+        public IActionResult RegisterPatient()
+        {
+            return View();
+        }
+
+
+        #region POST: Register New Patient
         // POST: /Auth/RegisterPatient
         [HttpPost]
         public async Task<IActionResult> RegisterPatient([FromForm] Patient_Detail model, [FromForm] string password)
@@ -37,9 +46,17 @@ namespace Patient_Monitoring.Controllers
             Response.Cookies.Append("AuthToken", token, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
             return RedirectToAction("Dashboard", "Patient");
         }
+
+        #endregion
+
+
+
         // GET: /Auth/RegisterDoctor
         [HttpGet]
         public IActionResult RegisterDoctor() => View();
+
+
+        #region POST: Register New Doctor
         // POST: /Auth/RegisterDoctor
         [HttpPost]
         public async Task<IActionResult> RegisterDoctor([FromForm] Doctor_Detail model, [FromForm] string password)
@@ -55,11 +72,18 @@ namespace Patient_Monitoring.Controllers
             await _db.SaveChangesAsync();
             var token = _jwt.GenerateToken(model.DoctorID.ToString(), model.Email, "Doctor");
             Response.Cookies.Append("AuthToken", token, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
+            // I have not included the above line in Web API. Remind me if you see this comment - by Derick.
             return RedirectToAction("Dashboard", "Doctor");
         }
+
+        #endregion
+
+
         // GET: /Auth/Login
         [HttpGet]
         public IActionResult Login() => View();
+
+
         // POST: /Auth/Login
         [HttpPost]
         public async Task<IActionResult> Login([FromForm] string email, [FromForm] string password)

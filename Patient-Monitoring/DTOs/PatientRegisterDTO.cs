@@ -1,16 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
-namespace Patient_Monitoring.Models
+
+namespace Patient_Monitoring.DTOs
 {
-    public class Patient_Detail
+    public class PatientRegisterDTO
     {
-        [Display(Name = "Patient ID")]
-        [Key]
-        public required string PatientID { get; set; } // Primary Key
-
-        // Personal Info
-
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         [Display(Name = "First Name")]
 
@@ -59,11 +52,8 @@ namespace Patient_Monitoring.Models
                     public required string ChronicConditionDetails { get; set; }*/
 
         // System Info
-        [Display(Name = "Registration Date")]
-        public DateTime RegistrationDate { get; set; }
 
         [Required]
         public required string Password { get; set; }
     }
-
 }

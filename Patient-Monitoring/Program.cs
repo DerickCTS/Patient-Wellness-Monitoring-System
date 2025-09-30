@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
+using Patient_Monitoring.Repository.Implementations;
+using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Services.Implementations;
+using Patient_Monitoring.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PatientMonitoringDbContext") ?? throw new InvalidOperationException("Connection string 'PatientMonitoringContext' not found.")));
+
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 
 var app = builder.Build();
 
@@ -28,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=AuthApi}/{action=Something}/{id?}");
 
 app.Run();
