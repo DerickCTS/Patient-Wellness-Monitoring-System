@@ -22,7 +22,7 @@ namespace Patient_Monitoring.Controllers
         public IActionResult RegisterPatient() => View();
         // POST: /Auth/RegisterPatient
         [HttpPost]
-        public async Task<IActionResult> RegisterPatient([FromForm] Patient_Details model, [FromForm] string password)
+        public async Task<IActionResult> RegisterPatient([FromForm] Patient_Detail model, [FromForm] string password)
         {
             if (!ModelState.IsValid) return View(model);
             if (await _db.Patient_Details.AnyAsync(p => p.Email == model.Email))
@@ -42,7 +42,7 @@ namespace Patient_Monitoring.Controllers
         public IActionResult RegisterDoctor() => View();
         // POST: /Auth/RegisterDoctor
         [HttpPost]
-        public async Task<IActionResult> RegisterDoctor([FromForm] Doctor_Details model, [FromForm] string password)
+        public async Task<IActionResult> RegisterDoctor([FromForm] Doctor_Detail model, [FromForm] string password)
         {
             if (!ModelState.IsValid) return View(model);
             if (await _db.Doctor_Details.AnyAsync(d => d.Email == model.Email))
