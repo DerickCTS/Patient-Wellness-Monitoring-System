@@ -22,6 +22,7 @@ namespace Patient_Monitoring.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             // Define relationships and constraints here if needed...
         }
     }

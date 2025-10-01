@@ -1,118 +1,86 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Patient_Monitoring.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using Patient_Monitoring.DTOs;
 using Patient_Monitoring.Models;
+using Patient_Monitoring.Services.Interface;
 
-namespace Patient_Monitoring.Controllers
+namespace Patient_Monitoring.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+/// <summary>
+/// Controller responsible for managing API requests related to patient wellness plans.
+/// It delegates all business logic to the IWellnessPlanService.
+/// </summary>
+public class WellnessPlanController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class WellnessPlanController : ControllerBase
+    private readonly IWellnessPlanService _service;
+
+    /// <summary>
+    /// Initializes a new instance of the controller, injecting the required service.
+    /// </summary>
+    public WellnessPlanController(IWellnessPlanService service)
     {
-        private readonly PatientMonitoringDbContext _context;
+        _service = service;
+    }
 
-        public WellnessPlanController(PatientMonitoringDbContext context)
+    #region GET: Retrieving Patient Details
+    // GET: api/WellnessPlan/GetPatientDetails?patientId=...&patientName=...
+    [HttpGet("GetPatientDetails")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PatientDetails))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PatientDetails>> GetPatientDetails(string patientId)
+    {
+        var result = await _service.GetPatientDetailsAsync(patientId);
+
+        if (result == null)
         {
-            _context = context;
+            // Patient was not found by the service
+            return NotFound("Patient not found.");
         }
 
-        // GET: api/WellnessPlan
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Wellness_Plan>>> GetWellness_Plans()
+        // Return the full DTO containing all mapped data
+        return Ok(result);
+    }
+    #endregion
+
+    // POST: api/WellnessPlanManagement/AssignPlan
+    /// <summary>
+    /// Assigns a new or existing wellness plan to a specified patient.
+    /// </summary>
+    /// <param name="patientId">The ID of the patient receiving the plan.</param>
+    /// <param name="newPlan">The details of the plan to assign (used to create or link).</param>
+    [HttpPost("AssignPlan")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PlanAssignment))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> AssignPlan(string patientId, [FromBody] Wellness_Plan newPlan)
+    {
+        if (!ModelState.IsValid)
         {
-            return await _context.Wellness_Plans.ToListAsync();
+            return BadRequest(ModelState);
         }
 
-        // GET: api/WellnessPlan/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Wellness_Plan>> GetWellness_Plan(string id)
+        // Delegate assignment and business validation to the service
+        var (assignedPlanDto, errorMessage) = await _service.AssignPlanAsync(patientId, newPlan);
+
+        if (errorMessage != null)
         {
-            var wellness_Plan = await _context.Wellness_Plans.FindAsync(id);
-
-            if (wellness_Plan == null)
+            // Handle specific business errors returned by the service
+            if (errorMessage.Contains("Patient not found"))
             {
-                return NotFound();
+                return NotFound(errorMessage);
             }
-
-            return wellness_Plan;
+            if (errorMessage.Contains("already assigned"))
+            {
+                return Conflict(errorMessage);
+            }
+            // Catch-all for other service errors
+            return BadRequest(errorMessage);
         }
 
-        // PUT: api/WellnessPlan/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutWellness_Plan(string id, Wellness_Plan wellness_Plan)
-        {
-            if (id != wellness_Plan.PlanID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(wellness_Plan).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!Wellness_PlanExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/WellnessPlan
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Wellness_Plan>> PostWellness_Plan(Wellness_Plan wellness_Plan)
-        {
-            _context.Wellness_Plans.Add(wellness_Plan);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (Wellness_PlanExists(wellness_Plan.PlanID))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetWellness_Plan", new { id = wellness_Plan.PlanID }, wellness_Plan);
-        }
-
-        // DELETE: api/WellnessPlan/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWellness_Plan(string id)
-        {
-            var wellness_Plan = await _context.Wellness_Plans.FindAsync(id);
-            if (wellness_Plan == null)
-            {
-                return NotFound();
-            }
-
-            _context.Wellness_Plans.Remove(wellness_Plan);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool Wellness_PlanExists(string id)
-        {
-            return _context.Wellness_Plans.Any(e => e.PlanID == id);
-        }
+        // Plan successfully assigned and possibly created
+        // Return 201 Created status with the newly assigned plan DTO
+        return CreatedAtAction(nameof(GetPatientDetails), new { patientId = patientId, patientName = string.Empty }, assignedPlanDto);
     }
 }

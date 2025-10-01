@@ -32,7 +32,7 @@ namespace Patient_Monitoring.Models
 
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         [Display(Name = "Description")]
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         [Required(ErrorMessage = "Custom plan status is required.")]
         [Display(Name = "Is Custom Plan")]

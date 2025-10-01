@@ -19,7 +19,7 @@ namespace Patient_Monitoring.Models
         [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         [Display(Name = "Last Name")]
 
-        public string? LastName { get; set; }
+        public string LastName { get; set; }
 
 
         [DataType(DataType.Date)]
