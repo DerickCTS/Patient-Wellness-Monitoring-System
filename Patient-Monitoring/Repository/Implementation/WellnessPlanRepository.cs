@@ -1,55 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
+using Patient_Monitoring.DTOs;
 using Patient_Monitoring.Models;
 using Patient_Monitoring.Repository.Interface;
-
 namespace Patient_Monitoring.Repository.Implementation
 {
-    /// <summary>
-    /// Provides concrete implementation for data access using Entity Framework Core.
-    /// This repository fulfills the contract defined by IWellnessPlanRepository.
-    /// </summary>
+    
     public class WellnessPlanRepository : IWellnessPlanRepository
     {
         private readonly PatientMonitoringDbContext _context;
 
-        /// <summary>
-        /// Initializes a new instance of the WellnessPlanRepository.
-        /// </summary>
-        /// <param name="context">The Entity Framework Core DbContext.</param>
         public WellnessPlanRepository(PatientMonitoringDbContext context)
         {
             _context = context;
         }
 
-       
-        public async Task<Patient_Detail?> GetPatientByIdAsync(string patientId)
+        public async Task<Patient_Detail?> GetPatientByIdOrNameAsync(string patientId, string patientName)
         {
             return await _context.Patient_Details
-                .FirstOrDefaultAsync(p => p.PatientID == patientId);
+                .FirstOrDefaultAsync(p => p.PatientID == patientId || (p.FirstName + " " + p.LastName).Contains(patientName));
         }
 
-        /// <summary>
-        /// Retrieves the primary diagnosis record for a given patient ID.
-        /// </summary>
-        public async Task<Patient_Diagnosis?> GetPatientDiagnosisAsync(string patientId)
+        public async Task<List<Patient_Diagnosis>?> GetPatientDiagnosisAsync(string patientId)
         {
-            return await _context.Patient_Diagnoses
-                .FirstOrDefaultAsync(pd => pd.PatientID == patientId);
+            return await _context.Patient_Diagnoses.Where(pd => pd.PatientID == patientId).ToListAsync();
         }
 
-        /// <summary>
-        /// Retrieves the disease details by its ID.
-        /// </summary>
         public async Task<Disease?> GetDiseaseByIdAsync(string diseaseId)
         {
             return await _context.Diseases
                 .FirstOrDefaultAsync(d => d.DiseaseId == diseaseId);
         }
 
-        /// <summary>
-        /// Retrieves the specialized doctor details mapped to the patient.
-        /// </summary>
         public async Task<Doctor_Detail?> GetSpecializedDoctorByPatientIdAsync(string patientId)
         {
             // 1. Find the mapping record
@@ -63,18 +45,13 @@ namespace Patient_Monitoring.Repository.Implementation
                 .FirstOrDefaultAsync(d => d.DoctorID == mapper.DoctorID);
         }
 
-        /// <summary>
-        /// Retrieves all wellness plan details that are assigned to the specified patient.
-        /// </summary>
         public async Task<IEnumerable<Wellness_Plan>> GetAssignedPlansByPatientIdAsync(string patientId)
-        {
-            // 1. Get the list of Plan IDs assigned to the patient via the mapper table
+        {      
             var assignedPlanIds = await _context.Patient_Plan_Mapper
                 .Where(pp => pp.PatientId == patientId)
                 .Select(pp => pp.PlanId)
                 .ToListAsync();
 
-            // 2. Retrieve the full plan details for those IDs
             return await _context.Wellness_Plans
                 .Where(p => assignedPlanIds.Contains(p.PlanID))
                 .ToListAsync();
@@ -126,7 +103,6 @@ namespace Patient_Monitoring.Repository.Implementation
         }
     }
 }
-
 
 
 

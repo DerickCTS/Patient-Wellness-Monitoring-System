@@ -1,6 +1,6 @@
 ﻿namespace Patient_Monitoring.DTOs
 {
-    public class PatientDetails
+    public class PatientWellnessDetails
     {
         public string PatientID { get; set; } = string.Empty;
         public string PatientFirstName { get; set; } = string.Empty;

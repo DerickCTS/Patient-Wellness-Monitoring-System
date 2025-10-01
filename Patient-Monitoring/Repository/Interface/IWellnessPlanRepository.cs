@@ -9,9 +9,9 @@ namespace Patient_Monitoring.Repository.Interface
     public interface IWellnessPlanRepository
     {
         // Retrieval methods (return entity models)
-        Task<Patient_Detail?> GetPatientByIdAsync(string patientId);
-        Task<Patient_Diagnosis?> GetPatientDiagnosisAsync(string patientId);
-        Task<Disease?> GetDiseaseByIdAsync(string diseaseId);
+        Task<Patient_Detail?> GetPatientByIdOrNameAsync(string patientId, string patientName);
+        Task<List<Patient_Diagnosis>?> GetPatientDiagnosisAsync(string patientId);
+        Task<Disease> GetDiseaseByIdAsync(string diseaseId);
         Task<Doctor_Detail?> GetSpecializedDoctorByPatientIdAsync(string patientId);
         Task<IEnumerable<Wellness_Plan>> GetAssignedPlansByPatientIdAsync(string patientId);
         Task<bool> PlanExistsAsync(string planId);
