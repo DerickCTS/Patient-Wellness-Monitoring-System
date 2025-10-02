@@ -22,13 +22,18 @@ namespace Patient_Monitoring.Services.Implementations
         }
 
         #region Register New Patient
-        public async Task<bool> RegisterPatient(PatientRegisterDTO patient)
+        public async Task<(bool success, string message)> RegisterPatient(PatientRegisterDTO patient)
         {
             var patientDetail = await _patientRepository.GetByEmail(patient.Email);
 
             if (patientDetail != null)
             {
-                return false;
+                return (false, "Email already registered as patient");
+            }
+
+            if (patient.ConfirmPassword != patient.Password)
+            {
+                return (false, "Confirm Password does not match the inputted password");
             }
 
             Patient_Detail newPatient = new Patient_Detail
@@ -50,18 +55,23 @@ namespace Patient_Monitoring.Services.Implementations
 
             await _patientRepository.AddPatient(newPatient);
 
-            return true;
+            return (true, "Registration successful");
         }
         #endregion
 
         #region Register New Doctor
-        public async Task<bool> RegisterDoctor(DoctorRegisterDTO doctor)
+        public async Task<(bool success, string message)> RegisterDoctor(DoctorRegisterDTO doctor)
         {
             var doctorDetails = await _doctorRepository.GetByEmail(doctor.Email);
 
             if (doctorDetails != null)
             {
-                return false;
+                return (false, "Email already registered as doctor");
+            }
+
+            if (doctor.Password != doctor.ConfirmPassword)
+            {
+                return (false, "Confirm Password does not match the inputted password");
             }
 
             Doctor_Detail newDoctor = new Doctor_Detail
@@ -79,7 +89,7 @@ namespace Patient_Monitoring.Services.Implementations
 
             await _doctorRepository.AddDoctor(newDoctor);
 
-            return true;
+            return (true, "Registration successful");
         }
         #endregion
 

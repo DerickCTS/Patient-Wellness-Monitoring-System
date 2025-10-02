@@ -37,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=AuthApi}/{action=Something}/{id?}");
+    pattern: "{controller=Auth}/{action=Something}/{id?}");
 
 app.Run();

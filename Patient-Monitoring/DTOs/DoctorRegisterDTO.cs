@@ -23,12 +23,20 @@ namespace Patient_Monitoring.DTOs
         [Phone(ErrorMessage = "Invalid phone number format.")]
         [StringLength(15, MinimumLength = 10, ErrorMessage = "Contact number must be between 10 and 15 digits.")]
         [Display(Name = "Contact Number")]
-        [Required] public required string ContactNumber { get; set; }
+        [Required] 
+        public required string ContactNumber { get; set; }
 
         [EmailAddress(ErrorMessage = "Invalid email address format.")]
-        [Required] public required string Email { get; set; }
+        [Required] 
+        public required string Email { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
         public required string Password { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public required string ConfirmPassword { get; set; }
+
     }
 }

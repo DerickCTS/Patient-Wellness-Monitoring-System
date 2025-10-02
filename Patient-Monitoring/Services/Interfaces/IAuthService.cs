@@ -5,10 +5,10 @@ namespace Patient_Monitoring.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<bool> RegisterPatient(PatientRegisterDTO patient);
+        Task<(bool success, string message)> RegisterPatient(PatientRegisterDTO patient);
 
         Task<(bool success, string? message)> Login(UserLoginDTO user);
 
-        Task<bool> RegisterDoctor(DoctorRegisterDTO patient);
+        Task<(bool success, string message)> RegisterDoctor(DoctorRegisterDTO patient);
     }
 }

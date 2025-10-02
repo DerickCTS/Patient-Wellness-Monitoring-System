@@ -22,14 +22,14 @@ namespace Patient_Monitoring.Controllers.API
         [Route("RegisterPatient")]
         public async Task<IActionResult> RegisterPatient([FromBody] PatientRegisterDTO registerDTO)
         {
-            bool success = await _authService.RegisterPatient(registerDTO);
+            (bool success, string message) = await _authService.RegisterPatient(registerDTO);
 
             if (!success)
             {
-                return BadRequest(new { message = "Email already registered as patient" });
+                return BadRequest(new { Message = message });
             }
 
-            return Ok(new { message = "Registration successful" });
+            return Ok(new { Message = message });
         }
         #endregion
 
@@ -52,14 +52,14 @@ namespace Patient_Monitoring.Controllers.API
         [Route("RegisterDoctor")]
         public async Task<IActionResult> RegisterDoctor([FromBody] DoctorRegisterDTO registerDTO)
         {
-            bool success = await _authService.RegisterDoctor(registerDTO);
+            (bool success, string Message) = await _authService.RegisterDoctor(registerDTO);
 
             if (!success)
             {
-                return BadRequest(new { message = "Email already registered as doctor" });
+                return BadRequest(new { message = Message });
             }
 
-            return Ok(new { message = "Registration successful" });
+            return Ok(new { message = Message });
         }
         #endregion
 
