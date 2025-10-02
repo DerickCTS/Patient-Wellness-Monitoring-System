@@ -44,11 +44,13 @@ namespace Patient_Monitoring.DTOs
 
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
         public required string Password { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name  = "Confirm Password")]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
         public required string ConfirmPassword { get; set; }
     }
 }

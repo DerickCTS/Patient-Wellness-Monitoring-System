@@ -38,11 +38,16 @@ namespace Patient_Monitoring.Controllers.API
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDTO loginDTO)
         {
-            var (success, message) = await _authService.Login(loginDTO);
+            var (success, message, token, refreshToken) = await _authService.Login(loginDTO);
+
             if (!success)
             {
                 return Unauthorized(new { message });
             }
+
+            Response.Cookies.Append("AuthToken", token!, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
+            Response.Cookies.Append("RefreshToken", refreshToken!, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
+
             return Ok(new { message = "Login successful" });
         }
         #endregion

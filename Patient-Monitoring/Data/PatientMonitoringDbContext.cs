@@ -19,6 +19,7 @@ namespace Patient_Monitoring.Data
         public DbSet<Patient_Medication> Patient_Medications { get; set; }
         public DbSet<Patient_Doctor_Mapper> Patient_Doctor_Mapper { get; set; }
         public DbSet<Patient_Plan_Mapper> Patient_Plan_Mapper { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

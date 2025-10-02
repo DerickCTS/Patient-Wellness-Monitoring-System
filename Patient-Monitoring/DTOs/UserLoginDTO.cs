@@ -9,8 +9,12 @@ namespace Patient_Monitoring.DTOs
         public required string Email { get; set; }
 
         [Required]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
         public required string Password { get; set; }
 
-        public string Role { get; set; }
+        [Required]
+        public string Role { get; set; } = null!;
+
+        public string? ClientId { get; set; }
     }
 }

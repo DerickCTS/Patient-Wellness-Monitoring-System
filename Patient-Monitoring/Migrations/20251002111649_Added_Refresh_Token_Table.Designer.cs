@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Patient_Monitoring.Data;
 
@@ -11,9 +12,11 @@ using Patient_Monitoring.Data;
 namespace Patient_Monitoring.Migrations
 {
     [DbContext(typeof(PatientMonitoringDbContext))]
-    partial class PatientMonitoringDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251002111649_Added_Refresh_Token_Table")]
+    partial class Added_Refresh_Token_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,7 +338,7 @@ namespace Patient_Monitoring.Migrations
                     b.HasIndex(new[] { "Token" }, "IX_Token_Unique")
                         .IsUnique();
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("refreshTokens");
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.Wellness_Plan", b =>

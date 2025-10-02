@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Utils;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Services.Interfaces;
 
@@ -39,7 +38,7 @@ namespace Patient_Monitoring.Controllers
                 ModelState.AddModelError("email", "Email already registered as patient");
                 return View(model);
             }
-            model.Password = PasswordHasher.Hash(password); // adjust field name to your model's password property
+           // model.Password = PasswordHasher.Hash(password); // adjust field name to your model's password property
             _db.Patient_Details.Add(model);
             await _db.SaveChangesAsync();
             var token = _jwt.GenerateToken(model.PatientID.ToString(), model.Email, "Patient");
@@ -67,7 +66,7 @@ namespace Patient_Monitoring.Controllers
                 ModelState.AddModelError("email", "Email already registered as doctor");
                 return View(model);
             }
-            model.Password = PasswordHasher.Hash(password);
+            //model.Password = PasswordHasher.Hash(password);
             _db.Doctor_Details.Add(model);
             await _db.SaveChangesAsync();
             var token = _jwt.GenerateToken(model.DoctorID.ToString(), model.Email, "Doctor");
@@ -95,20 +94,20 @@ namespace Patient_Monitoring.Controllers
             }
             // check patient table
             var patient = await _db.Patient_Details.SingleOrDefaultAsync(p => p.Email == email);
-            if (patient != null && PasswordHasher.Verify(password, patient.Password))
-            {
-                var token = _jwt.GenerateToken(patient.PatientID.ToString(), patient.Email, "Patient");
-                Response.Cookies.Append("AuthToken", token, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
-                return RedirectToAction("Dashboard", "Patient");
-            }
+            //if (patient != null && PasswordHasher.Verify(password, patient.Password))
+            //{
+            //    var token = _jwt.GenerateToken(patient.PatientID.ToString(), patient.Email, "Patient");
+            //    Response.Cookies.Append("AuthToken", token, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
+            //    return RedirectToAction("Dashboard", "Patient");
+            //}
             // check doctor table
             var doctor = await _db.Doctor_Details.SingleOrDefaultAsync(d => d.Email == email);
-            if (doctor != null && PasswordHasher.Verify(password, doctor.Password))
-            {
-                var token = _jwt.GenerateToken(doctor.DoctorID.ToString(), doctor.Email, "Doctor");
-                Response.Cookies.Append("AuthToken", token, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
-                return RedirectToAction("Dashboard", "Doctor");
-            }
+            //if (doctor != null && PasswordHasher.Verify(password, doctor.Password))
+            //{
+            //    var token = _jwt.GenerateToken(doctor.DoctorID.ToString(), doctor.Email, "Doctor");
+            //    Response.Cookies.Append("AuthToken", token, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
+            //    return RedirectToAction("Dashboard", "Doctor");
+            //}
             ModelState.AddModelError("", "Invalid credentials");
             return View();
         }

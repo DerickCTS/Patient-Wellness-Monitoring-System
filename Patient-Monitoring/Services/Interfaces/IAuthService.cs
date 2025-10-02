@@ -7,7 +7,7 @@ namespace Patient_Monitoring.Services.Interfaces
     {
         Task<(bool success, string message)> RegisterPatient(PatientRegisterDTO patient);
 
-        Task<(bool success, string? message)> Login(UserLoginDTO user);
+        Task<(bool success, string? message, string? token, string refreshToken)> Login(UserLoginDTO user);
 
         Task<(bool success, string message)> RegisterDoctor(DoctorRegisterDTO patient);
     }

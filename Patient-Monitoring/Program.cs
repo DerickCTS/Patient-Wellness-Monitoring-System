@@ -13,10 +13,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PatientMonitoringDbContext") ?? throw new InvalidOperationException("Connection string 'PatientMonitoringContext' not found.")));
 
-builder.Services.AddScoped<IJwtService, JwtService>();
+//builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IJWTService2, JWTService2>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
 
 var app = builder.Build();
 
