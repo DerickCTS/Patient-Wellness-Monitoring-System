@@ -10,6 +10,8 @@ namespace Patient_Monitoring.Models
         [Key]
         public required string PlanID { get; set; } // Primary Key
 
+        public ICollection<Patient_Plan_Mapper>? AssignedPatients { get; set; }
+
         [Required(ErrorMessage = "Plan Name is required.")]
         [StringLength(100, ErrorMessage = "Plan Name cannot exceed 100 characters.")]
         [Display(Name = "Plan Name")]

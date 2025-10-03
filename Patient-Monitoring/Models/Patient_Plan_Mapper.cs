@@ -15,10 +15,14 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Patient ID")]
         public required string PatientId { get; set; }
 
+        public Patient_Detail Patient { get; set; } = null!;
+
         [Required(ErrorMessage = "Plan ID is required.")]
         [StringLength(10, ErrorMessage = "Plan ID cannot exceed 10 characters.")]
         [Display(Name = "Plan ID")]
         public required string PlanId { get; set; }
+
+        public Wellness_Plan Plan { get; set; } = null!;
 
         [Required(ErrorMessage = "Status is required.")]
         [StringLength(50, ErrorMessage = "Status cannot exceed 50 characters.")]

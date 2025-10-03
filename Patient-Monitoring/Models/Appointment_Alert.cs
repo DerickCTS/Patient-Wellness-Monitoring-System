@@ -12,6 +12,8 @@ namespace Patient_Monitoring.Models
         [Required]
         [StringLength(50, ErrorMessage = "AppointmentID cannot exceed 50 characters.")]
         public required string AppointmentID { get; set; } // Foreign Key to Appointments
+
+        public Appointment Appointment { get; set; } = null!;
     }
 }
 

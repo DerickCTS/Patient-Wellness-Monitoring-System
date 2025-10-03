@@ -15,6 +15,8 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Patient ID")]
         public required string PatientID { get; set; } // Foreign Key to Patient_Details
 
+        public Patient_Detail Patient { get; set; } = null!;
+
         [Required(ErrorMessage = "Medication Name is required.")]
         [StringLength(100, ErrorMessage = "Medication Name cannot exceed 100 characters.")]
         [Display(Name = "Medication Name")]
@@ -43,5 +45,7 @@ namespace Patient_Monitoring.Models
         [StringLength(10, ErrorMessage = "Prescribing Doctor ID cannot exceed 10 characters.")]
         [Display(Name = "Prescribing Doctor ID")]
         public required string PrescribingDoctorId { get; set; } // Foreign Key to Doctor_Details
+
+        public Doctor_Detail PrescribingDoctor { get; set; } = null!;
     }
 }

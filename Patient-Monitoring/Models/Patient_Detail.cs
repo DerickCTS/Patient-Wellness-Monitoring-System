@@ -9,6 +9,13 @@ namespace Patient_Monitoring.Models
         [Key]
         public required string PatientID { get; set; } // Primary Key
 
+        public Patient_Doctor_Mapper PersonlizedDoctorMapper { get; set; } = null!;
+
+        public ICollection<Appointment>? Appointments { get; set; }
+
+        public ICollection<Patient_Diagnosis>? PatientDiagnosis { get; set;}
+
+        public ICollection<Patient_Plan_Mapper> PatientPlans { get; set; }
         // Personal Info
 
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
