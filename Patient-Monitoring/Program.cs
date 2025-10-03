@@ -6,7 +6,9 @@ using Patient_Monitoring.Services.Implementation;
 using Patient_Monitoring.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
+
 const string AllowSpecificOrigins = "_allowSpecificOrigins";
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowSpecificOrigins,
@@ -18,6 +20,7 @@ builder.Services.AddCors(options =>
                                 .AllowAnyMethod();
                       });
 });
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // Optional: Add Swagger/OpenAPI support for API documentation (useful for testing)
@@ -28,6 +31,7 @@ builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
 
 builder.Services.AddScoped<IWellnessPlanService, WellnessPlanService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IWellnessPlanRepository, WellnessPlanRepository>();
 
 var app = builder.Build();
 

@@ -18,7 +18,7 @@ namespace Patient_Monitoring.Models
         public Patient_Detail Patient { get; set; } = null!;
 
         [Required(ErrorMessage = "Disease ID is required.")]
-        [StringLength(10, ErrorMessage = "Disease ID cannot exceed 10 characters.")]
+        [StringLength(50, ErrorMessage = "Disease ID cannot exceed 50 characters.")]
         [Display(Name = "Disease ID")]
         public required string DiseaseId { get; set; }
 

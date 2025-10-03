@@ -9,6 +9,7 @@ namespace Patient_Monitoring.Models
         [Required]
         [Display(Name = "Doctor ID")]
         [Key]
+        [StringLength(50, ErrorMessage = "Doctor ID cannot exceed 50 characters.")]
         public required string DoctorID { get; set; } // Primary Key
 
         public ICollection<Appointment> Appointments { get; set; } = null!;

@@ -19,7 +19,8 @@ namespace Patient_Monitoring.Models
         [StringLength(50, ErrorMessage = "DoctorID cannot exceed 50 characters.")]
         public required string DoctorID { get; set; } // Foreign Key to Doctor_Details
 
-        public Doctor_Detail Doctor { get; set; }
+        public Doctor_Detail Doctor { get; set; } = null!;
+
         [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = "Appointment Date & Time")]

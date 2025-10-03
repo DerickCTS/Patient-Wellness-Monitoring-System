@@ -24,6 +24,8 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Plan ID")]
         public required string PlanId { get; set; } // Foreign Key to Wellness_Plan
 
+        public Wellness_Plan Plan { get; set; } = null!;
+
         [Required(ErrorMessage = "Status is required.")]
         [StringLength(50, ErrorMessage = "Status cannot exceed 50 characters.")]
         [Display(Name = "Status")]
