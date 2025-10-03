@@ -1,17 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Patient_Monitoring.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace Patient_Monitoring.Models
+namespace Patient_Monitoring.DTOs
 {
-    public class Wellness_Plan
+    public class PatientPlanDTO
     {
-        [Required(ErrorMessage = "Plan ID is required.")]
-        [StringLength(10, ErrorMessage = "Plan ID cannot exceed 10 characters.")]
-        [Display(Name = "Plan ID")]
-        [Key]
-        public required string PlanID { get; set; } // Primary Key
-
-        public ICollection<Patient_Plan_Mapper> AssignedPatients { get; set; }
-
         [Required(ErrorMessage = "Plan Name is required.")]
         [StringLength(100, ErrorMessage = "Plan Name cannot exceed 100 characters.")]
         [Display(Name = "Plan Name")]

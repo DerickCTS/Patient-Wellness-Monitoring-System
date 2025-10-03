@@ -7,128 +7,111 @@ namespace Patient_Monitoring.Services.Implementation
 {
     public class WellnessPlanService : IWellnessPlanService
     {
-        private readonly IWellnessPlanRepository _repository;
-
-        public WellnessPlanService(IWellnessPlanRepository repository)
+        private readonly IWellnessPlanRepository _wellnessPlanRepository;
+        private readonly IPatientRepository _patientRepository;
+        public WellnessPlanService(IWellnessPlanRepository wellnessPlanRepository, IPatientRepository patientRepository)
         {
-            _repository = repository;
+            _wellnessPlanRepository = wellnessPlanRepository;
+            _patientRepository = patientRepository;
         }
 
-        public async Task<PatientWellnessDetails?> GetPatientDetailsAsync(string patientId, string patientName)
+        public async Task<PatientWellnessDTO?> GetPatientDetailsAsync(string patientId, string patientName)
         {
-            // 1. Find patient (Repository interaction)
-            var patient = await _repository.GetPatientByIdOrNameAsync(patientId, patientName);
+       
+            var patient = await _patientRepository.GetPatientDataByIdOrNameAsync(patientId, patientName);
+
             if (patient == null)
             {
                 return null; 
             }
 
-            // 2. Get diagnosis
-            var diagnosis = await _repository.GetPatientDiagnosisAsync(patient.PatientID);
+            var plans = await _wellnessPlanRepository.GetAssignedPlansByPatientIdAsync(patient.PatientID);
 
-            
-            if (diagnosis == null)
+            var patientPlans = plans.Select(p => new PatientPlanDTO 
             {
-                return new PatientWellnessDetails 
-                {
-                    PatientID = patient.PatientID,
-                    PatientFirstName = patient.FirstName,
-                    PatientLastName = patient.LastName,
-                    Description = "Diagnosis record missing.", 
-                    AssignedPlans = await GetPlansForPatient(patient.PatientID)
-                };
-            }
+                PlanName = p.PlanName,
+                Description = p.Description,
+                Frequency_Count = p.Frequency_Count,
+                Frequency_Unit = p.Frequency_Unit,
+                is_custom = p.is_custom,
+                Recommended_Duration = p.Recommended_Duration
+            }).ToList();
 
-            // 3. Retrieve related details concurrently for efficiency
-            
-            var disease = _repository.GetDiseaseByIdAsync(diagnosis.DiseaseId);
-            var doctorTask = _repository.GetSpecializedDoctorByPatientIdAsync(patient.PatientID);
-            var plansTask = GetPlansForPatient(patient.PatientID);
-
-            await Task.WhenAll(diseaseTask, doctorTask, plansTask);
-
-            var disease = diseaseTask.Result;
-            var specializedDoctor = doctorTask.Result;
-            var assignedPlans = plansTask.Result;
-
-            // 4. Construct the PatientDetails DTO (Business logic/Mapping)
-            string? specializedDoctorName = null;
-            if (specializedDoctor != null)
+            var diagnoses = patient.PatientDiagnoses.Select(diagnosis => new DiagnosisDTO
             {
-                specializedDoctorName = $"{specializedDoctor.FirstName} {specializedDoctor.LastName}";
-            }
+                Disease = diagnosis.Disease.DiseaseName,
+                Description = diagnosis.Description
+            }).ToList();
 
-            return new PatientWellnessDetails // Final DTO construction
+            return new PatientWellnessDTO 
             {
                 PatientID = patient.PatientID,
-                PatientFirstName = patient.FirstName,
-                PatientLastName = patient.LastName,
-                DiseaseName = disease?.DiseaseName,
-                Description = diagnosis.Description,
-                SpecializedDoctorName = specializedDoctorName,
-                AssignedPlans = assignedPlans
+                FirstName = patient.FirstName,
+                LastName = patient.LastName,
+                Diagnoses = diagnoses,
+                AssignedPlans = patientPlans
             };
         }
        
-        private async Task<IEnumerable<PlanAssignment>> GetPlansForPatient(string patientId)
-        {
-            var plans = await _repository.GetAssignedPlansByPatientIdAsync(patientId);
-            return plans.Select(p => new PlanAssignment 
-            {
-                PlanID = p.PlanID,
-                PlanName = p.PlanName,
-                Description = p.Description,
-                IsCustom = p.is_custom
-            }).ToList();
-        }
+        //private async Task<IEnumerable<PatientPlanDTO>> GetPlansForPatient(string patientId)
+        //{
+        //    var plans = await _repository.GetAssignedPlansByPatientIdAsync(patientId);
+        //    return plans.Select(p => new PatientPlanDTO 
+        //    {
+        //        PlanID = p.PlanID,
+        //        PlanName = p.PlanName,
+        //        Description = p.Description,
+        //        IsCustom = p.is_custom
+        //    }).ToList();
+        //}
 
-        public async Task<(PlanAssignment?, string?)> AssignPlanAsync(string patientId, Wellness_Plan newPlan)
-        {
-            // 1. Check if patient exists
-            var patientExists = await _repository.GetPatientByIdOrNameAsync(patientId, string.Empty);
-            if (patientExists == null)
-            {
-                return (null, "Patient not found.");
-            }
+        //public async Task<(PatientPlanDTO?, string?)> AssignPlanAsync(string patientId, Wellness_Plan newPlan)
+        //{
+        //    // 1. Check if patient exists
+        //    var patientExists = await _repository.GetPatientByIdOrNameAsync(patientId, string.Empty);
+        //    if (patientExists == null)
+        //    {
+        //        return (null, "Patient not found.");
+        //    }
 
-            // 2. Check if plan is already assigned (Business Rule)
-            var isAssigned = await _repository.IsPlanAssignedAsync(patientId, newPlan.PlanID);
-            if (isAssigned)
-            {
-                return (null, $"Plan {newPlan.PlanID} is already assigned to patient {patientId}.");
-            }
+        //    // 2. Check if plan is already assigned (Business Rule)
+        //    var isAssigned = await _repository.IsPlanAssignedAsync(patientId, newPlan.PlanID);
+        //    if (isAssigned)
+        //    {
+        //        return (null, $"Plan {newPlan.PlanID} is already assigned to patient {patientId}.");
+        //    }
 
-            // 3. Add plan definition if it doesn't exist
-            var planExists = await _repository.PlanExistsAsync(newPlan.PlanID);
-            if (!planExists)
-            {
-                _repository.AddNewPlanAsync(newPlan);
-            }
+        //    // 3. Add plan definition if it doesn't exist
+        //    var planExists = await _repository.PlanExistsAsync(newPlan.PlanID);
+        //    if (!planExists)
+        //    {
+        //        _repository.AddNewPlanAsync(newPlan);
+        //    }
 
-            // 4. Create and add the mapping object
-            var patientPlanMapper = new Patient_Plan_Mapper
-            {
-                AssignmentID = Guid.NewGuid().ToString(),
-                PatientId = patientId,
-                PlanId = newPlan.PlanID,
-                Status = "Assigned" // Default status
-            };
-            _repository.AddPlanAssignmentAsync(patientPlanMapper);
+        //    // 4. Create and add the mapping object
+        //    var patientPlanMapper = new Patient_Plan_Mapper
+        //    {
+        //        AssignmentID = Guid.NewGuid().ToString(),
+        //        PatientId = patientId,
+        //        PlanId = newPlan.PlanID,
+        //        Status = "Assigned" // Default status
+        //    };
+        //    _repository.AddPlanAssignmentAsync(patientPlanMapper);
 
-            // 5. Commit changes
-            await _repository.SaveChangesAsync();
+        //    // 5. Commit changes
+        //    await _repository.SaveChangesAsync();
 
-            // 6. Return the mapped PlanAssignment DTO
-            var assignedPlanDto = new PlanAssignment // Mapping the result back
-            {
-                PlanID = newPlan.PlanID,
-                PlanName = newPlan.PlanName,
-                Description = newPlan.Description,
-                IsCustom = newPlan.is_custom
-            };
+        //    // 6. Return the mapped PlanAssignment DTO
+        //    var assignedPlanDto = new PatientPlanDTO // Mapping the result back
+        //    {
+        //        PlanID = newPlan.PlanID,
+        //        PlanName = newPlan.PlanName,
+        //        Description = newPlan.Description,
+        //        IsCustom = newPlan.is_custom
+        //    };
 
-            return (assignedPlanDto, null); // Return DTO and null error message
-        }
+        //    return (assignedPlanDto, null); // Return DTO and null error message
+        //}
     }
 
 }

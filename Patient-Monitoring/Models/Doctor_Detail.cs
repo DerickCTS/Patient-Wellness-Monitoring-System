@@ -11,7 +11,7 @@ namespace Patient_Monitoring.Models
         [Key]
         public required string DoctorID { get; set; } // Primary Key
 
-
+        public ICollection<Appointment> Appointments { get; set; } = null!;
         // Personal Info
         [Required]
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]

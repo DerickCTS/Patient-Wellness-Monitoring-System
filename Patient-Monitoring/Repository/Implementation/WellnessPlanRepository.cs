@@ -15,37 +15,7 @@ namespace Patient_Monitoring.Repository.Implementation
             _context = context;
         }
 
-        public async Task<Patient_Detail?> GetPatientByIdOrNameAsync(string patientId, string patientName)
-        {
-            return await _context.Patient_Details
-                .FirstOrDefaultAsync(p => p.PatientID == patientId || (p.FirstName + " " + p.LastName).Contains(patientName));
-        }
-
-        public async Task<List<Patient_Diagnosis>?> GetPatientDiagnosisAsync(string patientId)
-        {
-            return await _context.Patient_Diagnoses.Where(pd => pd.PatientID == patientId).ToListAsync();
-        }
-
-        public async Task<Disease?> GetDiseaseByIdAsync(string diseaseId)
-        {
-            return await _context.Diseases
-                .FirstOrDefaultAsync(d => d.DiseaseId == diseaseId);
-        }
-
-        public async Task<Doctor_Detail?> GetSpecializedDoctorByPatientIdAsync(string patientId)
-        {
-            // 1. Find the mapping record
-            var mapper = await _context.Patient_Doctor_Mapper
-                .FirstOrDefaultAsync(pdm => pdm.PatientID == patientId);
-
-            if (mapper == null) return null;
-
-            // 2. Use the DoctorID from the mapper to get doctor details
-            return await _context.Doctor_Details
-                .FirstOrDefaultAsync(d => d.DoctorID == mapper.DoctorID);
-        }
-
-        public async Task<IEnumerable<Wellness_Plan>> GetAssignedPlansByPatientIdAsync(string patientId)
+        public async Task<List<Wellness_Plan>> GetAssignedPlansByPatientIdAsync(string patientId)
         {      
             var assignedPlanIds = await _context.Patient_Plan_Mapper
                 .Where(pp => pp.PatientId == patientId)

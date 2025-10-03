@@ -25,8 +25,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PatientMonitoringDbContext") ?? throw new InvalidOperationException("Connection string 'PatientMonitoringContext' not found.")));
-builder.Services.AddScoped<Patient_Monitoring.Repository.Interface.IWellnessPlanRepository, Patient_Monitoring.Repository.Implementation.WellnessPlanRepository>();
+
 builder.Services.AddScoped<IWellnessPlanService, WellnessPlanService>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 var app = builder.Build();
 

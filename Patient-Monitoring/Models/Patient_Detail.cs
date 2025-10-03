@@ -9,6 +9,9 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required] public required string PatientID { get; set; } // Primary Key
 
+        // Navigation Properties
+        public ICollection<Patient_Diagnosis> PatientDiagnoses { get; set; } = new List<Patient_Diagnosis>();
+
         // Personal Info
 
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]

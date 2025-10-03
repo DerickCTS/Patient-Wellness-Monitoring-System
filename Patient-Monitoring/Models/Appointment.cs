@@ -9,6 +9,8 @@ namespace Patient_Monitoring.Models
         [StringLength(50, ErrorMessage = "AppointmentID cannot exceed 50 characters.")]
         public required string AppointmentID { get; set; } // Primary Key
 
+        public ICollection<Patient_Diagnosis> PatientDiagnoses { get; set; } = null!;
+
         [Required]
         [StringLength(50, ErrorMessage = "PatientID cannot exceed 50 characters.")]
         public required string PatientID { get; set; } // Foreign Key to Patient_Details
@@ -17,6 +19,7 @@ namespace Patient_Monitoring.Models
         [StringLength(50, ErrorMessage = "DoctorID cannot exceed 50 characters.")]
         public required string DoctorID { get; set; } // Foreign Key to Doctor_Details
 
+        public Doctor_Detail Doctor { get; set; }
         [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = "Appointment Date & Time")]

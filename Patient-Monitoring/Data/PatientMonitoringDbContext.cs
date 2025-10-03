@@ -22,8 +22,31 @@ namespace Patient_Monitoring.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+
             // Define relationships and constraints here if needed...
+            modelBuilder.Entity<Patient_Detail>()
+                .HasMany(p => p.PatientDiagnoses)
+                .WithOne(pd => pd.Patient)
+                .HasForeignKey(pd => pd.PatientID)
+                .IsRequired();
+
+            modelBuilder.Entity<Disease>()
+                .HasMany(d => d.PatientDiagnoses)
+                .WithOne(pd => pd.Disease)
+                .HasForeignKey(pd => pd.DiseaseId)
+                .IsRequired();
+
+            modelBuilder.Entity<Appointment>()
+                .HasMany(a => a.PatientDiagnoses)
+                .WithOne(pd => pd.Appointment)
+                .HasForeignKey(pd => pd.AppointmentId)
+                .IsRequired();
+
+            modelBuilder.Entity<Doctor_Detail>()
+                .HasMany(d => d.Appointments)
+                .WithOne(a => a.Doctor)
+                .HasForeignKey(a => a.DoctorID)
+                .IsRequired();
         }
     }
   
