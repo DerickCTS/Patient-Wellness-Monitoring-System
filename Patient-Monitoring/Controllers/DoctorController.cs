@@ -19,14 +19,14 @@ namespace Patient_Monitoring.Controllers
 
         // GET: api/Doctor_Detail
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Doctor_Detail>>> GetDoctor_Details()
+        public async Task<ActionResult<IEnumerable<Doctor>>> GetDoctor_Details()
         {
             return await _context.Doctor_Details.ToListAsync();
         }
 
         // GET: api/Doctor_Detail/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Doctor_Detail>> GetDoctor_Detail(string id)
+        public async Task<ActionResult<Doctor>> GetDoctor_Detail(string id)
         {
             var doctor_Detail = await _context.Doctor_Details.FindAsync(id);
 
@@ -41,7 +41,7 @@ namespace Patient_Monitoring.Controllers
         // PUT: api/Doctor_Detail/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDoctor_Detail(string id, Doctor_Detail doctor_Detail)
+        public async Task<IActionResult> PutDoctor_Detail(string id, Doctor doctor_Detail)
         {
             if (id != doctor_Detail.DoctorID)
             {
@@ -72,7 +72,7 @@ namespace Patient_Monitoring.Controllers
         // POST: api/Doctor_Detail
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Doctor_Detail>> PostDoctor_Detail(Doctor_Detail doctor_Detail)
+        public async Task<ActionResult<Doctor>> PostDoctor_Detail(Doctor doctor_Detail)
         {
             _context.Doctor_Details.Add(doctor_Detail);
             try

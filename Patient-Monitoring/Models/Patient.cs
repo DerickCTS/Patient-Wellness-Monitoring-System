@@ -1,58 +1,59 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 namespace Patient_Monitoring.Models
 {
-    public class Patient_Detail
+    public class Patient
     {
-        [Display(Name = "Patient ID")]
         [Key]
+        [Display(Name = "Patient ID")]
         public required string PatientID { get; set; } // Primary Key
 
-        public Patient_Doctor_Mapper PersonlizedDoctorMapper { get; set; } = null!;
-
-        public ICollection<Appointment>? Appointments { get; set; }
-
-        public ICollection<Patient_Diagnosis>? PatientDiagnosis { get; set;}
-
-        public ICollection<Patient_Plan_Mapper> PatientPlans { get; set; }
-        // Personal Info
 
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         [Display(Name = "First Name")]
+        [Required] 
+        public required string FirstName { get; set; }
 
-        [Required] public required string FirstName { get; set; }
 
         [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         [Display(Name = "Last Name")]
-
         public string? LastName { get; set; }
 
 
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
+        [Required] 
+        public required DateTime DateOfBirth { get; set; }
 
-        [Required] public required DateTime DateOfBirth { get; set; }
-        [Required] public required string Gender { get; set; }
 
-        // Contact Info
+        [Required] 
+        public required string Gender { get; set; }
+
 
         [Required]
         [Phone(ErrorMessage = "Invalid phone number.")]
         [StringLength(15, MinimumLength = 10, ErrorMessage = "Contact number must be between 10 and 15 digits.")]
-
+        [DisplayName("Contact Number")]
+        [DataType(DataType.PhoneNumber)]
         public required string ContactNumber { get; set; }
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
-        [Required] public required string Email { get; set; }
-        [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
-        [Required] public required string Address { get; set; }
 
-        // Emergency Contact
+
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [Required] 
+        public required string Email { get; set; }
+
+
+        [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
+        [Required] 
+        public required string Address { get; set; }
+
 
         [Phone(ErrorMessage = "Invalid emergency contact number.")]
         [Display(Name = "Emergency Contact")]
-
-        [Required] public required string EmergencyContact { get; set; }
+        [Required] 
+        public required string EmergencyContact { get; set; }
 
         /*            // Physical Metrics
                     public decimal HeightCm { get; set; }
@@ -67,10 +68,20 @@ namespace Patient_Monitoring.Models
 
         // System Info
         [Display(Name = "Registration Date")]
+        [DataType(DataType.Date)]
         public DateTime RegistrationDate { get; set; }
 
+
         [Required]
+        [DataType(DataType.Password)]
         public required string Password { get; set; }
+
+        public ICollection<Medication>? Medications { get; set; }
+        public PatientDoctorMapper PersonalizedDoctorMapper { get; set; } = null!;
+        public ICollection<Appointment>? Appointments { get; set; }
+        public ICollection<Diagnosis>? Diagnoses { get; set; }
+        public ICollection<PatientPlanAssignment>? AssignedPlans { get; set; }
+
     }
 
 }

@@ -2,21 +2,23 @@
 
 namespace Patient_Monitoring.Models
 {
-    public class Patient_Doctor_Mapper
+    public class PatientDoctorMapper
     {
         [Required]
         [StringLength(10, ErrorMessage = "Patient ID cannot exceed 10 characters.")]
         [Display(Name = "Patient ID")]
         [Key]
-        public required string PatientID { get; set; } // Foreign Key to Patient_Details
+        public required string PatientID { get; set; } 
 
-        public Patient_Detail Patient { get; set; } = null!;
 
         [Required]
         [StringLength(10, ErrorMessage = "Doctor ID cannot exceed 10 characters.")]
         [Display(Name = "Doctor ID")]
-        public required string DoctorID { get; set; } // Foreign Key to Doctor_Details
+        public required string DoctorID { get; set; } 
 
-        public Doctor_Detail Doctor_Detail { get; set; } = null!;
+
+        public Doctor Doctor { get; set; } = null!;
+
+        public Patient Patient { get; set; } = null!;
     }
 }

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.DTOs;
-using Patient_Monitoring.Models;
 using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Controllers.API

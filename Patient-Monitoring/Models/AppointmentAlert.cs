@@ -2,7 +2,7 @@
 
 namespace Patient_Monitoring.Models
 {
-    public class Appointment_Alert
+    public class AppointmentAlert
     {
         [Key]
         [Required]
