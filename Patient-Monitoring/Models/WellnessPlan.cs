@@ -31,13 +31,16 @@ namespace Patient_Monitoring.Models
 
 
         [Required]
+        public string Category { get; set; } = null!;
+
+
+        [Required]
         [DisplayName("Created By")]
         public string CreatedByDoctorId { get; set; } = null!;
         
 
         public  ICollection<WellnessPlanDetail>? WellnessPlanDetails { get; set; }
         public  ICollection<PatientPlanAssignment>? AssignedPatients { get; set; }
-
         public Doctor CreatedByDoctor { get; set; } = null!;
     }
 }

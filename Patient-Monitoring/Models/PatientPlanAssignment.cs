@@ -49,8 +49,6 @@ namespace Patient_Monitoring.Models
         [DisplayName("Patient Id")]
         public bool IsActive { get; set; }
 
-        [StringLength(35)]
-        public string? OverrideGoal { get; set; }
 
         // Navigation properties
         public WellnessPlan AssignedWellnessPlan { get; set; } = null!;

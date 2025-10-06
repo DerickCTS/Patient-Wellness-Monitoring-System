@@ -25,9 +25,6 @@ namespace Patient_Monitoring.Models
         [DataType(DataType.Text)]
         public string Content { get; set; } = null!;
 
-        [Required]
-        [DisplayName("Display Order")]
-        public long DisplayOrder { get; set; }
 
         public WellnessPlan WellnessPlan { get; set; } = null!;
     }
