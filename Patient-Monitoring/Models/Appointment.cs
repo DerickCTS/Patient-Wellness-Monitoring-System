@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.CodeAnalysis;
+using System.ComponentModel.DataAnnotations;
+using System.Numerics;
+using Patient_Monitoring.Enums
 
 namespace Patient_Monitoring.Models
 {
@@ -28,5 +31,13 @@ namespace Patient_Monitoring.Models
 
         [StringLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
         public string? Notes { get; set; } // Nullable for optional notes
+
+        public Appointment_Alert? Alert { get; set; }
+        public Patient Patient { get; set; } = null!;
+        public Doctor Doctor { get; set; } = null!;
+        public AppointmentStatus Status { get; set; }
+        public ICollection<Diagnosis> Diagnoses { get; set; } = null!;
+        public DateTime CreatedAt { get; internal set; }
+
     }
 }

@@ -84,6 +84,7 @@ namespace Patient_Monitoring.Controllers
         public IActionResult Login() => View();
 
 
+        #region POST: Login
         // POST: /Auth/Login
         [HttpPost]
         public async Task<IActionResult> Login([FromForm] string email, [FromForm] string password)
@@ -112,6 +113,8 @@ namespace Patient_Monitoring.Controllers
             ModelState.AddModelError("", "Invalid credentials");
             return View();
         }
+
+        #endregion
         [HttpPost]
         public IActionResult Logout()
         {
