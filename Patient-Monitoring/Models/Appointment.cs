@@ -7,7 +7,6 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        [StringLength(50, ErrorMessage = "AppointmentID cannot exceed 50 characters.")]
         [DisplayName("Appointment Id")]
         public required string AppointmentID { get; set; } // Primary Key
 

@@ -6,7 +6,6 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        [StringLength(50, ErrorMessage = "DiseaseId cannot exceed 50 characters.")]
         public required string DiseaseId { get; set; } // Primary Key
 
 

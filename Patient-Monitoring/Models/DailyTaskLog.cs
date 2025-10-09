@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Monitoring.Models
 {
-    [Table("DailyTaskLog")]
     public class DailyTaskLog
     {
         [Key]

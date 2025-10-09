@@ -17,7 +17,7 @@ namespace Patient_Monitoring.Repository.Implementations
         #region Get Doctor by Email
         public async Task<Doctor?> GetByEmail(string email)
         {
-            return await _context.Doctor_Details.FirstOrDefaultAsync(d => d.Email == email);
+            return await _context.Doctors.FirstOrDefaultAsync(d => d.Email == email);
         }
 
         #endregion
@@ -25,7 +25,7 @@ namespace Patient_Monitoring.Repository.Implementations
         #region Add New Doctor to DB
         public async Task AddDoctor(Doctor doctor)
         {
-            await _context.Doctor_Details.AddAsync(doctor);
+            await _context.Doctors.AddAsync(doctor);
             await _context.SaveChangesAsync();
         }
         #endregion

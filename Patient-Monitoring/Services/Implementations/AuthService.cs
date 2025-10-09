@@ -13,9 +13,9 @@ namespace Patient_Monitoring.Services.Implementations
         private readonly IDoctorRepository _doctorRepository;
         private readonly PasswordHasher<Patient> _patientPasswordHasher;
         private readonly PasswordHasher<Doctor> _doctorPasswordHasher;
-        private readonly IJWTService2 _jwtService;
+        private readonly IJWTService _jwtService;
 
-        public AuthService(IPatientRepository patientRepository, IDoctorRepository doctorRepository, IJWTService2 jwtService)
+        public AuthService(IPatientRepository patientRepository, IDoctorRepository doctorRepository, IJWTService jwtService)
         {
             _patientRepository = patientRepository;
             _doctorRepository = doctorRepository;

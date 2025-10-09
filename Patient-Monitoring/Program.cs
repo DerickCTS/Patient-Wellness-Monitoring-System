@@ -17,7 +17,7 @@ builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
-builder.Services.AddScoped<IJWTService2, JWTService2>();
+builder.Services.AddScoped<IJWTService, JWTService2>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
 
