@@ -34,11 +34,13 @@ namespace Patient_Monitoring.DTOs
         [Required] public required string Address { get; set; }
 
         // Emergency Contact
+        [Display(Name = "Emergency Contact Name")]
+        [Required] public required string EmergencyContactName { get; set; }
 
         [Phone(ErrorMessage = "Invalid emergency contact number.")]
         [Display(Name = "Emergency Contact")]
 
-        [Required] public required string EmergencyContact { get; set; }
+        [Required] public required string EmergencyContactNumber { get; set; }
 
         /*            // Physical Metrics
                     public decimal HeightCm { get; set; }

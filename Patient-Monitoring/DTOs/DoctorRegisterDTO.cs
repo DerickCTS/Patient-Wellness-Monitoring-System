@@ -25,6 +25,12 @@ namespace Patient_Monitoring.DTOs
         [Display(Name = "Contact Number")]
         [Required] public required string ContactNumber { get; set; }
 
+
+        [Required]  
+        [StringLength(100, ErrorMessage = "Education details cannot exceed 100 characters.")]
+        public required string Education { get; set; }
+
+
         [EmailAddress(ErrorMessage = "Invalid email address format.")]
         [Required] public required string Email { get; set; }
 

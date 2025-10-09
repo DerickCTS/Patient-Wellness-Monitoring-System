@@ -13,7 +13,7 @@ namespace Patient_Monitoring.Middleware
         }
         public async Task Invoke(HttpContext context)
         {
-            string token = null;
+            string? token = null;
             var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
             if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
                 token = authHeader.Substring("Bearer ".Length).Trim();

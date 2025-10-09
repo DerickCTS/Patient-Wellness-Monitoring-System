@@ -18,6 +18,13 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 
+
+// Register PatientDashboardService
+builder.Services.AddScoped<IPatientDashboardService, PatientDashboardService>();
+
+// Register PatientDashboardRepository
+builder.Services.AddScoped<IPatientDashboardRepository, PatientDashboardRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -4,8 +4,8 @@ namespace Patient_Monitoring.Repository.Interfaces
 {
     public interface IDoctorRepository
     {
-        Task<Doctor_Detail?> GetByEmail(string email);
+        Task<Doctor?> GetByEmail(string email);
 
-        Task AddDoctor(Doctor_Detail doctor);
+        Task AddDoctor(Doctor doctor);
     }
 }

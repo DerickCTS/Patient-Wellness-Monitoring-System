@@ -10,15 +10,15 @@ namespace Patient_Monitoring.Services.Implementations
     {
         private readonly IPatientRepository _patientRepository;
         private readonly IDoctorRepository _doctorRepository;
-        private readonly PasswordHasher<Patient_Detail> _patientPasswordHasher;
-        private readonly PasswordHasher<Doctor_Detail> _doctorPasswordHasher;
+        private readonly PasswordHasher<Patient> _patientPasswordHasher;
+        private readonly PasswordHasher<Doctor> _doctorPasswordHasher;
 
         public AuthService(IPatientRepository patientRepository, IDoctorRepository doctorRepository)
         {
             _patientRepository = patientRepository;
             _doctorRepository = doctorRepository;
-            _patientPasswordHasher = new PasswordHasher<Patient_Detail>();
-            _doctorPasswordHasher = new PasswordHasher<Doctor_Detail>();
+            _patientPasswordHasher = new PasswordHasher<Patient>();
+            _doctorPasswordHasher = new PasswordHasher<Doctor>();
         }
 
         #region Register New Patient
@@ -31,7 +31,7 @@ namespace Patient_Monitoring.Services.Implementations
                 return false;
             }
 
-            Patient_Detail newPatient = new Patient_Detail
+            Patient newPatient = new Patient
             {
                 PatientID = "P" + Guid.NewGuid().ToString(),
                 FirstName = patient.FirstName,
@@ -41,7 +41,8 @@ namespace Patient_Monitoring.Services.Implementations
                 ContactNumber = patient.ContactNumber,
                 Email = patient.Email,
                 Address = patient.Address,
-                EmergencyContact = patient.EmergencyContact,
+                EmergencyContactName = patient.EmergencyContactName,
+                EmergencyContactNumber = patient.EmergencyContactNumber,
                 RegistrationDate = DateTime.UtcNow,
                 Password = patient.Password
             };
@@ -64,7 +65,7 @@ namespace Patient_Monitoring.Services.Implementations
                 return false;
             }
 
-            Doctor_Detail newDoctor = new Doctor_Detail
+            Doctor newDoctor = new Doctor
             {
                 DoctorID = "D" + Guid.NewGuid().ToString(),
                 FirstName = doctor.FirstName,
@@ -72,7 +73,8 @@ namespace Patient_Monitoring.Services.Implementations
                 Specialization = doctor.Specialization,
                 ContactNumber = doctor.ContactNumber,
                 Email = doctor.Email,
-                Password = doctor.Password
+                Password = doctor.Password,
+                Education = doctor.Education,
             };
 
             newDoctor.Password = _doctorPasswordHasher.HashPassword(newDoctor, doctor.Password);

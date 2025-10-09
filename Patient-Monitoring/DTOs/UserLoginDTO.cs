@@ -10,6 +10,6 @@ namespace Patient_Monitoring.DTOs
         [Required]
         public required string Password { get; set; }
 
-        public string Role { get; set; }
+        public required string Role { get; set; }
     }
 }
