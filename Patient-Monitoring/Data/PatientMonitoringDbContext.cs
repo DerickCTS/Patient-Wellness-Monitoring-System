@@ -38,6 +38,12 @@ namespace Patient_Monitoring.Data
              .WithMany(d => d.PatientPlanAssignments) // Assuming Doctor has a collection named PatientPlanAssignments
              .HasForeignKey(ppa => ppa.AssignedByDoctorId)
              .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Diagnosis>()
+                .HasOne(d => d.Patient)
+                .WithMany(p => p.Diagnoses)
+                .HasForeignKey(d => d.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }
