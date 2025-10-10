@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
+using Patient_Monitoring.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PatientMonitoringDbContext") ?? throw new InvalidOperationException("Connection string 'PatientMonitoringContext' not found.")));
+
+// Registers the SchedulingService with the dependency injection container.
+builder.Services.AddScoped<SchedulingService>();
 
 var app = builder.Build();
 
