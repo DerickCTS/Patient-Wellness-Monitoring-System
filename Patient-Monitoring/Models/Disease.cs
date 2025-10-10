@@ -6,6 +6,7 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
+        [Display(Name = "Disease ID")]
         public required string DiseaseId { get; set; } // Primary Key
 
 

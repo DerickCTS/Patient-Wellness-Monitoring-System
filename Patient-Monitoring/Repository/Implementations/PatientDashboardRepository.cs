@@ -68,21 +68,21 @@ namespace Patient_Monitoring.Repository.Implementations
         public async Task<int> GetPatientTotalVisitsAsync(string patientId, string doctorId)
         {
             return await _context.Appointments
-                .CountAsync(a => a.PatientID == patientId &&
-                               a.DoctorID == doctorId &&
+                .CountAsync(a => a.PatientId == patientId &&
+                               a.DoctorId == doctorId &&
                                a.Status == "completed");
         }
 
         public async Task<DateTime?> GetPatientLastVisitAsync(string patientId, string doctorId)
         {
             var lastAppointment = await _context.Appointments
-                .Where(a => a.PatientID == patientId &&
-                          a.DoctorID == doctorId &&
+                .Where(a => a.PatientId == patientId &&
+                          a.DoctorId == doctorId &&
                           a.Status == "completed")
-                .OrderByDescending(a => a.Appointment_Date_Time)
+                .OrderByDescending(a => a.AppointmentDate)
                 .FirstOrDefaultAsync();
 
-            return lastAppointment?.Appointment_Date_Time;
+            return lastAppointment?.AppointmentDate;
         }
 
         //public async Task<DoctorAvailability> GetDoctorNextAvailabilityAsync(string doctorId)

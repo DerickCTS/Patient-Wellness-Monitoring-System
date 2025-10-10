@@ -67,7 +67,7 @@ namespace Patient_Monitoring.Services.Implementations
 
             Doctor newDoctor = new Doctor
             {
-                DoctorID = "D" + Guid.NewGuid().ToString(),
+                DoctorId = "D" + Guid.NewGuid().ToString(),
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 Specialization = doctor.Specialization,

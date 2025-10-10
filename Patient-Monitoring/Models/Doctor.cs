@@ -9,7 +9,7 @@ namespace Patient_Monitoring.Models
         [Required]
         [Display(Name = "Doctor ID")]
         [Key]
-        public required string DoctorID { get; set; }
+        public required string DoctorId { get; set; }
 
 
         [Required]
@@ -71,5 +71,9 @@ namespace Patient_Monitoring.Models
         public ICollection<WellnessPlan>? FormulatedWellnessPlans { get; set; }
 
         public ICollection<PatientPlanAssignment>? PatientPlanAssignments { get; set; }
+
+        public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; } = null!;
+
+        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; } = null!;
     }
 }

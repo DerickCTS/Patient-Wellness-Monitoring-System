@@ -8,12 +8,13 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [DisplayName("Log Id")]
-        public string LogId { get; set; } = null!;
+        [Required]
+        public required string LogId { get; set; }
 
 
         [Required]
         [DisplayName("Assignment Id")]
-        public string AssignmentId { get; set; } = null!;
+        public required string AssignmentId { get; set; }
 
 
         [Required]
@@ -24,7 +25,7 @@ namespace Patient_Monitoring.Models
 
         [Required]
         [StringLength(50)]
-        public string Status { get; set; } = null!;
+        public required string Status { get; set; }
 
 
         [Required]

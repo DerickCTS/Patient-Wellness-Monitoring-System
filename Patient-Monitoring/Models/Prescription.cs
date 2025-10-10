@@ -8,13 +8,16 @@ namespace Patient_Monitoring.Models
     public class Prescription
     {
         [Key]
-        public string PrescriptionId { get; set; } = null!;
+        [Display(Name = "Prescription ID")]
+        public required string PrescriptionId { get; set; } 
 
         [Required]
-        public string PatientId { get; set; } = null!;
+        [Display(Name = "Patient ID")]
+        public required string PatientId { get; set; }
 
         [Required]
         [MaxLength(100)]
+        [Display(Name = "Medication Name")]
         public required string MedicationName { get; set; } // e.g., "Paracetamol"
 
         [Required]
@@ -22,22 +25,27 @@ namespace Patient_Monitoring.Models
         public required string Dosage { get; set; } // e.g., "500mg"
 
         [Required]
+        [Display(Name = "Start Date")]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; } // Medication start date
 
         [Required]
+        [Display(Name = "End Date")]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; } // Medication end date
 
         [Required]
-        public string PrescribingDoctorId { get; set; } = null!;
+        [Display(Name = "Prescribing Doctor ID")]
+        public required string PrescribingDoctorId { get; set; } 
 
         [MaxLength(255)]
         public string? Instructions { get; set; } // Optional notes (e.g., "Take with food")
 
-        // Navigation Properties
-        //[ForeignKey(nameof(PatientId))]
-        public required Patient Patient { get; set; }
+        // Navigation Properties        
+        public Patient Patient { get; set; } = null!;
 
-        //[ForeignKey(nameof(PrescribingDoctorId))]
-        public required Doctor Doctor { get; set; }
+        public Doctor Doctor { get; set; } = null!;
+
+        public ICollection<MedicationSchedule> MedicationSchedules { get; set; } = null!;
     }
 }

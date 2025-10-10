@@ -7,9 +7,7 @@ namespace Patient_Monitoring.Models
 {
     public class Patient
     {
-        [Display(Name = "Profile Image")]
-        public string? ProfileImage { get; set; }
-
+        
         [Key]
         [Display(Name = "Patient ID")]
         public required string PatientID { get; set; } // Primary Key
@@ -53,6 +51,7 @@ namespace Patient_Monitoring.Models
         [Required]
         public required string Address { get; set; }
 
+
         [Required]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
         public required string EmergencyContactName { get; set; }
@@ -80,11 +79,17 @@ namespace Patient_Monitoring.Models
         public DateTime RegistrationDate { get; set; }
 
 
+        [Display(Name = "Profile Image")]
+        public string? ProfileImage { get; set; }
+
+
         [Required]
         [DataType(DataType.Password)]
         public required string Password { get; set; }
 
+
         public ICollection<Prescription>? Medications { get; set; }
+        public ICollection<Notification>? Notifications { get; set; }
         public PatientDoctorMapper PersonalizedDoctorMapper { get; set; } = null!;
         public ICollection<Appointment>? Appointments { get; set; }
         public ICollection<Diagnosis>? Diagnoses { get; set; }

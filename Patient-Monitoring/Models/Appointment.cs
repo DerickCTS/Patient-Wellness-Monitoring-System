@@ -7,51 +7,50 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        
-        public required string AppointmentID { get; set; } // Primary Key
+        [Display(Name = "Appointment ID")]
+        public required string AppointmentId { get; set; }
+
 
         [Required]
-        public required string PatientID { get; set; } // Foreign Key to Patient
+        [Display(Name = "Patient ID")]
+        public required string PatientId { get; set; }
+
 
         [Required]
-        
-        public required string DoctorID { get; set; } // Foreign Key to Doctor
+        [Display(Name = "Doctor ID")]
+        public required string DoctorId { get; set; } 
+
 
         [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = "Appointment Date & Time")]
-        public DateTime Appointment_Date_Time { get; set; }
+        public DateTime AppointmentDate { get; set; }
 
-        // --- MODIFICATIONS START HERE ---
-
-        // 1. Increased length for detailed patient issue
+        
         [Required]
         [StringLength(1000, ErrorMessage = "Reason cannot exceed 1000 characters.")]
-        public required string Reason { get; set; }
+        public required string Reason { get; set; } 
 
-        [StringLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
-        public string? Notes { get; set; } // Nullable for optional notes
 
-        // 2. Foreign Key to the booked slot
-        public int? SlotID { get; set; } // Nullable if the appointment wasn't booked via a slot system
+        [Required]
+        [Display(Name = "Slot ID")]
+        public int SlotId { get; set; }
+
 
         // 3. Status for approval workflow: 'Pending Approval', 'Confirmed', 'Rejected', etc.
         [Required]
-        [StringLength(50)]
-        public required string Status { get; set; } = "Pending Approval";
+        [StringLength(100)]
+        public string Status { get; set; } = "Pending Approval";
 
-        // 4. Reason provided by doctor if rejected
+
+        [StringLength(1000, ErrorMessage = "Rejection reason cannot exceed 1000 characters.")]
+        [Display(Name = "Rejection Reason")]    
         public string? RejectionReason { get; set; }
 
-        // --- NAVIGATION PROPERTIES ---
-
-        [ForeignKey("SlotID")]
+        [ForeignKey("SlotId")]
         public AppointmentSlot? AppointmentSlot { get; set; }
-
-        // Assuming you have Doctor and Patient models for these:
-        // [ForeignKey("DoctorID")]
-        // public Doctor? Doctor { get; set; }
-        // [ForeignKey("PatientID")]
-        // public Patient? Patient { get; set; }
+        public ICollection<Diagnosis> Diagnoses { get; set; } = null!; 
+        public Patient Patient { get; set; } = null!;
+        public Doctor Doctor { get; set; } = null!;
     }
 }

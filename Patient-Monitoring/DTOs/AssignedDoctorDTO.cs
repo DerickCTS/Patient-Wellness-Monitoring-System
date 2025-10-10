@@ -27,6 +27,6 @@
         public required string Duration { get; set; }
         public int TotalVisits { get; set; }
         public DateTime LastVisit { get; set; }
-        public string? Notes { get; set; }
+        
     }
 }

@@ -11,38 +11,46 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [DisplayName("Assignment Id")]
-        public string AssignmentId { get; set; } = null!;
+        public required string AssignmentId { get; set; } 
+
 
         [Required]
         [DisplayName("Patient Id")]
-        public string PatientId { get; set; } = null!;
+        public required string PatientId { get; set; } 
+
 
         [Required]
         [DisplayName("Plan Id")]
-        public string PlanId { get; set; } = null!;
+        public required string PlanId { get; set; } 
+
 
         [Required]
         [DisplayName("Assigned By")]
-        public string AssignedByDoctorId { get; set; } = null!;
+        public required string AssignedByDoctorId { get; set; } 
+
 
         [Required]
         [Range(1, 100)]
         [DisplayName("Frequency Count")]
         public int FrequencyCount { get; set; }
 
+
         [Required]
         [StringLength(10)]
         [DisplayName("Frequency Unit")]
-        public string FrequencyUnit { get; set; } = null!;
+        public required string FrequencyUnit { get; set; }
+
 
         [Required]
         [DataType(DataType.Date)]
         [DisplayName("Start Date")]
         public DateTime StartDate { get; set; }
 
+
         [DataType(DataType.Date)]
         [DisplayName("End Date")]
         public DateTime EndDate { get; set; }
+
 
         [Required]
         [DisplayName("Patient Id")]

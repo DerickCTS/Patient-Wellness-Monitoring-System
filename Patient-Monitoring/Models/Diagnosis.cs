@@ -7,12 +7,12 @@ namespace Patient_Monitoring.Models
         [Required(ErrorMessage = "Diagnosis ID is required.")]
         [Display(Name = "Diagnosis ID")]
         [Key]
-        public required string DiagnosisID { get; set; }
+        public required string DiagnosisId { get; set; }
 
 
         [Required(ErrorMessage = "Patient ID is required.")]
         [Display(Name = "Patient ID")]
-        public required string PatientID { get; set; }
+        public required string PatientId { get; set; }
 
 
         [Required(ErrorMessage = "Disease ID is required.")]

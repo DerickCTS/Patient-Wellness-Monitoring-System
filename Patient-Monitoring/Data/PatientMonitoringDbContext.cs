@@ -9,7 +9,7 @@ namespace Patient_Monitoring.Data
         {
         }
 
-        public DbSet<AppointmentAlert> AppointmentAlerts { get; set; }
+       
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<WellnessPlan> WellnessPlans { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
@@ -32,9 +32,14 @@ namespace Patient_Monitoring.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Define relationships and constraints here if needed...
+
+            modelBuilder.Entity<PatientPlanAssignment>()
+             .HasOne(ppa => ppa.AssigningDoctor)
+             .WithMany(d => d.PatientPlanAssignments) // Assuming Doctor has a collection named PatientPlanAssignments
+             .HasForeignKey(ppa => ppa.AssignedByDoctorId)
+             .OnDelete(DeleteBehavior.Restrict);
         }
-        
+
     }
   
 }

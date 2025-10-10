@@ -169,21 +169,21 @@ namespace Patient_Monitoring.Services.Implementations
 
                 // Get total number of patients for this doctor
                 var totalPatients = await _context.PatientDoctorMapper
-                    .CountAsync(pdm => pdm.DoctorID == doctor.DoctorID);
+                    .CountAsync(pdm => pdm.DoctorID == doctor.DoctorId);
 
                 // Get total visits count
                 var totalVisits = await _context.Appointments
-                    .CountAsync(a => a.PatientID == patientId &&
-                                   a.DoctorID == doctor.DoctorID &&
+                    .CountAsync(a => a.PatientId == patientId &&
+                                   a.DoctorId == doctor.DoctorId &&
                                    a.Status == "completed");
 
                 // Get last visit date
                 var lastVisit = await _context.Appointments
-                    .Where(a => a.PatientID == patientId &&
-                              a.DoctorID == doctor.DoctorID &&
+                    .Where(a => a.PatientId == patientId &&
+                              a.DoctorId == doctor.DoctorId &&
                               a.Status == "completed")
-                    .OrderByDescending(a => a.Appointment_Date_Time)
-                    .Select(a => a.Appointment_Date_Time)
+                    .OrderByDescending(a => a.AppointmentDate)
+                    .Select(a => a.AppointmentDate)
                     .FirstOrDefaultAsync();
 
                 // Get next available slot
@@ -192,16 +192,11 @@ namespace Patient_Monitoring.Services.Implementations
                 // Calculate duration since assignment
                 var duration = CalculateDuration(doctorMapping.AssignedDate);
 
-                // Get latest appointment notes
-                var latestNotes = await _context.Appointments
-                    .Where(a => a.PatientID == patientId && a.DoctorID == doctor.DoctorID)
-                    .OrderByDescending(a => a.Appointment_Date_Time)
-                    .Select(a => a.Notes)
-                    .FirstOrDefaultAsync();
+               
 
                 return new AssignedDoctorDTO
                 {
-                    DoctorId = doctor.DoctorID,
+                    DoctorId = doctor.DoctorId,
                     FirstName = doctor.FirstName,
                     LastName = doctor.LastName,
                     Specialization = doctor.Specialization,
@@ -223,7 +218,7 @@ namespace Patient_Monitoring.Services.Implementations
                         Duration = duration,
                         TotalVisits = totalVisits,
                         LastVisit = lastVisit != default ? lastVisit : doctorMapping.AssignedDate,
-                        Notes = latestNotes ?? "Patient shows excellent progress with prescribed treatment plan."
+                        
                     }
                 };
             }
