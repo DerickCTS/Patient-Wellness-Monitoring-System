@@ -1,136 +1,55 @@
-﻿//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-//namespace Patient_Monitoring.ApiControllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class DiagnosisApiController : ControllerBase
-//    {
-//        private readonly IAppointmentService _appointmentService;
+[ApiController]
+[Route("api/[controller]")]
+// [Authorize(Roles = "Doctor")] // You would protect this for doctors only
+public class DiagnosisApiController : ControllerBase
+{
+    private readonly IDiagnosisService _diagnosisService;
 
-//        public AppointmentController(IAppointmentService appointmentService)
-//        {
-//            _appointmentService = appointmentService;
-//        }
+    public DiagnosisApiController(IDiagnosisService diagnosisService)
+    {
+        _diagnosisService = diagnosisService;
+    }
 
-//        /// <summary>
-//        /// Get today's appointments for a specific doctor
-//        /// </summary>
-//        /// <param name="doctorId">Doctor ID</param>
-//        /// <param name="date">Optional date (defaults to today)</param>
-//        /// <param name="status">Appointment status (defaults to "Confirmed")</param>
-//        /// <returns>List of appointments</returns>
-//        [HttpGet("todays/{doctorId}")]
-//        public async Task<IActionResult> GetTodaysAppointments(
-//            string doctorId,
-//            [FromQuery] DateTime? date = null,
-//            [FromQuery] string status = "Confirmed")
-//        {
-//            try
-//            {
-//                var appointments = await _appointmentService.GetTodaysAppointmentsAsync(doctorId, date, status);
-//                return Ok(new
-//                {
-//                    success = true,
-//                    data = appointments,
-//                    count = appointments.Count()
-//                });
-//            }
-//            catch (Exception ex)
-//            {
-//                return StatusCode(500, new
-//                {
-//                    success = false,
-//                    message = "Error retrieving appointments",
-//                    error = ex.Message
-//                });
-//            }
-//        }
+    private string GetCurrentDoctorId()
+    {
+        // In a real app, get this from the JWT token claims
+        return "doctor_id_from_dummy_data";
+    }
 
-//        /// <summary>
-//        /// Get appointment details by ID
-//        /// </summary>
-//        /// <param name="appointmentId">Appointment ID</param>
-//        /// <returns>Appointment details</returns>
-//        [HttpGet("{appointmentId}")]
-//        public async Task<IActionResult> GetAppointmentDetails(string appointmentId)
-//        {
-//            try
-//            {
-//                var appointment = await _appointmentService.GetAppointmentDetailsAsync(appointmentId);
+    [HttpGet("today")]
+    public async Task<IActionResult> GetTodaysAppointments()
+    {
+        var doctorId = GetCurrentDoctorId();
+        var appointments = await _diagnosisService.GetTodaysAppointmentsAsync(doctorId);
+        return Ok(appointments);
+    }
 
-//                if (appointment == null)
-//                {
-//                    return NotFound(new
-//                    {
-//                        success = false,
-//                        message = "Appointment not found"
-//                    });
-//                }
+    [HttpGet("appointment/{appointmentId}")]
+    public async Task<IActionResult> GetPatientDiagnosisDetails(string appointmentId)
+    {
+        var details = await _diagnosisService.GetPatientDiagnosisDetailsAsync(appointmentId);
+        if (details == null) return NotFound();
+        return Ok(details);
+    }
 
-//                return Ok(new
-//                {
-//                    success = true,
-//                    data = appointment
-//                });
-//            }
-//            catch (Exception ex)
-//            {
-//                return StatusCode(500, new
-//                {
-//                    success = false,
-//                    message = "Error retrieving appointment details",
-//                    error = ex.Message
-//                });
-//            }
-//        }
+    [HttpGet("diseases")]
+    public async Task<IActionResult> GetAllDiseases()
+    {
+        var diseases = await _diagnosisService.GetAllDiseasesAsync();
+        return Ok(diseases);
+    }
 
-//        /// <summary>
-//        /// Update appointment status
-//        /// </summary>
-//        /// <param name="appointmentId">Appointment ID</param>
-//        /// <param name="request">Status update request</param>
-//        /// <returns>Update result</returns>
-//        [HttpPatch("{appointmentId}/status")]
-//        public async Task<IActionResult> UpdateAppointmentStatus(
-//            string appointmentId,
-//            [FromBody] UpdateStatusRequest request)
-//        {
-//            try
-//            {
-//                var result = await _appointmentService.UpdateAppointmentStatusAsync(appointmentId, request.Status);
-
-//                if (!result)
-//                {
-//                    return NotFound(new
-//                    {
-//                        success = false,
-//                        message = "Appointment not found"
-//                    });
-//                }
-
-//                return Ok(new
-//                {
-//                    success = true,
-//                    message = "Appointment status updated successfully"
-//                });
-//            }
-//            catch (Exception ex)
-//            {
-//                return StatusCode(500, new
-//                {
-//                    success = false,
-//                    message = "Error updating appointment status",
-//                    error = ex.Message
-//                });
-//            }
-//        }
-//    }
-
-//    public class UpdateStatusRequest
-//    {
-//        public string Status { get; set; }
-//    }
-//}
-//}
+    [HttpPost("appointment/{appointmentId}/save")]
+    public async Task<IActionResult> SaveDiagnosis(string appointmentId, [FromBody] SaveDiagnosisDto data)
+    {
+        var doctorId = GetCurrentDoctorId();
+        var success = await _diagnosisService.SaveDiagnosisAndPrescriptionsAsync(appointmentId, doctorId, data);
+        if (!success)
+        {
+            return BadRequest("Failed to save diagnosis and prescriptions.");
+        }
+        return Ok(new { message = "Diagnosis and prescriptions saved successfully." });
+    }
+}

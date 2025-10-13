@@ -1,11 +1,7 @@
-﻿using Patient_Monitoring.DTOs;
-
-namespace Patient_Monitoring.Services.Interfaces
+﻿public interface IProgressService
 {
-    public interface IProgressService
-    {
-        Task<IEnumerable<PlanCardDTO>> GetAssignedPlansAsync(string patientId, string timeframe);
-        Task<PlanDetailDTO?> GetPlanDetailsAsync(int logId);
-        Task<bool> UpdateTaskStatusAsync(int logId, string newStatus);
-    }
+    Task<List<AssignedPlanCardDto>> GetAssignedPlanCardsAsync(string patientId, string statusFilter, string categoryFilter, string dateFilter);
+    Task<PlanDetailDto?> GetPlanDetailsAsync(string assignmentId);
+    Task<bool> UpdateTaskStatusAsync(string taskLogId, UpdateTaskStatusDto updateDto);
+    Task<DashboardDto> GetDashboardDataAsync(string patientId);
 }

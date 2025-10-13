@@ -1,48 +1,62 @@
-﻿//using Microsoft.AspNetCore.Mvc;
-//using Patient_Monitoring.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 
-//namespace Patient_Monitoring.ApiControllers
-//{
-//    [ApiController]
-//    [Route("patients/{patientId}/progress")]
-//    public class ProgressApiController : ControllerBase
-//    {
-//        private readonly IProgressService _progressService;
+[ApiController]
+[Route("api/[controller]")]
+// [Authorize] // You would add this to protect the endpoint
+public class ProgressApiController : ControllerBase
+{
+    private readonly IProgressService _progressService;
 
-//        public ProgressApiController(IProgressService progressService)
-//        {
-//            _progressService = progressService;
-//        }
+    public ProgressApiController(IProgressService progressService)
+    {
+        _progressService = progressService;
+    }
 
-//        [HttpGet("plans")]
-//        public async Task<IActionResult> GetAssignedPlans(string patientId, [FromQuery] string timeframe = "This Week")
-//        {
-//            var plans = await _progressService.GetAssignedPlansAsync(patientId, timeframe);
-//            return Ok(plans);
-//        }
+    private string GetCurrentPatientId()
+    {
+        // In a real app, you would get this from the user's token claims
+        // For example: return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return "patient_id_from_dummy_data"; // Replace with a real ID from your seeded data
+    }
 
-//        [HttpGet("logs/{logId}/details")]
-//        public async Task<IActionResult> GetPlanDetails(int patientId, int logId)
-//        {
-//            // You might add a check here to ensure the log belongs to the patient
-//            var details = await _progressService.GetPlanDetailsAsync(logId);
-//            if (details == null)
-//            {
-//                return NotFound();
-//            }
-//            return Ok(details);
-//        }
+    [HttpGet("plans")]
+    public async Task<IActionResult> GetAssignedPlanCards(
+        [FromQuery] string status = "All",
+        [FromQuery] string category = "All",
+        [FromQuery] string date = "This Week")
+    {
+        var patientId = GetCurrentPatientId();
+        var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, status, category, date);
+        return Ok(cards);
+    }
 
-//        [HttpPost("logs/{logId}/status")]
-//        public async Task<IActionResult> UpdateTaskStatus(int patientId, int logId, [FromBody] UpdateTaskStatusRequest request)
-//        {
-//            // Add check to ensure log belongs to patient
-//            var result = await _progressService.UpdateTaskStatusAsync(logId, request.NewStatus);
-//            if (!result)
-//            {
-//                return BadRequest("Failed to update task status.");
-//            }
-//            return Ok();
-//        }
-//    }
-//}
+    [HttpGet("plans/{assignmentId}/details")]
+    public async Task<IActionResult> GetPlanDetails(string assignmentId)
+    {
+        var details = await _progressService.GetPlanDetailsAsync(assignmentId);
+        if (details == null)
+        {
+            return NotFound();
+        }
+        return Ok(details);
+    }
+
+    [HttpPatch("tasks/{taskLogId}/status")]
+    public async Task<IActionResult> UpdateTaskStatus(string taskLogId, [FromBody] UpdateTaskStatusDto updateDto)
+    {
+        var success = await _progressService.UpdateTaskStatusAsync(taskLogId, updateDto);
+        if (!success)
+        {
+            return NotFound("Task log not found or failed to update.");
+        }
+        return NoContent(); // Success, no content to return
+    }
+
+    [HttpGet("dashboard")]
+    public async Task<IActionResult> GetDashboardData()
+    {
+        var patientId = GetCurrentPatientId();
+        var dashboardData = await _progressService.GetDashboardDataAsync(patientId);
+        return Ok(dashboardData);
+    }
+}

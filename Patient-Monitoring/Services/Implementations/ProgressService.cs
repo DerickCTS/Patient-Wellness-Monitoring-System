@@ -1,83 +1,182 @@
-﻿//using Patient_Monitoring.DTOs;
-//using Patient_Monitoring.Repository.Interfaces;
-//using Patient_Monitoring.Services.Interfaces;
+﻿public class ProgressService : IProgressService
+{
+    private readonly IProgressRepository _progressRepository;
 
-//namespace Patient_Monitoring.Services.Implementations
-//{
-//    public class ProgressService : IProgressService
-//    {
-//        private readonly IProgressRepository _repository;
+    public ProgressService(IProgressRepository progressRepository)
+    {
+        _progressRepository = progressRepository;
+    }
 
-//        public ProgressService(IProgressRepository repository)
-//        {
-//            _repository = repository;
-//        }
+    public async Task<List<AssignedPlanCardDto>> GetAssignedPlanCardsAsync(string patientId, string statusFilter, string categoryFilter, string dateFilter)
+    {
+        var assignments = await _progressRepository.GetActiveAssignmentsWithTasksAsync(patientId);
+        var today = DateTime.Today;
+        var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+        var endOfWeek = startOfWeek.AddDays(6);
 
-//        public async Task<IEnumerable<PlanCardDTO>> GetAssignedPlansAsync(string patientId, string timeframe)
-//        {
-//            // Simple logic for timeframe filter
-//            var today = DateTime.Today;
-//            var startDate = timeframe.ToLower() == "this week" ? today.AddDays(-(int)today.DayOfWeek) : today;
-//            var endDate = startDate.AddDays(6);
+        var cards = new List<AssignedPlanCardDto>();
 
-//            var wellnessTasks = await _repository.GetWellnessTasksForPatientAsync(patientId, startDate, endDate);
+        foreach (var assignment in assignments)
+        {
+            // Find the most relevant task log for this assignment
+            var relevantTask = assignment.DailyTaskLogs
+                .Where(t => t.DueDate >= startOfWeek)
+                .OrderBy(t => t.DueDate)
+                .FirstOrDefault();
 
-//            return wellnessTasks.Select(log => new PlanCardDTO
-//            {
-//                LogId = log.LogId,
-//                PlanName = log.PatientPlanAssignment.WellnessPlan.PlanName,
-//                ImageUrl = log.PatientPlanAssignment.WellnessPlan.ImageURL,
-//                Status = log.Status,
-//                IsActive = log.PatientPlanAssignment.IsActive
-//            });
-//        }
+            if (relevantTask == null) continue;
 
-//        public async Task<PlanDetailDTO?> GetPlanDetailsAsync(int logId)
-//        {
-//            var log = await _repository.GetTaskLogByIdAsync(logId);
-//            if (log == null) return null;
+            cards.Add(new AssignedPlanCardDto
+            {
+                AssignmentId = assignment.AssignmentId,
+                PlanName = assignment.AssignedWellnessPlan.PlanName,
+                ImageUrl = assignment.AssignedWellnessPlan.ImageUrl,
+                Category = assignment.AssignedWellnessPlan.Category,
+                Status = relevantTask.Status,
+                DueDate = relevantTask.DueDate,
+                TaskLogId = relevantTask.LogId
+            });
+        }
 
-//            var assignment = await _repository.GetAssignmentByIdAsync(log.AssignmentId);
-//            if (assignment == null) return null;
+        // APPLY FILTERS
+        if (!string.IsNullOrEmpty(statusFilter) && statusFilter.ToLower() != "all")
+        {
+            cards = cards.Where(c => c.Status.Equals(statusFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (!string.IsNullOrEmpty(categoryFilter) && categoryFilter.ToLower() != "all")
+        {
+            cards = cards.Where(c => c.Category.Equals(categoryFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (dateFilter.ToLower() == "this week")
+        {
+            cards = cards.Where(c => c.DueDate >= startOfWeek && c.DueDate <= endOfWeek).ToList();
+        }
 
-//            var dto = new PlanDetailDTO
-//            {
-//                TaskName = assignment.WellnessPlan.PlanName,
-//                Goal = assignment.WellnessPlan.Goal,
-//                Description = assignment.OverrideDescription ?? assignment.WellnessPlan.Description,
-//                AssignedBy = "Dr. Anand Kumar", // Placeholder - get from joined Doctor table
-//                Frequency = $"{assignment.FrequencyCount} times per {assignment.FrequencyUnit}"
-//            };
+        return cards;
+    }
 
-//            // Override Logic: Check for custom details first
-//            var customDetails = (await _repository.GetCustomPlanDetailsAsync(assignment.AssignmentId)).ToList();
+    public async Task<PlanDetailDto?> GetPlanDetailsAsync(string assignmentId)
+    {
+        var assignment = await _progressRepository.GetAssignmentDetailsAsync(assignmentId);
+        if (assignment == null) return null;
 
-//            if (customDetails.Any())
-//            {
-//                dto.Instructions = customDetails.Where(d => d.DetailType == "Instruction").Select(d => new PlanDetailItemDTO { Content = d.Content }).ToList();
-//                dto.Benefits = customDetails.Where(d => d.DetailType == "Benefit").Select(d => new PlanDetailItemDTO { Content = d.Content }).ToList();
-//                dto.Safety = customDetails.Where(d => d.DetailType == "Safety").Select(d => new PlanDetailItemDTO { Content = d.Content }).ToList();
-//            }
-//            else // Fall back to template details
-//            {
-//                var templateDetails = (await _repository.GetTemplatePlanDetailsAsync(assignment.PlanId)).ToList();
-//                dto.Instructions = templateDetails.Where(d => d.DetailType == "Instruction").Select(d => new PlanDetailItemDTO { Content = d.Content }).ToList();
-//                dto.Benefits = templateDetails.Where(d => d.DetailType == "Benefit").Select(d => new PlanDetailItemDTO { Content = d.Content }).ToList();
-//                dto.Safety = templateDetails.Where(d => d.DetailType == "Safety").Select(d => new PlanDetailItemDTO { Content = d.Content }).ToList();
-//            }
+        // Logic to check for custom details first, then fall back to general details.
+        var hasCustomDetails = assignment.AssignmentPlanDetails != null && assignment.AssignmentPlanDetails.Any();
 
-//            return dto;
-//        }
+        var detailsSource = hasCustomDetails
+            ? assignment.AssignmentPlanDetails
+            : assignment.AssignedWellnessPlan.WellnessPlanDetails;
 
-//        public async Task<bool> UpdateTaskStatusAsync(int logId, string newStatus)
-//        {
-//            var log = await _repository.GetTaskLogByIdAsync(logId);
-//            if (log == null) return false;
+        var planDetails = new PlanDetailDto
+        {
+            PlanName = assignment.AssignedWellnessPlan.PlanName,
+            Goal = assignment.AssignedWellnessPlan.Goal,
+            ImageUrl = assignment.AssignedWellnessPlan.ImageUrl,
+            AssignedByDoctorName = $"Dr. {assignment.AssigningDoctor.FirstName} {assignment.AssigningDoctor.LastName}",
+            Frequency = $"{assignment.FrequencyCount} times per {assignment.FrequencyUnit}",
+            Description = detailsSource.FirstOrDefault(d => d.DetailType == "Description")?.Content ?? "No description available.",
+            Instructions = detailsSource.Where(d => d.DetailType == "Instruction").Select(d => d.Content).ToList(),
+            Benefits = detailsSource.Where(d => d.DetailType == "Benefit").Select(d => d.Content).ToList(),
+            SafetyPrecautions = detailsSource.Where(d => d.DetailType == "Safety").Select(d => d.Content).ToList()
+        };
 
-//            log.Status = newStatus;
-//            log.CompletedAt = newStatus == "Completed" ? DateTime.UtcNow : null;
+        return planDetails;
+    }
 
-//            return await _repository.UpdateTaskLogAsync(log);
-//        }
-//    }
-//}
+    public async Task<bool> UpdateTaskStatusAsync(string taskLogId, UpdateTaskStatusDto updateDto)
+    {
+        var taskLog = await _progressRepository.GetTaskLogByIdAsync(taskLogId);
+        if (taskLog == null) return false;
+
+        if (updateDto.IsComplete)
+        {
+            taskLog.Status = "Completed";
+            taskLog.CompletedAt = DateTime.UtcNow;
+            taskLog.PatientNotes = updateDto.PatientNotes;
+        }
+        else // Marking as incomplete
+        {
+            taskLog.Status = "Pending";
+            taskLog.CompletedAt = null;
+            taskLog.PatientNotes = null;
+        }
+
+        return await _progressRepository.SaveChangesAsync();
+    }
+
+    public async Task<DashboardDto> GetDashboardDataAsync(string patientId)
+    {
+        var today = DateTime.Today;
+        var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+        var startOfYear = new DateTime(today.Year, 1, 1);
+
+        var allLogsForYear = await _progressRepository.GetTaskLogsForPeriodAsync(patientId, startOfYear, today);
+
+        // Wellness Score
+        var last7DaysLogs = allLogsForYear.Where(l => l.DueDate >= today.AddDays(-6)).ToList();
+        var completedLast7Days = last7DaysLogs.Count(l => l.Status == "Completed");
+        double wellnessScore = last7DaysLogs.Any() ? ((double)completedLast7Days / last7DaysLogs.Count) * 100 : 0;
+
+        // Streaks
+        var logsByDate = allLogsForYear
+            .Where(l => l.DueDate < today) // Only look at past days for streaks
+            .GroupBy(l => l.DueDate.Date)
+            .ToDictionary(g => g.Key, g => g.All(t => t.Status == "Completed"));
+
+        int currentStreak = 0;
+        int bestStreak = 0;
+        int maxStreak = 0;
+
+        for (var date = today.AddDays(-1); date >= startOfYear; date = date.AddDays(-1))
+        {
+            if (logsByDate.TryGetValue(date, out bool allCompleted) && allCompleted)
+            {
+                currentStreak++;
+            }
+            else if (logsByDate.ContainsKey(date)) // Day exists but not all tasks were completed
+            {
+                if (currentStreak > maxStreak) maxStreak = currentStreak;
+                if (bestStreak == 0) bestStreak = currentStreak; // Set best streak on the first break
+                currentStreak = 0;
+            }
+            // If the date is missing, we assume it's a break in the streak
+            else if (!logsByDate.ContainsKey(date))
+            {
+                if (currentStreak > maxStreak) maxStreak = currentStreak;
+                currentStreak = 0;
+            }
+        }
+        if (currentStreak > maxStreak) maxStreak = currentStreak;
+        bestStreak = maxStreak;
+
+        // Health Tip
+        var tips = new List<string> { "A 2% drop in hydration can impact memory and focus. Keep a water bottle handy!", "Take a 5-minute stretching break for every hour you sit.", "Eating a handful of nuts can be a great source of healthy fats and energy." };
+        var healthTip = tips[new Random().Next(tips.Count)];
+
+        // Tasks Today & This Week
+        var todayLogs = allLogsForYear.Where(l => l.DueDate == today).ToList();
+        var weekLogs = allLogsForYear.Where(l => l.DueDate >= startOfWeek && l.DueDate < today.AddDays(1)).ToList();
+
+        // Calendar
+        var calendarData = allLogsForYear
+            .GroupBy(l => l.DueDate.Date)
+            .Select(g => new ActivityCalendarDay
+            {
+                Date = g.Key,
+                CompletionLevel = g.Count(t => t.Status == "Completed")
+            }).ToList();
+
+        return new DashboardDto
+        {
+            WellnessScore = Math.Round(wellnessScore, 1),
+            CurrentStreak = currentStreak,
+            BestStreak = bestStreak,
+            HealthTipOfTheDay = healthTip,
+            TasksTodayCompleted = todayLogs.Count(l => l.Status == "Completed"),
+            TasksTodayTotal = todayLogs.Count,
+            TasksThisWeekCompleted = weekLogs.Count(l => l.Status == "Completed"),
+            TasksThisWeekTotal = weekLogs.Count,
+            ActivityCalendar = calendarData
+        };
+    }
+}

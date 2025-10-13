@@ -914,59 +914,7 @@ namespace Patient_Monitoring.Data
 
                 context.AppointmentSlots.AddRange(appointmentSlots);
 
-                // Seeding 'Prescriptions' Table
-                // -----------------------------
-                // Medication names, dosages and instruction are predefined here. We have randomly chosen
-                // 15 doctors & 8 patients who have records of prescription being assigned by and assigned to.
-                // The following is defined such that each patient will intake atmost 3 prescription (upper limit
-                // of random is 3)
-
-                var medicationNames = new[] {
-        "Lisinopril", "Atorvastatin", "Metformin", "Amoxicillin", "Amlodipine",
-        "Ibuprofen", "Paracetamol", "Omeprazole", "Sertraline", "Albuterol"
-    };
-                var dosages = new[] { "10mg", "20mg", "40mg", "250mg", "500mg", "5mg", "600mg" };
-                var instructions = new[] {
-        "Take one tablet daily in the morning with water.",
-        "Take one tablet twice a day with meals.",
-        "As needed for pain, not to exceed 4 doses in 24 hours.",
-        "Take one capsule every 8 hours for 7 days. Finish all medication.",
-        "Take one tablet 30 minutes before breakfast."
-    };
-
-                var prescriptions = new List<Prescription>();
-
-                var patientsWithPrescriptions = patients.OrderBy(p => Guid.NewGuid()).Take(15).ToList();
-
-                var prescribingDoctors = doctors.OrderBy(d => Guid.NewGuid()).Take(8).ToList();
-
-                foreach (var patient in patientsWithPrescriptions)
-                {
-
-                    int numberOfPrescriptions = random.Next(1, 4);
-
-                    for (int i = 0; i < numberOfPrescriptions; i++)
-                    {
-
-                        var doctor = prescribingDoctors[random.Next(prescribingDoctors.Count)];
-
-                        var startDate = DateTime.UtcNow.AddDays(-random.Next(10, 60));
-
-                        prescriptions.Add(new Prescription
-                        {
-                            PrescriptionId = Guid.NewGuid().ToString(),
-                            PatientId = patient.PatientID,
-                            PrescribingDoctorId = doctor.DoctorId,
-                            MedicationName = medicationNames[random.Next(medicationNames.Length)],
-                            Dosage = dosages[random.Next(dosages.Length)],
-                            Instructions = instructions[random.Next(instructions.Length)],
-                            StartDate = startDate,
-                            EndDate = startDate.AddDays(random.Next(7, 90))
-                        });
-                    }
-                }
-
-                context.Prescriptions.AddRange(prescriptions);
+                
 
                 // Seeding 'WellnessPlan' Table
                 // ----------------------------
@@ -1092,37 +1040,61 @@ namespace Patient_Monitoring.Data
 
                 context.SaveChanges();
 
-                // Seeding 'MedicationSchedule' Table
-                // ----------------------------------
-                // Here 5 possible times in a day is predefined - times when a patient takes their prescriptions.
-                // 4 common quantity intakes are defined.
-                // A patient atmost takes their prescription 3 times a day (which is why upper limit of frequency is 3)
+                // Seeding 'Prescriptions' Table
+                // -----------------------------
+                // Medication names, dosages and instruction are predefined here. We have randomly chosen
+                // 15 doctors & 8 patients who have records of prescription being assigned by and assigned to.
+                // The following is defined such that each patient will intake atmost 3 prescription (upper limit
+                // of random is 3)
 
-                var timesOfDay = new[] { "Morning", "Noon", "Afternoon", "Evening", "Bedtime" };
+                var medicationNames = new[] {
+        "Lisinopril", "Atorvastatin", "Metformin", "Amoxicillin", "Amlodipine",
+        "Ibuprofen", "Paracetamol", "Omeprazole", "Sertraline", "Albuterol"
+    };
+                var dosages = new[] { "10mg", "20mg", "40mg", "250mg", "500mg", "5mg", "600mg" };
+                var instructions = new[] {
+        "Take one tablet daily in the morning with water.",
+        "Take one tablet twice a day with meals.",
+        "As needed for pain, not to exceed 4 doses in 24 hours.",
+        "Take one capsule every 8 hours for 7 days. Finish all medication.",
+        "Take one tablet 30 minutes before breakfast."
+    };
 
-                var commonQuantities = new[] { 0.5f, 1.0f, 1.5f, 2.0f };
+                var prescriptions = new List<Prescription>();
 
-                var medicationSchedules = new List<MedicationSchedule>();
+                var patientsWithPrescriptions = patients.OrderBy(p => Guid.NewGuid()).Take(15).ToList();
 
-                foreach (var prescription in prescriptions)
+                var prescribingDoctors = doctors.OrderBy(d => Guid.NewGuid()).Take(8).ToList();
+
+                foreach (var patient in patientsWithPrescriptions)
                 {
-                    int frequency = random.Next(1, 4);
 
-                    var selectedTimes = timesOfDay.OrderBy(t => Guid.NewGuid()).Take(frequency).ToList();
+                    int numberOfPrescriptions = random.Next(1, 4);
 
-                    foreach (var time in selectedTimes)
+                    for (int i = 0; i < numberOfPrescriptions; i++)
                     {
-                        medicationSchedules.Add(new MedicationSchedule
+
+                        var doctor = prescribingDoctors[random.Next(prescribingDoctors.Count)];
+
+                        var startDate = DateTime.UtcNow.AddDays(-random.Next(10, 60));
+
+                        prescriptions.Add(new Prescription
                         {
-                            ScheduleId = Guid.NewGuid().ToString(),
-                            PrescriptionId = prescription.PrescriptionId,
-                            TimeOfDay = time,
-                            Quantity = commonQuantities[random.Next(commonQuantities.Length)]
+                            PrescriptionId = Guid.NewGuid().ToString(),
+                            PatientId = patient.PatientID,
+                            PrescribingDoctorId = doctor.DoctorId,
+                            MedicationName = medicationNames[random.Next(medicationNames.Length)],
+                            Dosage = dosages[random.Next(dosages.Length)],
+                            Instructions = instructions[random.Next(instructions.Length)],
+                            StartDate = startDate,
+                            EndDate = startDate.AddDays(random.Next(7, 90))
                         });
                     }
                 }
 
-                context.MedicationSchedules.AddRange(medicationSchedules);
+                context.Prescriptions.AddRange(prescriptions);
+
+                
 
 
                 // Seed 'Appointment' Table
@@ -1315,6 +1287,38 @@ namespace Patient_Monitoring.Data
 
 
                 context.SaveChanges();
+
+                // Seeding 'MedicationSchedule' Table
+                // ----------------------------------
+                // Here 5 possible times in a day is predefined - times when a patient takes their prescriptions.
+                // 4 common quantity intakes are defined.
+                // A patient atmost takes their prescription 3 times a day (which is why upper limit of frequency is 3)
+
+                var timesOfDay = new[] { "Morning", "Noon", "Afternoon", "Evening", "Bedtime" };
+
+                var commonQuantities = new[] { 0.5f, 1.0f, 1.5f, 2.0f };
+
+                var medicationSchedules = new List<MedicationSchedule>();
+
+                foreach (var prescription in prescriptions)
+                {
+                    int frequency = random.Next(1, 4);
+
+                    var selectedTimes = timesOfDay.OrderBy(t => Guid.NewGuid()).Take(frequency).ToList();
+
+                    foreach (var time in selectedTimes)
+                    {
+                        medicationSchedules.Add(new MedicationSchedule
+                        {
+                            ScheduleId = Guid.NewGuid().ToString(),
+                            PrescriptionId = prescription.PrescriptionId,
+                            TimeOfDay = time,
+                            Quantity = commonQuantities[random.Next(commonQuantities.Length)]
+                        });
+                    }
+                }
+
+                context.MedicationSchedules.AddRange(medicationSchedules);
 
                 // Seeding 'Diagnosis' Table
                 // --------------------------

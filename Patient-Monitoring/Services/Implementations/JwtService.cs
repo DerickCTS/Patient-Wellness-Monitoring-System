@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 
 namespace Patient_Monitoring.Services.Implementations
 {
-    public class JWTService2 : IJwtService
+    public class JwtService2 : IJwtService
     {
         private readonly string _key;
         private readonly string _issuer;
@@ -20,7 +20,7 @@ namespace Patient_Monitoring.Services.Implementations
         private readonly int _accessTokenExpiry;
         private readonly int _refreshTokenExpiry;
         private readonly IRefreshTokenRepository _repository;
-        public JWTService2(IConfiguration config, IRefreshTokenRepository repository)
+        public JwtService2(IConfiguration config, IRefreshTokenRepository repository)
         {
             _key = config["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key");
             _issuer = config["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer"); ;
