@@ -17,7 +17,7 @@ builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
-builder.Services.AddScoped<IJWTService, JWTService2>();
+builder.Services.AddScoped<IJwtService, JWTService2>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
 
@@ -29,8 +29,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    
 }
-
+DataSeeder.Seed(app);
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

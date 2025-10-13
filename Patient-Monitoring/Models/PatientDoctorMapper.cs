@@ -7,13 +7,17 @@ namespace Patient_Monitoring.Models
         [Required]
         [Display(Name = "Patient ID")]
         [Key]
-        public required string PatientID { get; set; } 
+        public required string PatientID { get; set; }
 
 
         [Required]
         [Display(Name = "Doctor ID")]
-        public required string DoctorID { get; set; } 
+        public required string DoctorID { get; set; }
 
+        [Required]
+        [Display(Name = "Patient Since")]
+        [DataType(DataType.Date)]
+        public required DateTime AssignedDate { get; set; }
 
         public Doctor Doctor { get; set; } = null!;
 

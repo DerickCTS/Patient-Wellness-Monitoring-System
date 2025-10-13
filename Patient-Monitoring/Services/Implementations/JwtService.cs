@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 
 namespace Patient_Monitoring.Services.Implementations
 {
-    public class JWTService2 : IJWTService
+    public class JWTService2 : IJwtService
     {
         private readonly string _key;
         private readonly string _issuer;

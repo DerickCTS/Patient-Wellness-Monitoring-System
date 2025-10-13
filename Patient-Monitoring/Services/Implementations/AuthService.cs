@@ -13,9 +13,9 @@ namespace Patient_Monitoring.Services.Implementations
         private readonly IDoctorRepository _doctorRepository;
         private readonly PasswordHasher<Patient> _patientPasswordHasher;
         private readonly PasswordHasher<Doctor> _doctorPasswordHasher;
-        private readonly IJWTService _jwtService;
+        private readonly IJwtService _jwtService;
 
-        public AuthService(IPatientRepository patientRepository, IDoctorRepository doctorRepository, IJWTService jwtService)
+        public AuthService(IPatientRepository patientRepository, IDoctorRepository doctorRepository, IJwtService jwtService)
         {
             _patientRepository = patientRepository;
             _doctorRepository = doctorRepository;
@@ -49,7 +49,8 @@ namespace Patient_Monitoring.Services.Implementations
                 ContactNumber = patient.ContactNumber,
                 Email = patient.Email,
                 Address = patient.Address,
-                EmergencyContact = patient.EmergencyContact,
+                EmergencyContactName = patient.EmergencyContactName,
+                EmergencyContactNumber = patient.EmergencyContactNumber,
                 RegistrationDate = DateTime.UtcNow,
                 Password = patient.Password
             };
@@ -79,10 +80,11 @@ namespace Patient_Monitoring.Services.Implementations
 
             Doctor newDoctor = new Doctor
             {
-                DoctorID = "D" + Guid.NewGuid().ToString(),
+                DoctorId = "D" + Guid.NewGuid().ToString(),
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 Specialization = doctor.Specialization,
+                Education = doctor.Education,
                 ContactNumber = doctor.ContactNumber,
                 Email = doctor.Email,
                 Password = doctor.Password
@@ -137,7 +139,7 @@ namespace Patient_Monitoring.Services.Implementations
 
                 var token = _jwtService.GenerateAccessToken(doctor, "Doctor", out string jwtId);
 
-                var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, doctor.DoctorID, Enums.UserType.Doctor);
+                var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, doctor.DoctorId, Enums.UserType.Doctor);
 
                 return (true, null, token, refreshToken);
             }

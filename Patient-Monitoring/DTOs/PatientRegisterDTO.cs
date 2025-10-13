@@ -37,10 +37,15 @@ namespace Patient_Monitoring.DTOs
         public required string Address { get; set; }
 
 
-        [Phone(ErrorMessage = "Invalid emergency contact number.")]
-        [Display(Name = "Emergency Contact")]
         [Required]
-        public required string EmergencyContact { get; set; }
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
+        public required string EmergencyContactName { get; set; }
+
+
+        [Phone(ErrorMessage = "Invalid emergency contact number.")]
+        [Display(Name = "Emergency Contact Number")]
+        [Required]
+        public required string EmergencyContactNumber { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

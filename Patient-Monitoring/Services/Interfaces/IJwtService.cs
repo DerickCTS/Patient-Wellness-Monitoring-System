@@ -3,7 +3,7 @@ using Patient_Monitoring.Models;
 
 namespace Patient_Monitoring.Services.Interfaces
 {
-    public interface IJWTService
+    public interface IJwtService
     {
         //string GenerateAccessToken(dynamic user, IList<string> roles, out string jwtId, Client client);
 

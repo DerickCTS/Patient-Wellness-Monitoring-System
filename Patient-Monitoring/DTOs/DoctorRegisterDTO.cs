@@ -20,6 +20,10 @@ namespace Patient_Monitoring.DTOs
         public required string Specialization { get; set; }
 
 
+        [Required]
+        [StringLength(100, ErrorMessage = "Education details cannot exceed 100 characters.")]
+        public required string Education { get; set; }
+
         [Phone(ErrorMessage = "Invalid phone number format.")]
         [StringLength(15, MinimumLength = 10, ErrorMessage = "Contact number must be between 10 and 15 digits.")]
         [Display(Name = "Contact Number")]
