@@ -43,7 +43,7 @@ namespace Patient_Monitoring.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDoctor_Detail(string id, Doctor_Detail doctor_Detail)
         {
-            if (id != doctor_Detail.DoctorID)
+            if (id != doctor_Detail.DoctorId)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace Patient_Monitoring.Controllers
             }
             catch (DbUpdateException)
             {
-                if (Doctor_DetailExists(doctor_Detail.DoctorID))
+                if (Doctor_DetailExists(doctor_Detail.DoctorId))
                 {
                     return Conflict();
                 }
@@ -91,7 +91,7 @@ namespace Patient_Monitoring.Controllers
                 }
             }
 
-            return CreatedAtAction("GetDoctor_Detail", new { id = doctor_Detail.DoctorID }, doctor_Detail);
+            return CreatedAtAction("GetDoctor_Detail", new { id = doctor_Detail.DoctorId }, doctor_Detail);
         }
 
         // DELETE: api/Doctor_Detail/5
@@ -112,7 +112,7 @@ namespace Patient_Monitoring.Controllers
 
         private bool Doctor_DetailExists(string id)
         {
-            return _context.Doctor_Details.Any(e => e.DoctorID == id);
+            return _context.Doctor_Details.Any(e => e.DoctorId == id);
         }
     }
 }

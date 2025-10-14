@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Patient_Monitoring.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAppointmentSchedulingTablesFix : Migration
+    public partial class InitialCleanSetup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,16 +40,18 @@ namespace Patient_Monitoring.Migrations
                 name: "Doctor_Details",
                 columns: table => new
                 {
-                    DoctorID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Specialization = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Education = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorSince = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Doctor_Details", x => x.DoctorID);
+                    table.PrimaryKey("PK_Doctor_Details", x => x.DoctorId);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,7 +168,7 @@ namespace Patient_Monitoring.Migrations
                         name: "FK_AppointmentSlots_Doctor_Details_DoctorID",
                         column: x => x.DoctorID,
                         principalTable: "Doctor_Details",
-                        principalColumn: "DoctorID",
+                        principalColumn: "DoctorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -189,12 +191,12 @@ namespace Patient_Monitoring.Migrations
                         name: "FK_DoctorAvailabilities_Doctor_Details_DoctorID",
                         column: x => x.DoctorID,
                         principalTable: "Doctor_Details",
-                        principalColumn: "DoctorID",
+                        principalColumn: "DoctorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DoctorTimesOff",
+                name: "DoctorTimeOff",
                 columns: table => new
                 {
                     TimeOffID = table.Column<int>(type: "int", nullable: false)
@@ -206,12 +208,12 @@ namespace Patient_Monitoring.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DoctorTimesOff", x => x.TimeOffID);
+                    table.PrimaryKey("PK_DoctorTimeOff", x => x.TimeOffID);
                     table.ForeignKey(
-                        name: "FK_DoctorTimesOff_Doctor_Details_DoctorID",
+                        name: "FK_DoctorTimeOff_Doctor_Details_DoctorID",
                         column: x => x.DoctorID,
                         principalTable: "Doctor_Details",
-                        principalColumn: "DoctorID",
+                        principalColumn: "DoctorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -224,10 +226,13 @@ namespace Patient_Monitoring.Migrations
                     DoctorID = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Appointment_Date_Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     SlotID = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    RejectionReason = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RejectionReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RequestedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Doctor_DetailDoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -237,7 +242,17 @@ namespace Patient_Monitoring.Migrations
                         column: x => x.SlotID,
                         principalTable: "AppointmentSlots",
                         principalColumn: "SlotID");
+                    table.ForeignKey(
+                        name: "FK_Appointments_Doctor_Details_Doctor_DetailDoctorId",
+                        column: x => x.Doctor_DetailDoctorId,
+                        principalTable: "Doctor_Details",
+                        principalColumn: "DoctorId");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_Doctor_DetailDoctorId",
+                table: "Appointments",
+                column: "Doctor_DetailDoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_SlotID",
@@ -257,8 +272,8 @@ namespace Patient_Monitoring.Migrations
                 column: "DoctorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DoctorTimesOff_DoctorID",
-                table: "DoctorTimesOff",
+                name: "IX_DoctorTimeOff_DoctorID",
+                table: "DoctorTimeOff",
                 column: "DoctorID");
         }
 
@@ -278,7 +293,7 @@ namespace Patient_Monitoring.Migrations
                 name: "DoctorAvailabilities");
 
             migrationBuilder.DropTable(
-                name: "DoctorTimesOff");
+                name: "DoctorTimeOff");
 
             migrationBuilder.DropTable(
                 name: "Patient_Details");

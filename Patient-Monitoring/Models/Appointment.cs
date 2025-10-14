@@ -30,6 +30,7 @@ namespace Patient_Monitoring.Models
         [StringLength(1000, ErrorMessage = "Reason cannot exceed 1000 characters.")]
         public required string Reason { get; set; }
 
+        public DateTime AppointmentDate { get; set; }
         [StringLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
         public string? Notes { get; set; } // Nullable for optional notes
 
@@ -49,6 +50,7 @@ namespace Patient_Monitoring.Models
         [ForeignKey("SlotID")]
         public AppointmentSlot? AppointmentSlot { get; set; }
 
+        public required DateTime RequestedOn { get; set; } 
         // Assuming you have Doctor and Patient models for these:
         // [ForeignKey("DoctorID")]
         // public Doctor? Doctor { get; set; }

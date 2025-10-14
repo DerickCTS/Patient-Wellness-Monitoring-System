@@ -22,7 +22,7 @@ namespace Patient_Monitoring.Services.Implementations
 
             foreach (var doctor in doctors)
             {
-                await GenerateSlotsForDoctor(doctor.DoctorID, startDate, endDate);
+                await GenerateSlotsForDoctor(doctor.DoctorId, startDate, endDate);
             }
         }
 
@@ -32,7 +32,7 @@ namespace Patient_Monitoring.Services.Implementations
                                                 .Where(da => da.DoctorID == doctorId)
                                                 .ToListAsync();
 
-            var timeOff = await _context.DoctorTimesOff
+            var timeOff = await _context.DoctorTimeOffs
                                          .Where(dto => dto.DoctorID == doctorId)
                                          .ToListAsync();
 

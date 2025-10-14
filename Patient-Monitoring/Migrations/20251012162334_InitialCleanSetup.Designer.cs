@@ -12,8 +12,8 @@ using Patient_Monitoring.Data;
 namespace Patient_Monitoring.Migrations
 {
     [DbContext(typeof(PatientMonitoringDbContext))]
-    [Migration("20251008005749_AddAppointmentSchedulingTablesFix")]
-    partial class AddAppointmentSchedulingTablesFix
+    [Migration("20251012162334_InitialCleanSetup")]
+    partial class InitialCleanSetup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace Patient_Monitoring.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("Appointment_Date_Time")
                         .HasColumnType("datetime2");
 
@@ -38,6 +41,9 @@ namespace Patient_Monitoring.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Doctor_DetailDoctorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(500)
@@ -56,6 +62,9 @@ namespace Patient_Monitoring.Migrations
                     b.Property<string>("RejectionReason")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("RequestedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("SlotID")
                         .HasColumnType("int");
 
@@ -66,11 +75,13 @@ namespace Patient_Monitoring.Migrations
 
                     b.HasKey("AppointmentID");
 
+                    b.HasIndex("Doctor_DetailDoctorId");
+
                     b.HasIndex("SlotID")
                         .IsUnique()
                         .HasFilter("[SlotID] IS NOT NULL");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.AppointmentSlot", b =>
@@ -99,7 +110,7 @@ namespace Patient_Monitoring.Migrations
 
                     b.HasIndex("DoctorID");
 
-                    b.ToTable("AppointmentSlots");
+                    b.ToTable("AppointmentSlots", (string)null);
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.Appointment_Alert", b =>
@@ -169,7 +180,7 @@ namespace Patient_Monitoring.Migrations
 
                     b.HasIndex("DoctorID");
 
-                    b.ToTable("DoctorAvailabilities");
+                    b.ToTable("DoctorAvailabilities", (string)null);
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.DoctorTimeOff", b =>
@@ -199,18 +210,26 @@ namespace Patient_Monitoring.Migrations
 
                     b.HasIndex("DoctorID");
 
-                    b.ToTable("DoctorTimesOff");
+                    b.ToTable("DoctorTimeOff", (string)null);
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.Doctor_Detail", b =>
                 {
-                    b.Property<string>("DoctorID")
+                    b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<DateTime>("DoctorSince")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Education")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -231,9 +250,9 @@ namespace Patient_Monitoring.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("DoctorID");
+                    b.HasKey("DoctorId");
 
-                    b.ToTable("Doctor_Details");
+                    b.ToTable("Doctor_Details", (string)null);
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.Patient_Detail", b =>
@@ -280,7 +299,7 @@ namespace Patient_Monitoring.Migrations
 
                     b.HasKey("PatientID");
 
-                    b.ToTable("Patient_Details");
+                    b.ToTable("Patient_Details", (string)null);
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.Patient_Diagnosis", b =>
@@ -436,6 +455,10 @@ namespace Patient_Monitoring.Migrations
 
             modelBuilder.Entity("Patient_Monitoring.Models.Appointment", b =>
                 {
+                    b.HasOne("Patient_Monitoring.Models.Doctor_Detail", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("Doctor_DetailDoctorId");
+
                     b.HasOne("Patient_Monitoring.Models.AppointmentSlot", "AppointmentSlot")
                         .WithOne("Appointment")
                         .HasForeignKey("Patient_Monitoring.Models.Appointment", "SlotID");
@@ -457,7 +480,7 @@ namespace Patient_Monitoring.Migrations
             modelBuilder.Entity("Patient_Monitoring.Models.DoctorAvailability", b =>
                 {
                     b.HasOne("Patient_Monitoring.Models.Doctor_Detail", "Doctor")
-                        .WithMany()
+                        .WithMany("DoctorAvailabilities")
                         .HasForeignKey("DoctorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -468,7 +491,7 @@ namespace Patient_Monitoring.Migrations
             modelBuilder.Entity("Patient_Monitoring.Models.DoctorTimeOff", b =>
                 {
                     b.HasOne("Patient_Monitoring.Models.Doctor_Detail", "Doctor")
-                        .WithMany()
+                        .WithMany("DoctorTimeOffs")
                         .HasForeignKey("DoctorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -479,6 +502,15 @@ namespace Patient_Monitoring.Migrations
             modelBuilder.Entity("Patient_Monitoring.Models.AppointmentSlot", b =>
                 {
                     b.Navigation("Appointment");
+                });
+
+            modelBuilder.Entity("Patient_Monitoring.Models.Doctor_Detail", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("DoctorAvailabilities");
+
+                    b.Navigation("DoctorTimeOffs");
                 });
 #pragma warning restore 612, 618
         }

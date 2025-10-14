@@ -4,37 +4,56 @@ namespace Patient_Monitoring.Models
 {
     public class Doctor_Detail
     {
-
-
         [Required]
         [Display(Name = "Doctor ID")]
         [Key]
-        public required string DoctorID { get; set; } // Primary Key
+        public required string DoctorId { get; set; }
 
 
-        // Personal Info
         [Required]
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         [Display(Name = "First Name")]
         public required string FirstName { get; set; }
 
+
         [Required]
         [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         [Display(Name = "Last Name")]
-
-
         public required string LastName { get; set; }
+
+
         [Required]
         [StringLength(50, ErrorMessage = "Specialization cannot exceed 50 characters.")]
         public required string Specialization { get; set; }
 
 
+        [Required]
+        [StringLength(100, ErrorMessage = "Education details cannot exceed 100 characters.")]
+        public required string Education { get; set; }
+
+
         [Phone(ErrorMessage = "Invalid phone number format.")]
         [StringLength(15, MinimumLength = 10, ErrorMessage = "Contact number must be between 10 and 15 digits.")]
         [Display(Name = "Contact Number")]
+        [DataType(DataType.PhoneNumber)]
+        [Required]
+        public required string ContactNumber { get; set; }
 
-        [Required] public required string ContactNumber { get; set; }
+
         [EmailAddress(ErrorMessage = "Invalid email address format.")]
-        [Required] public required string Email { get; set; }
+        [Required]
+        public required string Email { get; set; }
+
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Doctor Since")]
+        public required DateTime DoctorSince { get; set; }
+
+        public ICollection<Appointment>? Appointments { get; set; }
+
+        public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; } = null!;
+
+        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; } = null!;
     }
 }

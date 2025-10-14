@@ -9,6 +9,7 @@ namespace Patient_Monitoring.Data
         {
         }
 
+        // DbSets (No changes needed here, EF Core maps the models)
         public DbSet<Appointment_Alert> Appointment_Alerts { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Wellness_Plan> Wellness_Plans { get; set; }
@@ -20,54 +21,62 @@ namespace Patient_Monitoring.Data
         public DbSet<Patient_Doctor_Mapper> Patient_Doctor_Mapper { get; set; }
         public DbSet<Patient_Plan_Mapper> Patient_Plan_Mapper { get; set; }
         public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
-        public DbSet<DoctorTimeOff> DoctorTimesOff { get; set; }
+        public DbSet<DoctorTimeOff> DoctorTimeOffs { get; set; }
         public DbSet<AppointmentSlot> AppointmentSlots { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Define relationships and constraints here if needed...
+            // ====================================================================
+            // CRITICAL FIX: Explicitly set table names to match SSMS PLURAL names.
+            // This prevents EF Core from looking for tables that don't exist.
+            // ====================================================================
+
+            // The table is MISSING, so we'll use the desired singular name for creation
+            modelBuilder.Entity<DoctorTimeOff>().ToTable("DoctorTimeOff");
+
+            // Match the existing plural names in SSMS screenshots:
+            modelBuilder.Entity<DoctorAvailability>().ToTable("DoctorAvailabilities"); // Matches SSMS
+            modelBuilder.Entity<AppointmentSlot>().ToTable("AppointmentSlots");     // Matches SSMS
+            modelBuilder.Entity<Appointment>().ToTable("Appointments");             // Matches SSMS
+            modelBuilder.Entity<Doctor_Detail>().ToTable("Doctor_Details");         // Matches SSMS
+            modelBuilder.Entity<Patient_Detail>().ToTable("Patient_Details");       // Matches SSMS
+
+
             // --------------------------------------------------------------------------------
             // 1. Configure the One-to-One Relationship between Appointment and AppointmentSlot
-            //    An Appointment is linked to one Slot, and that Slot can only be linked to one Appointment.
             // --------------------------------------------------------------------------------
             modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.AppointmentSlot)       // Appointment has one AppointmentSlot
-                .WithOne(s => s.Appointment)          // AppointmentSlot has one Appointment
-                .HasForeignKey<Appointment>(a => a.SlotID) // The foreign key is on the Appointment table
-                .IsRequired(false);                   // SlotID is nullable (optional relationship)
+                .HasOne(a => a.AppointmentSlot)
+                .WithOne(s => s.Appointment)
+                .HasForeignKey<Appointment>(a => a.SlotID)
+                .IsRequired(false);
 
 
             // --------------------------------------------------------------------------------
-            // 2. Configure the Doctor relationships 
-            //    (Assumes your existing Doctor model is named 'Doctor' or 'Doctor_Detail')
+            // 2. Configure the Doctor relationships (One-to-Many)
             // --------------------------------------------------------------------------------
 
             // Doctor to DoctorAvailability
             modelBuilder.Entity<DoctorAvailability>()
                 .HasOne(da => da.Doctor)
-                .WithMany() // Or specify a navigation property in Doctor if you have one
+                .WithMany(d => d.DoctorAvailabilities)
                 .HasForeignKey(da => da.DoctorID);
 
             // Doctor to DoctorTimeOff
             modelBuilder.Entity<DoctorTimeOff>()
                 .HasOne(dto => dto.Doctor)
-                .WithMany() // Or specify a navigation property in Doctor if you have one
+                .WithMany(d => d.DoctorTimeOffs)
                 .HasForeignKey(dto => dto.DoctorID);
 
             // Doctor to AppointmentSlot
             modelBuilder.Entity<AppointmentSlot>()
                 .HasOne(s => s.Doctor)
-                .WithMany() // Or specify a navigation property in Doctor if you have one
+                .WithMany()
                 .HasForeignKey(s => s.DoctorID);
 
             // Call the base method last
             base.OnModelCreating(modelBuilder);
         }
     }
-  
 }
-
-
-
-
