@@ -19,5 +19,13 @@ public class PatientDetail
     public string ChiefComplaint { get; set; }
 }
 
-public class ExistingDiagnosisDto { /* ... for later expansion ... */ }
-public class ExistingPrescriptionDto { /* ... for later expansion ... */ }
+public class ExistingDiagnosisDto 
+{ 
+    public string DiseaseName { get; set; }
+    public string Description { get; set; }
+}
+public class ExistingPrescriptionDto 
+{ 
+    public string MedicationName {  get; set; }
+    public string Dosage {  get; set; }
+}

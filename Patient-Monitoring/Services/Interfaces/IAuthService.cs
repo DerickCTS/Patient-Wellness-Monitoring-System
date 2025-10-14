@@ -1,4 +1,4 @@
-﻿using Patient_Monitoring.DTOs;
+﻿using Patient_Monitoring.DTOs.Authentication;
 using Patient_Monitoring.Models;
 
 namespace Patient_Monitoring.Services.Interfaces

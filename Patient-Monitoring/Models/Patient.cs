@@ -88,7 +88,7 @@ namespace Patient_Monitoring.Models
         public required string Password { get; set; }
 
 
-        public ICollection<Prescription>? Medications { get; set; }
+        public ICollection<Prescription>? Prescriptions { get; set; }
         public ICollection<Notification>? Notifications { get; set; }
         public PatientDoctorMapper PersonalizedDoctorMapper { get; set; } = null!;
         public ICollection<Appointment>? Appointments { get; set; }

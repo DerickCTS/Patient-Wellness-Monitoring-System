@@ -637,121 +637,121 @@ namespace Patient_Monitoring.Data
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Hypertension",
-        Description = "A condition in which the force of the blood against the artery walls is consistently too high."
+        DiseaseDescription = "A condition in which the force of the blood against the artery walls is consistently too high."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Type 2 Diabetes",
-        Description = "A chronic condition that affects the way the body metabolizes sugar (glucose), its main source of fuel."
+        DiseaseDescription = "A chronic condition that affects the way the body metabolizes sugar (glucose), its main source of fuel."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Asthma",
-        Description = "A respiratory condition where airways narrow and swell and may produce extra mucus, making breathing difficult."
+        DiseaseDescription = "A respiratory condition where airways narrow and swell and may produce extra mucus, making breathing difficult."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Coronary Artery Disease",
-        Description = "Damage or disease in the heart's major blood vessels, typically caused by a buildup of plaque."
+        DiseaseDescription = "Damage or disease in the heart's major blood vessels, typically caused by a buildup of plaque."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Migraine",
-        Description = "A type of headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head."
+        DiseaseDescription = "A type of headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Gastroesophageal Reflux Disease (GERD)",
-        Description = "A digestive disorder that affects the ring of muscle between the esophagus and stomach, causing acid reflux."
+        DiseaseDescription = "A digestive disorder that affects the ring of muscle between the esophagus and stomach, causing acid reflux."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Major Depressive Disorder",
-        Description = "A mood disorder causing a persistent feeling of sadness and loss of interest."
+        DiseaseDescription = "A mood disorder causing a persistent feeling of sadness and loss of interest."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Osteoarthritis",
-        Description = "The most common form of arthritis, occurring when the protective cartilage that cushions the ends of bones wears down over time."
+        DiseaseDescription = "The most common form of arthritis, occurring when the protective cartilage that cushions the ends of bones wears down over time."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Chronic Kidney Disease (CKD)",
-        Description = "A condition characterized by a gradual loss of kidney function over time."
+        DiseaseDescription = "A condition characterized by a gradual loss of kidney function over time."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Allergic Rhinitis",
-        Description = "An allergic response causing itchy, watery eyes, sneezing, and other similar symptoms, commonly known as hay fever."
+        DiseaseDescription = "An allergic response causing itchy, watery eyes, sneezing, and other similar symptoms, commonly known as hay fever."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Hypothyroidism",
-        Description = "A condition in which the thyroid gland doesn't produce enough of certain crucial hormones."
+        DiseaseDescription = "A condition in which the thyroid gland doesn't produce enough of certain crucial hormones."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Iron Deficiency Anemia",
-        Description = "A condition in which blood lacks adequate healthy red blood cells due to insufficient iron."
+        DiseaseDescription = "A condition in which blood lacks adequate healthy red blood cells due to insufficient iron."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Insomnia",
-        Description = "A common sleep disorder that can make it hard to fall asleep, hard to stay asleep, or cause you to wake up too early."
+        DiseaseDescription = "A common sleep disorder that can make it hard to fall asleep, hard to stay asleep, or cause you to wake up too early."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Influenza",
-        Description = "A viral infection that attacks your respiratory system — your nose, throat and lungs."
+        DiseaseDescription = "A viral infection that attacks your respiratory system — your nose, throat and lungs."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Pneumonia",
-        Description = "An infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus."
+        DiseaseDescription = "An infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Acne Vulgaris",
-        Description = "A common skin condition that occurs when hair follicles become plugged with oil and dead skin cells."
+        DiseaseDescription = "A common skin condition that occurs when hair follicles become plugged with oil and dead skin cells."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Eczema (Atopic Dermatitis)",
-        Description = "A condition that causes dry, itchy and inflamed skin. It's common in young children but can occur at any age."
+        DiseaseDescription = "A condition that causes dry, itchy and inflamed skin. It's common in young children but can occur at any age."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Gout",
-        Description = "A common and complex form of arthritis characterized by sudden, severe attacks of pain, swelling, and redness in the joints."
+        DiseaseDescription = "A common and complex form of arthritis characterized by sudden, severe attacks of pain, swelling, and redness in the joints."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Urinary Tract Infection (UTI)",
-        Description = "An infection in any part of the urinary system, the kidneys, bladder, or urethra."
+        DiseaseDescription = "An infection in any part of the urinary system, the kidneys, bladder, or urethra."
     },
     new Disease
     {
         DiseaseId = Guid.NewGuid().ToString(),
         DiseaseName = "Glaucoma",
-        Description = "A group of eye conditions that damage the optic nerve, the health of which is vital for good vision."
+        DiseaseDescription = "A group of eye conditions that damage the optic nerve, the health of which is vital for good vision."
     }
 };
 
@@ -1040,63 +1040,6 @@ namespace Patient_Monitoring.Data
 
                 context.SaveChanges();
 
-                // Seeding 'Prescriptions' Table
-                // -----------------------------
-                // Medication names, dosages and instruction are predefined here. We have randomly chosen
-                // 15 doctors & 8 patients who have records of prescription being assigned by and assigned to.
-                // The following is defined such that each patient will intake atmost 3 prescription (upper limit
-                // of random is 3)
-
-                var medicationNames = new[] {
-        "Lisinopril", "Atorvastatin", "Metformin", "Amoxicillin", "Amlodipine",
-        "Ibuprofen", "Paracetamol", "Omeprazole", "Sertraline", "Albuterol"
-    };
-                var dosages = new[] { "10mg", "20mg", "40mg", "250mg", "500mg", "5mg", "600mg" };
-                var instructions = new[] {
-        "Take one tablet daily in the morning with water.",
-        "Take one tablet twice a day with meals.",
-        "As needed for pain, not to exceed 4 doses in 24 hours.",
-        "Take one capsule every 8 hours for 7 days. Finish all medication.",
-        "Take one tablet 30 minutes before breakfast."
-    };
-
-                var prescriptions = new List<Prescription>();
-
-                var patientsWithPrescriptions = patients.OrderBy(p => Guid.NewGuid()).Take(15).ToList();
-
-                var prescribingDoctors = doctors.OrderBy(d => Guid.NewGuid()).Take(8).ToList();
-
-                foreach (var patient in patientsWithPrescriptions)
-                {
-
-                    int numberOfPrescriptions = random.Next(1, 4);
-
-                    for (int i = 0; i < numberOfPrescriptions; i++)
-                    {
-
-                        var doctor = prescribingDoctors[random.Next(prescribingDoctors.Count)];
-
-                        var startDate = DateTime.UtcNow.AddDays(-random.Next(10, 60));
-
-                        prescriptions.Add(new Prescription
-                        {
-                            PrescriptionId = Guid.NewGuid().ToString(),
-                            PatientId = patient.PatientID,
-                            PrescribingDoctorId = doctor.DoctorId,
-                            MedicationName = medicationNames[random.Next(medicationNames.Length)],
-                            Dosage = dosages[random.Next(dosages.Length)],
-                            Instructions = instructions[random.Next(instructions.Length)],
-                            StartDate = startDate,
-                            EndDate = startDate.AddDays(random.Next(7, 90))
-                        });
-                    }
-                }
-
-                context.Prescriptions.AddRange(prescriptions);
-
-                
-
-
                 // Seed 'Appointment' Table
                 // Here we have some pre-defined appointment reasons and rejection reasons. We first find
                 // all slots that are booked. For each booked slot we create an appointment which could take
@@ -1288,37 +1231,67 @@ namespace Patient_Monitoring.Data
 
                 context.SaveChanges();
 
-                // Seeding 'MedicationSchedule' Table
-                // ----------------------------------
-                // Here 5 possible times in a day is predefined - times when a patient takes their prescriptions.
-                // 4 common quantity intakes are defined.
-                // A patient atmost takes their prescription 3 times a day (which is why upper limit of frequency is 3)
+                // Seeding 'Prescriptions' Table
+                // -----------------------------
+                // Medication names, dosages and instruction are predefined here. We have randomly chosen
+                // 15 doctors & 8 patients who have records of prescription being assigned by and assigned to.
+                // The following is defined such that each patient will intake atmost 3 prescription (upper limit
+                // of random is 3)
 
-                var timesOfDay = new[] { "Morning", "Noon", "Afternoon", "Evening", "Bedtime" };
+                var medicationNames = new[] {
+        "Lisinopril", "Atorvastatin", "Metformin", "Amoxicillin", "Amlodipine",
+        "Ibuprofen", "Paracetamol", "Omeprazole", "Sertraline", "Albuterol"
+    };
+                var dosages = new[] { "10mg", "20mg", "40mg", "250mg", "500mg", "5mg", "600mg" };
+                var instructions = new[] {
+        "Take one tablet daily in the morning with water.",
+        "Take one tablet twice a day with meals.",
+        "As needed for pain, not to exceed 4 doses in 24 hours.",
+        "Take one capsule every 8 hours for 7 days. Finish all medication.",
+        "Take one tablet 30 minutes before breakfast."
+    };
 
-                var commonQuantities = new[] { 0.5f, 1.0f, 1.5f, 2.0f };
+                var prescriptions = new List<Prescription>();
 
-                var medicationSchedules = new List<MedicationSchedule>();
+                // 1. Start with a list of all confirmed appointments.
+                var confirmedAppointments = appointments.Where(a => a.Status == "Confirmed").ToList();
 
-                foreach (var prescription in prescriptions)
+                // 2. Select a random subset of these appointments (e.g., 80%) to generate prescriptions for.
+                var appointmentsWithPrescriptions = confirmedAppointments
+                    .OrderBy(a => Guid.NewGuid())
+                    .Take((int)(confirmedAppointments.Count * 0.8))
+                    .ToList();
+
+                // 3. Loop through each selected appointment to create its associated prescriptions.
+                foreach (var appointment in appointmentsWithPrescriptions)
                 {
-                    int frequency = random.Next(1, 4);
+                    // Each selected appointment will get between 1 and 3 random prescriptions.
+                    int numberOfPrescriptions = random.Next(1, 4);
 
-                    var selectedTimes = timesOfDay.OrderBy(t => Guid.NewGuid()).Take(frequency).ToList();
-
-                    foreach (var time in selectedTimes)
+                    for (int i = 0; i < numberOfPrescriptions; i++)
                     {
-                        medicationSchedules.Add(new MedicationSchedule
+                        var startDate = appointment.AppointmentDate; // Prescription starts on the appointment day.
+
+                        prescriptions.Add(new Prescription
                         {
-                            ScheduleId = Guid.NewGuid().ToString(),
-                            PrescriptionId = prescription.PrescriptionId,
-                            TimeOfDay = time,
-                            Quantity = commonQuantities[random.Next(commonQuantities.Length)]
+                            PrescriptionId = Guid.NewGuid().ToString(),
+                            // All key IDs are now sourced directly from the appointment record.
+                            PatientId = appointment.PatientId,
+                            PrescribingDoctorId = appointment.DoctorId,
+                            AppointmentId = appointment.AppointmentId,
+                            // Randomly select medication details.
+                            MedicationName = medicationNames[random.Next(medicationNames.Length)],
+                            Dosage = dosages[random.Next(dosages.Length)],
+                            Instructions = instructions[random.Next(instructions.Length)],
+                            StartDate = startDate,
+                            EndDate = startDate.AddDays(random.Next(7, 90))
                         });
                     }
                 }
 
-                context.MedicationSchedules.AddRange(medicationSchedules);
+                context.Prescriptions.AddRange(prescriptions);
+
+
 
                 // Seeding 'Diagnosis' Table
                 // --------------------------
@@ -1337,11 +1310,11 @@ namespace Patient_Monitoring.Data
 
                 var diagnoses = new List<Diagnosis>();
 
-                var confirmedAppointments = appointments.Where(a => a.Status == "Confirmed").ToList();
+                var confirmedAppointment = appointments.Where(a => a.Status == "Confirmed").ToList();
 
-                var appointmentsToDiagnose = confirmedAppointments
+                var appointmentsToDiagnose = confirmedAppointment
                     .OrderBy(a => Guid.NewGuid())
-                    .Take((int)(confirmedAppointments.Count * 0.8))
+                    .Take((int)(confirmedAppointment.Count * 0.8))
                     .ToList();
 
                 foreach (var appointment in appointmentsToDiagnose)
@@ -1548,6 +1521,40 @@ namespace Patient_Monitoring.Data
                         }
                     }
                 }
+
+                context.SaveChanges();
+
+                // Seeding 'MedicationSchedule' Table
+                // ----------------------------------
+                // Here 5 possible times in a day is predefined - times when a patient takes their prescriptions.
+                // 4 common quantity intakes are defined.
+                // A patient atmost takes their prescription 3 times a day (which is why upper limit of frequency is 3)
+
+                var timesOfDay = new[] { "Morning", "Noon", "Afternoon", "Evening", "Bedtime" };
+
+                var commonQuantities = new[] { 0.5f, 1.0f, 1.5f, 2.0f };
+
+                var medicationSchedules = new List<MedicationSchedule>();
+
+                foreach (var prescription in prescriptions)
+                {
+                    int frequency = random.Next(1, 4);
+
+                    var selectedTimes = timesOfDay.OrderBy(t => Guid.NewGuid()).Take(frequency).ToList();
+
+                    foreach (var time in selectedTimes)
+                    {
+                        medicationSchedules.Add(new MedicationSchedule
+                        {
+                            ScheduleId = Guid.NewGuid().ToString(),
+                            PrescriptionId = prescription.PrescriptionId,
+                            TimeOfDay = time,
+                            Quantity = commonQuantities[random.Next(commonQuantities.Length)]
+                        });
+                    }
+                }
+
+                context.MedicationSchedules.AddRange(medicationSchedules);
 
                 context.SaveChanges();
             }

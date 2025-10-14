@@ -61,7 +61,7 @@ namespace Patient_Monitoring.Models
         [ForeignKey(nameof(PlanId))]
         public WellnessPlan AssignedWellnessPlan { get; set; } = null!;
         public ICollection<AssignmentPlanDetail>? AssignmentPlanDetails { get; set; }
-        public ICollection<TaskLog> DailyTaskLogs { get; set; } = null!;
+        public ICollection<TaskLog> TaskLogs { get; set; } = null!;
         public Doctor AssigningDoctor { get; set; } = null!;
         public Patient AssignedPatient { get; set; } = null!;
     }

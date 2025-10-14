@@ -1,19 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
 
 public class DiagnosisRepository : IDiagnosisRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly PatientMonitoringDbContext _context;
 
-    public DiagnosisRepository(ApplicationDbContext context)
+    public DiagnosisRepository(PatientMonitoringDbContext context)
     {
         _context = context;
     }
+
+
 
     public async Task<List<Appointment>> GetTodaysAppointmentsForDoctorAsync(string doctorId)
     {
         return await _context.Appointments
             .Include(a => a.Patient)
+            .Include(a => a.AppointmentSlot) // Eager load the slot to get the EndTime
             .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Date == DateTime.Today)
             .OrderBy(a => a.AppointmentDate)
             .ToListAsync();
@@ -23,9 +28,10 @@ public class DiagnosisRepository : IDiagnosisRepository
     {
         return await _context.Appointments
             .Include(a => a.Patient)
-            // Include existing diagnoses and prescriptions for this appointment
             .Include(a => a.Diagnoses)
-            .Include(a => a.Patient).ThenInclude(p => p.Medications.Where(m => m.AppointmentId == appointmentId))
+                .ThenInclude(d => d.Disease) // Eager load the Disease name for the diagnosis
+                                             // This is a filtered include for prescriptions related ONLY to this appointment
+            .Include(a => a.Patient).ThenInclude(p => p.Prescriptions.Where(m => m.AppointmentId == appointmentId))
             .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
     }
 

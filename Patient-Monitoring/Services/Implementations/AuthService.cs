@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
 using Patient_Monitoring.DTOs;
+using Patient_Monitoring.DTOs.Authentication;
 using Patient_Monitoring.Models;
 using Patient_Monitoring.Repository.Interfaces;
 using Patient_Monitoring.Services.Interfaces;

@@ -35,9 +35,8 @@ namespace Patient_Monitoring.Models
         public required string Category { get; set; }
 
 
-        [Required]
         [Display(Name = "Is Template")]
-        public required bool IsTemplate { get; set; }
+        public bool IsTemplate { get; set; }
 
 
         [DisplayName("Created By")]

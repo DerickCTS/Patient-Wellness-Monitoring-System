@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -6,17 +7,23 @@
 public class ProgressApiController : ControllerBase
 {
     private readonly IProgressService _progressService;
-
+    private readonly string patientId;
     public ProgressApiController(IProgressService progressService)
     {
         _progressService = progressService;
+        patientId = GetCurrentPatientId();
     }
 
     private string GetCurrentPatientId()
     {
-        // In a real app, you would get this from the user's token claims
-        // For example: return User.FindFirstValue(ClaimTypes.NameIdentifier);
-        return "patient_id_from_dummy_data"; // Replace with a real ID from your seeded data
+        var patientId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(patientId))
+        {
+            throw new InvalidOperationException("Patient ID claim (sub) not found in token.");
+        }
+
+        return patientId;
     }
 
     [HttpGet("plans")]
@@ -25,7 +32,6 @@ public class ProgressApiController : ControllerBase
         [FromQuery] string category = "All",
         [FromQuery] string date = "This Week")
     {
-        var patientId = GetCurrentPatientId();
         var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, status, category, date);
         return Ok(cards);
     }

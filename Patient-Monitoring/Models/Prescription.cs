@@ -40,8 +40,14 @@ namespace Patient_Monitoring.Models
         [MaxLength(255)]
         public string? Instructions { get; set; } // Optional notes (e.g., "Take with food")
 
+
+        [Required]
+        [Display(Name = "Appointment Id")]
+        public required string AppointmentId { get; set; }
+
         // Navigation Properties        
         public Patient Patient { get; set; } = null!;
+        public Appointment Appointment { get; set; } = null!;
 
         [ForeignKey(nameof(PrescribingDoctorId))]
         public Doctor Doctor { get; set; } = null!;

@@ -15,7 +15,7 @@ namespace Patient_Monitoring.Models
 
 
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
-        public string? Description { get; set; }
+        public string? DiseaseDescription { get; set; }
 
         public ICollection<Diagnosis>? Diagnosis { get; set; }
     }

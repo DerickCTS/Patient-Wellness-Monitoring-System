@@ -44,6 +44,18 @@ namespace Patient_Monitoring.Data
                 .WithMany(p => p.Diagnoses)
                 .HasForeignKey(d => d.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Prescription>()
+                .HasOne(p => p.Doctor)
+                .WithMany(d => d.PrescribedMedications)
+                .HasForeignKey(p => p.PrescribingDoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Prescription>()
+                .HasOne(p => p.Patient)
+                .WithMany(p => p.Prescriptions)
+                .HasForeignKey(p => p.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

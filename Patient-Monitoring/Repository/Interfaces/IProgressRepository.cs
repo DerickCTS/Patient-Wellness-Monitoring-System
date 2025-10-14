@@ -1,14 +1,10 @@
 ﻿using Patient_Monitoring.Models;
 
-namespace Patient_Monitoring.Repository.Interfaces
+public interface IProgressRepository
 {
-    public interface IProgressRepository
-    {
-        Task<IEnumerable<TaskLog>> GetWellnessTasksForPatientAsync(string patientId, DateTime startDate, DateTime endDate);
-        Task<TaskLog?> GetTaskLogByIdAsync(int logId);
-        Task<PatientPlanAssignment?> GetAssignmentByIdAsync(int assignmentId);
-        Task<IEnumerable<AssignmentPlanDetail>> GetCustomPlanDetailsAsync(int assignmentId);
-        Task<IEnumerable<WellnessPlanDetail>> GetTemplatePlanDetailsAsync(int planId);
-        Task<bool> UpdateTaskLogAsync(TaskLog taskLog);
-    }
+    Task<List<PatientPlanAssignment>> GetActiveAssignmentsWithTasksAsync(string patientId);
+    Task<PatientPlanAssignment?> GetAssignmentDetailsAsync(string assignmentId);
+    Task<TaskLog?> GetTaskLogByIdAsync(string taskLogId);
+    Task<List<TaskLog>> GetTaskLogsForPeriodAsync(string patientId, DateTime startDate, DateTime endDate);
+    Task<bool> SaveChangesAsync();
 }

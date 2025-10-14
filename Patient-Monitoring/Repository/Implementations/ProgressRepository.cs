@@ -1,4 +1,5 @@
-﻿using Patient_Monitoring.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
 
 public class ProgressRepository : IProgressRepository
@@ -18,7 +19,7 @@ public class ProgressRepository : IProgressRepository
 
         return await _context.PatientPlanAssignments
             .Include(a => a.AssignedWellnessPlan)
-            .Include(a => a.DailyTaskLogs) // EF Core will use the correct name 'TaskLogs'
+            .Include(a => a.TaskLogs) 
             .Where(a => a.PatientId == patientId && a.IsActive && a.StartDate <= today)
             .ToListAsync();
     }

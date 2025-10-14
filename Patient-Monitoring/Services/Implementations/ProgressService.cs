@@ -19,7 +19,7 @@
         foreach (var assignment in assignments)
         {
             // Find the most relevant task log for this assignment
-            var relevantTask = assignment.DailyTaskLogs
+            var relevantTask = assignment.TaskLogs
                 .Where(t => t.DueDate >= startOfWeek)
                 .OrderBy(t => t.DueDate)
                 .FirstOrDefault();
@@ -60,13 +60,10 @@
         var assignment = await _progressRepository.GetAssignmentDetailsAsync(assignmentId);
         if (assignment == null) return null;
 
-        // Logic to check for custom details first, then fall back to general details.
-        var hasCustomDetails = assignment.AssignmentPlanDetails != null && assignment.AssignmentPlanDetails.Any();
+        // This part is correct
+        bool hasCustomDetails = assignment.AssignmentPlanDetails != null && assignment.AssignmentPlanDetails.Any();
 
-        var detailsSource = hasCustomDetails
-            ? assignment.AssignmentPlanDetails
-            : assignment.AssignedWellnessPlan.WellnessPlanDetails;
-
+        // THE FIX: Apply the conditional logic to each property individually to get the final result.
         var planDetails = new PlanDetailDto
         {
             PlanName = assignment.AssignedWellnessPlan.PlanName,
@@ -74,10 +71,30 @@
             ImageUrl = assignment.AssignedWellnessPlan.ImageUrl,
             AssignedByDoctorName = $"Dr. {assignment.AssigningDoctor.FirstName} {assignment.AssigningDoctor.LastName}",
             Frequency = $"{assignment.FrequencyCount} times per {assignment.FrequencyUnit}",
-            Description = detailsSource.FirstOrDefault(d => d.DetailType == "Description")?.Content ?? "No description available.",
-            Instructions = detailsSource.Where(d => d.DetailType == "Instruction").Select(d => d.Content).ToList(),
-            Benefits = detailsSource.Where(d => d.DetailType == "Benefit").Select(d => d.Content).ToList(),
-            SafetyPrecautions = detailsSource.Where(d => d.DetailType == "Safety").Select(d => d.Content).ToList()
+
+            // If hasCustomDetails is true, get Description from the first list, otherwise get it from the second.
+            Description = (hasCustomDetails
+                ? assignment.AssignmentPlanDetails!.FirstOrDefault(d => d.DetailType == "Description")?.Content
+                : assignment.AssignedWellnessPlan.WellnessPlanDetails?.FirstOrDefault(d => d.DetailType == "Description")?.Content)
+                ?? "No description available.",
+
+            // Do the same for Instructions...
+            Instructions = (hasCustomDetails
+                ? assignment.AssignmentPlanDetails!.Where(d => d.DetailType == "Instruction").Select(d => d.Content).ToList()
+                : assignment.AssignedWellnessPlan.WellnessPlanDetails?.Where(d => d.DetailType == "Instruction").Select(d => d.Content).ToList())
+                ?? new List<string>(),
+
+            // ...for Benefits...
+            Benefits = (hasCustomDetails
+                ? assignment.AssignmentPlanDetails!.Where(d => d.DetailType == "Benefit").Select(d => d.Content).ToList()
+                : assignment.AssignedWellnessPlan.WellnessPlanDetails?.Where(d => d.DetailType == "Benefit").Select(d => d.Content).ToList())
+                ?? new List<string>(),
+
+            // ...and for Safety.
+            SafetyPrecautions = (hasCustomDetails
+                ? assignment.AssignmentPlanDetails!.Where(d => d.DetailType == "Safety").Select(d => d.Content).ToList()
+                : assignment.AssignedWellnessPlan.WellnessPlanDetails?.Where(d => d.DetailType == "Safety").Select(d => d.Content).ToList())
+                ?? new List<string>()
         };
 
         return planDetails;
