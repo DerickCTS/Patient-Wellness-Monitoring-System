@@ -4,6 +4,7 @@ using Patient_Monitoring.Models;
 using Patient_Monitoring.Repositories.Interfaces;
 
 
+
 namespace Patient_Monitoring.Repositories.Implementations
 {
     public class WellnessPlanRepository : IWellnessPlanRepository
