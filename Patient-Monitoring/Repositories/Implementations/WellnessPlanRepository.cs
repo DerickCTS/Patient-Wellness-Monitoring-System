@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Interfaces;
 
 
-
-namespace Patient_Monitoring.Repository.Implementations
+namespace Patient_Monitoring.Repositories.Implementations
 {
     public class WellnessPlanRepository : IWellnessPlanRepository
     {
@@ -18,6 +17,23 @@ namespace Patient_Monitoring.Repository.Implementations
 
         // --- 'Use Template' Flow ---
 
+        public async Task AddWellnessPlanAsync(WellnessPlan plan)
+        {
+            await _context.WellnessPlans.AddAsync(plan);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddPatientPlanAssignment(PatientPlanAssignment assignment)
+        {
+            await _context.PatientPlanAssignments.AddAsync(assignment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddAssignmentPlanDetails(List<AssignmentPlanDetail> details)
+        {
+            await _context.AssignmentPlanDetails.AddRangeAsync(details);
+            await _context.SaveChangesAsync();
+        }
         public async Task<IEnumerable<WellnessPlan>> GetAllTemplateCards()
         {
             // Fetch template cards data: Plan Name, Goal, Image
@@ -42,11 +58,10 @@ namespace Patient_Monitoring.Repository.Implementations
             return assignment;
         }
 
-        public async Task<IEnumerable<AssignmentPlanDetail>> AddAssignmentDetailsAsync(IEnumerable<AssignmentPlanDetail> details)
+        public async Task AddAssignmentDetailsAsync(IEnumerable<AssignmentPlanDetail> details)
         {
             _context.AssignmentPlanDetails.AddRange(details);
             await _context.SaveChangesAsync();
-            return details;
         }
 
         public async Task<List<WellnessPlanDetail>> GetTemplatePlanDetailsAsync(string planId)
@@ -55,4 +70,3 @@ namespace Patient_Monitoring.Repository.Implementations
         }
     }
 }
-

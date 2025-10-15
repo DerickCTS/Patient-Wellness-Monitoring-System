@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Interfaces;
 
-namespace Patient_Monitoring.Repository.Implementations
+namespace Patient_Monitoring.Repositories.Implementations
 {
     /// <summary>
     /// Concrete implementation of notification repository.
