@@ -1,79 +1,58 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
-using Patient_Monitoring.DTOs;
 using Patient_Monitoring.Models;
 using Patient_Monitoring.Repository.Interface;
+
+
+
 namespace Patient_Monitoring.Repository.Implementation
 {
-    
     public class WellnessPlanRepository : IWellnessPlanRepository
     {
-        private readonly PatientMonitoringDbContext _context;
+        private readonly PatientMonitoringDbContext _context; // Your DbContext
 
         public WellnessPlanRepository(PatientMonitoringDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Wellness_Plan>> GetAssignedPlansByPatientIdAsync(string patientId)
-        {      
-            var assignedPlanIds = await _context.Patient_Plan_Mapper
-                .Where(pp => pp.PatientId == patientId)
-                .Select(pp => pp.PlanId)
-                .ToListAsync();
+        // --- 'Use Template' Flow ---
 
-            return await _context.Wellness_Plans
-                .Where(p => assignedPlanIds.Contains(p.PlanID))
-                .ToListAsync();
+        public async Task<IEnumerable<WellnessPlan>> GetAllTemplateCards()
+        {
+            // Fetch template cards data: Plan Name, Goal, Image
+            return await _context.WellnessPlans
+                                 .Where(wp => wp.IsTemplate)
+                                 .Select(p => p)
+                                 .ToListAsync();
         }
 
-        /// <summary>
-        /// Checks if a plan definition exists in the database.
-        /// </summary>
-        public async Task<bool> PlanExistsAsync(string planId)
+        public async Task<WellnessPlan?> GetTemplatePlanAsync(string planId)
         {
-            return await _context.Wellness_Plans.AnyAsync(p => p.PlanID == planId);
+            return await _context.WellnessPlans
+                                 .FirstOrDefaultAsync(p => p.PlanId == planId);
         }
 
-        /// <summary>
-        /// Checks if a specific plan is already assigned to a specific patient.
-        /// </summary>
-        public async Task<bool> IsPlanAssignedAsync(string patientId, string planId)
+        // --- Assignment Flow (Both) ---
+
+        public async Task<PatientPlanAssignment> AddAssignmentAsync(PatientPlanAssignment assignment)
         {
-            return await _context.Patient_Plan_Mapper
-                .AnyAsync(ppm => ppm.PatientId == patientId && ppm.PlanId == planId);
-        }
-
-        // --- Write Methods ---
-
-        /// <summary>
-        /// Adds a new wellness plan definition to the database context.
-        /// </summary>
-        public void AddNewPlanAsync(Wellness_Plan newPlan)
-        {
-            _context.Wellness_Plans.Add(newPlan);
-        }
-
-        /// <summary>
-        /// Adds a new patient-plan assignment record to the database context.
-        /// </summary>
-        public void AddPlanAssignmentAsync(Patient_Plan_Mapper patientPlanMapper)
-        {
-            _context.Patient_Plan_Mapper.Add(patientPlanMapper);
-        }
-
-        // --- Persistence ---
-
-        /// <summary>
-        /// Persists all changes tracked by the DbContext to the underlying database.
-        /// </summary>
-        public async Task SaveChangesAsync()
-        {
+            _context.PatientPlanAssignments.Add(assignment);
             await _context.SaveChangesAsync();
+            return assignment;
+        }
+
+        public async Task<IEnumerable<AssignmentPlanDetail>> AddAssignmentDetailsAsync(IEnumerable<AssignmentPlanDetail> details)
+        {
+            _context.AssignmentPlanDetails.AddRange(details);
+            await _context.SaveChangesAsync();
+            return details;
+        }
+
+        public async Task<List<WellnessPlanDetail>> GetTemplatePlanDetailsAsync(string planId)
+        {
+            return await _context.WellnessPlanDetails.Where(wpd => wpd.PlanId == planId).ToListAsync();
         }
     }
 }
-
-
-
 
