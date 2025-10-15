@@ -9,7 +9,7 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required]
         [Display(Name = "Availability ID")]
-        public  int AvailabilityId { get; set; }
+        public int AvailabilityId { get; set; }
 
 
         [Required]

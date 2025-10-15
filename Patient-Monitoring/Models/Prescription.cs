@@ -38,19 +38,21 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Prescribing Doctor ID")]
         public required string PrescribingDoctorId { get; set; }
 
+        [Required]
+        [Display(Name = "Appointment Id")]
+        public required string AppointmentId { get; set; }
+
         [MaxLength(255)]
         public string? Instructions { get; set; } // Optional notes (e.g., "Take with food")
 
         // Navigation Properties        
         public Patient Patient { get; set; } = null!;
-        [ForeignKey("PrescribingDoctorId")]
+
+        [ForeignKey(nameof(PrescribingDoctorId))]
         public Doctor Doctor { get; set; } = null!;
 
         public ICollection<MedicationSchedule> MedicationSchedules { get; set; } = null!;
-        [Required]
-        [Display(Name = "Appointment Id")]
-        public required string AppointmentId { get; set; }
+
         public Appointment Appointment { get; set; } = null!;
     }
-    }
-
+}

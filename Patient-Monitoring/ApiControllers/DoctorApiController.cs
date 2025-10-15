@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Services.Interface;
+using Patient_Monitoring.Services.Interfaces;
 using System.Net;
 
-namespace Patient_Monitoring.Controllers.API;
+namespace Patient_Monitoring.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 
-public class DoctorController : ControllerBase
+public class DoctorApiController : ControllerBase
 {
     private readonly IDoctorService _doctorService;
 
 
-    public DoctorController(IDoctorService doctorService)
+    public DoctorApiController(IDoctorService doctorService)
     {
         _doctorService = doctorService;
     }

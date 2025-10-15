@@ -3,7 +3,6 @@ using Patient_Monitoring.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace Patient_Monitoring.Models
 {
     [Index(nameof(Token), Name = "IX_Token_Unique", IsUnique = true)]

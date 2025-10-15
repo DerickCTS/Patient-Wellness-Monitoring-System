@@ -11,9 +11,9 @@ namespace Patient_Monitoring.Models
         [DisplayName("Detail Id")]
         public required string DetailId { get; set; }
 
-        
+        [Required]
         [DisplayName("Plan Id")]
-        public  string PlanId { get; set; }
+        public required string PlanId { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -24,6 +24,7 @@ namespace Patient_Monitoring.Models
         [StringLength(600)]
         [DataType(DataType.Text)]
         public required string Content { get; set; }
+
 
         [ForeignKey(nameof(PlanId))]
         public WellnessPlan WellnessPlan { get; set; } = null!;

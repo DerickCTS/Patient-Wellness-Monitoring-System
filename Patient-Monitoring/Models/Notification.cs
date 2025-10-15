@@ -5,7 +5,7 @@ using Patient_Monitoring.Enums;
 
 namespace Patient_Monitoring.Models
 {
-
+    
 
     public class Notification
     {
@@ -28,14 +28,14 @@ namespace Patient_Monitoring.Models
         [Required]
         public bool IsRead { get; set; } = false;
 
-
+        
 
         [Required]
         public NotificationType Type { get; set; }
         public Patient Patient { get; set; } = null!;
         [ForeignKey("Patient")]
         public string PatientId { get; set; } = null!;
-
+       
 
 
 

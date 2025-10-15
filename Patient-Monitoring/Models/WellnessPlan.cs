@@ -34,20 +34,19 @@ namespace Patient_Monitoring.Models
         [StringLength(30)]
         public required string Category { get; set; }
 
+        [Required]
+        [Display(Name = "Is Template")]
+        public required bool IsTemplate { get; set; }
 
-        
+
         [DisplayName("Created By")]
-        public  string? CreatedByDoctorId { get; set; }
-
-
-      
-        [DisplayName("Is Template")]
-        public bool IsTemplate { get; set; }
+        public string? CreatedByDoctorId { get; set; }
 
 
         public ICollection<WellnessPlanDetail>? WellnessPlanDetails { get; set; }
         public ICollection<PatientPlanAssignment>? AssignedPatients { get; set; }
-        [ForeignKey("CreatedByDoctorId")]
+
+        [ForeignKey(nameof(CreatedByDoctorId))]
         public Doctor CreatedByDoctor { get; set; } = null!;
     }
 }

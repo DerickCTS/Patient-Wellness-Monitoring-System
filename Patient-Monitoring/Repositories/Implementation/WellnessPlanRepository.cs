@@ -18,6 +18,23 @@ namespace Patient_Monitoring.Repository.Implementation
 
         // --- 'Use Template' Flow ---
 
+        public async Task AddWellnessPlanAsync(WellnessPlan plan)
+        {
+            await _context.WellnessPlans.AddAsync(plan);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddPatientPlanAssignment(PatientPlanAssignment assignment)
+        {
+            await _context.PatientPlanAssignments.AddAsync(assignment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddAssignmentPlanDetails(List<AssignmentPlanDetail> details)
+        {
+            await _context.AssignmentPlanDetails.AddRangeAsync(details);
+            await _context.SaveChangesAsync();
+        }
         public async Task<IEnumerable<WellnessPlan>> GetAllTemplateCards()
         {
             // Fetch template cards data: Plan Name, Goal, Image
@@ -42,11 +59,10 @@ namespace Patient_Monitoring.Repository.Implementation
             return assignment;
         }
 
-        public async Task<IEnumerable<AssignmentPlanDetail>> AddAssignmentDetailsAsync(IEnumerable<AssignmentPlanDetail> details)
+        public async Task AddAssignmentDetailsAsync(IEnumerable<AssignmentPlanDetail> details)
         {
             _context.AssignmentPlanDetails.AddRange(details);
             await _context.SaveChangesAsync();
-            return details;
         }
 
         public async Task<List<WellnessPlanDetail>> GetTemplatePlanDetailsAsync(string planId)

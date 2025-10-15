@@ -59,21 +59,21 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
         public List<WellnessPlanDetailDto> WellnessPlans { get; set; } = new List<WellnessPlanDetailDto>();
 
     }
-    public class AssignPlanRequest
-    {
-        public string DoctorId { get; set; } = string.Empty;
-        public string PatientId { get; set; } = string.Empty;
-        public string PlanName { get; set; } = string.Empty;
-        public string Goal { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public List<string> Instruction { get; set; } = new List<string>();
-        public List<string> Benefits { get; set; } = new List<string>();
-        public List<string> Safety { get; set; } = new List<string>();
-        public int FrequencyCount { get; set; }
-        public string FrequencyUnit { get; set; } = string.Empty;
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-    }
+    //public class AssignPlanRequest
+    //{
+    //    public string DoctorId { get; set; } = string.Empty;
+    //    public string PatientId { get; set; } = string.Empty;
+    //    public string PlanName { get; set; } = string.Empty;
+    //    public string Goal { get; set; } = string.Empty;
+    //    public string Description { get; set; } = string.Empty;
+    //    public List<string> Instruction { get; set; } = new List<string>();
+    //    public List<string> Benefits { get; set; } = new List<string>();
+    //    public List<string> Safety { get; set; } = new List<string>();
+    //    public int FrequencyCount { get; set; }
+    //    public string FrequencyUnit { get; set; } = string.Empty;
+    //    public DateTime StartDate { get; set; }
+    //    public DateTime EndDate { get; set; }
+    //}
     public class DiagnosisDetailsDto
     {
         

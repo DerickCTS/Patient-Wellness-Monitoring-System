@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 
@@ -10,7 +9,7 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required]
         [Display(Name = "Slot ID")]
-        public  int SlotId { get; set; } // Primary Key
+        public int SlotId { get; set; } // Primary Key
 
 
         [Required]

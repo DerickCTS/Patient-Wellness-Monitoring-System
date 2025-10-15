@@ -1,15 +1,17 @@
-﻿using Patient_Monitoring.Models;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using Patient_Monitoring.DTOs;
+using Patient_Monitoring.DTOs.WellnessPlan;
+using Patient_Monitoring.Models;
 using Patient_Monitoring.Repository.Interface;
+using Patient_Monitoring.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Patient_Monitoring.DTOs;
-using Patient_Monitoring.Services.Interface;
 
 
 
-namespace Patient_Monitoring.Services.Implementation
+namespace Patient_Monitoring.Services.Implementations
 {
     public class WellnessPlanService : IWellnessPlanService
     {
@@ -69,54 +71,73 @@ namespace Patient_Monitoring.Services.Implementation
             var assignment = new PatientPlanAssignment
             {
                 AssignmentId = Guid.NewGuid().ToString(), // Generate a unique ID
-              
+                PatientId = request.PatientId,
+                AssignedByDoctorId = request.DoctorId,
                 FrequencyCount = request.FrequencyCount,
                 FrequencyUnit = request.FrequencyUnit,
-               // PatientId=request.PatientId,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
                 IsActive = true
             };
 
-            // a. Handle 'Use Template' flow
-            if (!string.IsNullOrEmpty(request.PlanId))
+            // If condition is met, when the doctor assigns a plan using template. If PlanName is null, then it is a template.
+            if (string.IsNullOrEmpty(request.PlanName))
             {
-                // Template flow
                 assignment.PlanId = request.PlanId;
+
+                await _repository.AddPatientPlanAssignment(assignment);
+
+                // This if condition is met, if the doctor has modified the template details - i.e Instruction, Benefits, Safety & Description
+                // If DetailsModifed == true => Data was modified
+                // else DetailsModified == false => Data was not modified
 
                 if (request.DetailsModified)
                 {
-                    // Case 1: Template data was modified (DetailsModified == true)
-                    // Insert into AssignmentPlanDetails
-                    await InsertAssignmentDetails(assignment.AssignmentId, request.Details);
+                    // Doctor has modified the template details. So we add new details into AssignmentPlanDetails table.
+                    var assignmentDetails = request.Details.Select(d => new AssignmentPlanDetail
+                    {
+                        CustomDetailId = Guid.NewGuid().ToString(),
+                        AssignmentId = assignment.AssignmentId,
+                        DetailType = d.detail_type,
+                        Content = d.content,
+                    }).ToList();
+
+                    await _repository.AddAssignmentDetailsAsync(assignmentDetails);
                 }
-                // Case 2: Template data was NOT modified (DetailsModified == false)
-                // The assignment.plan_id links to the template, and no AssignmentPlanDetails are needed.
             }
-            // b. Handle 'Create from Scratch' flow
             else
             {
-                // Scratch flow - Plan Name, Goal, etc. are not stored in AssignedWellnessPlan table.
-                // Insert into AssignmentPlanDetails (all details must be included here)
-                // We also need to store the plan name/goal/image somehow, perhaps in the assignment table 
-                // or a custom field if the ERD allowed it, but based on the current ERD,
-                // we'll primarily use AssignmentPlanDetails for the custom content.
-                // NOTE: The ERD doesn't show where PlanName/Goal go for a scratch plan, 
-                // so we assume it *must* go into AssignmentPlanDetails as a special type.
+                // Insert into 3 tables: WellnessPlan, WellnessPlanDetails, PatientPlanAssignment
+                // Inserting into WellnessPlan table
+                var newWellnessPlan = new WellnessPlan
+                {
+                    PlanId = Guid.NewGuid().ToString(),
+                    Category = request.Category,
+                    IsTemplate = false,
+                    PlanName = request.PlanName,
+                    Goal = request.Goal,
+                    ImageUrl = request.ImageUrl,
+                };
 
-                // Add Name/Goal/Image as special 'details' for a scratch plan
-                request.Details.Add(new PlanDetailDto { detail_type = "PlanName", content = request.PlanName, display_order = -3 });
-                request.Details.Add(new PlanDetailDto { detail_type = "PlanGoal", content = request.Goal, display_order = -2 });
-                request.Details.Add(new PlanDetailDto { detail_type = "PlanImage", content = request.ImageUrl, display_order = -1 });
+                await _repository.AddWellnessPlanAsync(newWellnessPlan);
 
-                await InsertAssignmentDetails(assignment.AssignmentId, request.Details);
+                assignment.PlanId = newWellnessPlan.PlanId;
+                await _repository.AddPatientPlanAssignment(assignment);
 
+                // Inserting into AssignmentPlanDetails table
+                var newAssignmentPlanDetails = request.Details.Select(d => new AssignmentPlanDetail
+                {
+                    CustomDetailId = Guid.NewGuid().ToString(),
+                    AssignmentId = assignment.AssignmentId,
+                    DetailType = d.detail_type,
+                    Content = d.content,
+                }).ToList();
+
+                await _repository.AddAssignmentDetailsAsync(newAssignmentPlanDetails);
             }
 
-            // 2. Add the main assignment record
-            var result = await _repository.AddAssignmentAsync(assignment);
 
-            return result.AssignmentId;
+            return "Plan Assigned Successfully";
         }
 
         private async Task InsertAssignmentDetails(string assignmentId, List<PlanDetailDto> details)
@@ -129,8 +150,6 @@ namespace Patient_Monitoring.Services.Implementation
                 AssignmentId = assignmentId,
                 DetailType = d.detail_type,
                 Content = d.content,
-               
-
             }).ToList();
 
             await _repository.AddAssignmentDetailsAsync(assignmentDetails);

@@ -15,10 +15,13 @@
     }
     public enum NotificationType
     {
-        AppointmentReminder,
-        MedicationReminder,
-        WellnessTip,
-        AppointmentRequest,
-        AppointmentResponse
+        Medication = 1,
+        Appointment = 2,
+        WellnessActivity = 3,
+        MedicineReminder = 4,
+        AppointmentReminder = 5,
+        DailyScheduleSummary = 6
     }
+
+
 }

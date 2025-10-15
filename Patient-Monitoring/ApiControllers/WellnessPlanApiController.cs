@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Patient_Monitoring.Services.Interface;
+using Patient_Monitoring.Services.Interfaces;
+using Patient_Monitoring.DTOs.WellnessPlan;
 
 
-namespace Patient_Monitoring.Controller.API
+namespace Patient_Monitoring.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WellnessPlanController : ControllerBase
+    public class WellnessPlanApiController : ControllerBase
     {
         private readonly IWellnessPlanService _service;
 
-        public WellnessPlanController(IWellnessPlanService service)
+        public WellnessPlanApiController(IWellnessPlanService service)
         {
             _service = service;
         }
@@ -42,40 +43,26 @@ namespace Patient_Monitoring.Controller.API
         }
         #endregion
 
-        // --- Assignment Endpoint (Handles both flows) ---
 
-        /// <summary>
+
         /// POST: api/AssignedWellnessPlan/assign - Assigns a new plan (Template or Scratch) to a patient.
-        /// </summary>
         [HttpPost("assign")]
         public async Task<IActionResult> AssignPlan([FromBody] AssignPlanRequestDto request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // Basic validation check for assignment details
+            // Ensuring Frequency Count is > 0 & Start Date > EndDate
             if (request.FrequencyCount <= 0 || request.StartDate >= request.EndDate)
             {
                 return BadRequest("Invalid frequency or dates.");
             }
 
-            // Validation based on flow
+            // The first if is checks if the plan id is null or empty. If it is null, it means the plan was 
+            // created from scratch, so the plan name, goal, and details are required. Otherwise it is a template.
             if (string.IsNullOrEmpty(request.PlanId))
             {
-                // Create from Scratch flow: requires name, goal, and details
                 if (string.IsNullOrEmpty(request.PlanName) || string.IsNullOrEmpty(request.Goal) || !request.Details.Any())
                 {
                     return BadRequest("Plan Name, Goal, and details are required for 'Create from Scratch'.");
                 }
-            }
-            else
-            {
-                // Use Template flow: does not require PlanName/Goal/ImageUrl
-                request.PlanName = null;
-                request.Goal = null;
-                request.ImageUrl = null;
             }
 
             try
