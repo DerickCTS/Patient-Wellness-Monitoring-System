@@ -9,7 +9,7 @@ using Patient_Monitoring.Services.Interface;
 
 
 
-namespace Patient_Monitoring.Services.Implementation
+namespace Patient_Monitoring.Services.Implementations
 {
     public class WellnessPlanService : IWellnessPlanService
     {

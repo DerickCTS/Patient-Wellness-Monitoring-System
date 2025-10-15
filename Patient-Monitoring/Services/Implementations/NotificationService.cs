@@ -2,8 +2,8 @@
 using Patient_Monitoring.DTOs.Notification;
 using Patient_Monitoring.Enums;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repositories;
-using Patient_Monitoring.Services;
+using Patient_Monitoring.Repository.Interface;
+using Patient_Monitoring.Services.Interface;
 
 public class NotificationService(INotificationRepository repo) : INotificationService
 {

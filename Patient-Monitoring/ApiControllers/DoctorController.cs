@@ -4,7 +4,7 @@ using Patient_Monitoring.Models;
 using Patient_Monitoring.Services.Interface;
 using System.Net;
 
-namespace Patient_Monitoring.Controllers.API;
+namespace Patient_Monitoring.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

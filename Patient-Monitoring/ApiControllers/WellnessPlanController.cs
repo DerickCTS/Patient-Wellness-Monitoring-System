@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Patient_Monitoring.Services.Interface;
 
 
-namespace Patient_Monitoring.Controller.API
+namespace Patient_Monitoring.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
