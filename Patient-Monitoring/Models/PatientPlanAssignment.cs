@@ -18,7 +18,7 @@ namespace Patient_Monitoring.Models
         [DisplayName("Patient Id")]
         public string PatientId { get; set; } = null!;
 
-        [Required]
+        
         [DisplayName("Plan Id")]
         public string PlanId { get; set; } = null!;
 
