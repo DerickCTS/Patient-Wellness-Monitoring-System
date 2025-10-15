@@ -4,11 +4,9 @@ using Microsoft.OpenApi.Models;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Repository.Implementation;
 using Patient_Monitoring.Repository.Interface;
-using Patient_Monitoring.Services.Implementation;
 using Patient_Monitoring.Services.Interface;
 using Patient_Monitoring.Jobs;
-using Patient_Monitoring.Repositories;
-using Patient_Monitoring.Services;
+using Patient_Monitoring.Services.Implementations;
 
 
 

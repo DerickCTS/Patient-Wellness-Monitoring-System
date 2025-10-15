@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
+using Patient_Monitoring.Repository.Interface;
 
-namespace Patient_Monitoring.Repositories
+namespace Patient_Monitoring.Repository.Implementation
 {
     /// <summary>
     /// Concrete implementation of notification repository.
@@ -22,7 +23,7 @@ namespace Patient_Monitoring.Repositories
 
         public async Task<IEnumerable<Notification>> GetDueNotificationsAsync(DateTime now) =>
             await _context.Notifications
-                .Where(n => !n.IsRead  && ( n.ScheduledAt) <= now)
+                .Where(n => !n.IsRead  &&  n.ScheduledAt <= now)
                 .ToListAsync();
 
         public async Task AddAsync(Notification notification) =>

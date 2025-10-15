@@ -8,7 +8,7 @@ using Patient_Monitoring.Repository.Interface;
 using Patient_Monitoring.Services.Interface;
 using System.Numerics;
 
-namespace Patient_Monitoring.Services.Implementation
+namespace Patient_Monitoring.Services.Implementations
 {
     public class DoctorService : IDoctorService
 
@@ -55,10 +55,10 @@ namespace Patient_Monitoring.Services.Implementation
             var diagnoses = patient.Diagnoses.Select(
                 diagnosis => new
                 {
-                    DiseaseName = diagnosis.Disease.DiseaseName,
-                    DiagnosedBy = (diagnosis.Appointment.Doctor.FirstName + diagnosis.Appointment.Doctor.LastName),
-                    DiagnosisId = (diagnosis.DiagnosisId),
-                    DiagnosedDate = (diagnosis.Appointment.AppointmentDate)
+                    diagnosis.Disease.DiseaseName,
+                    DiagnosedBy = diagnosis.Appointment.Doctor.FirstName + diagnosis.Appointment.Doctor.LastName,
+                    diagnosis.DiagnosisId,
+                    DiagnosedDate = diagnosis.Appointment.AppointmentDate
                 }).ToList();
 
             var medications = patient.Prescriptions.Select(p => new MedicationDetailDto
@@ -78,7 +78,7 @@ namespace Patient_Monitoring.Services.Implementation
                     PlanName = plan.AssignedWellnessPlan.PlanName,
                     FrequencyCount = plan.FrequencyCount,
                     FrequencyUnit = plan.FrequencyUnit,
-                    WellnessType = (plan.AssignedWellnessPlan.CreatedByDoctor == null) ? "General" : "Custom"
+                    WellnessType = plan.AssignedWellnessPlan.CreatedByDoctor == null ? "General" : "Custom"
                 }).ToList();
 
 

@@ -1,7 +1,7 @@
 ﻿using Patient_Monitoring.DTOs;
 using Patient_Monitoring.Models;
 
-namespace Patient_Monitoring.Services.Interfaces
+namespace Patient_Monitoring.Services.Interface
 {
     public interface IAuthService
     {

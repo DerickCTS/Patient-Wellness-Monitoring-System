@@ -9,7 +9,7 @@ namespace Patient_Monitoring.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class NotificationsController(INotificationService service) : ControllerBase
+    public class NotificationsApiController(INotificationService service) : ControllerBase
     {
         private readonly INotificationService _service = service;
 
