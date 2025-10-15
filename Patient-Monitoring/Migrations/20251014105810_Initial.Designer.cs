@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Patient_Monitoring.Data;
 
@@ -11,9 +12,11 @@ using Patient_Monitoring.Data;
 namespace Patient_Monitoring.Migrations
 {
     [DbContext(typeof(PatientMonitoringDbContext))]
-    partial class PatientMonitoringDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251014105810_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,11 +311,8 @@ namespace Patient_Monitoring.Migrations
 
             modelBuilder.Entity("Patient_Monitoring.Models.Notification", b =>
                 {
-                    b.Property<int>("NotificationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+                    b.Property<string>("NotificationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -322,8 +322,11 @@ namespace Patient_Monitoring.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("NotificationType")
+                        .HasColumnType("int");
 
                     b.Property<string>("PatientId")
                         .IsRequired()
@@ -334,17 +337,14 @@ namespace Patient_Monitoring.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("NotificationId");
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.Patient", b =>

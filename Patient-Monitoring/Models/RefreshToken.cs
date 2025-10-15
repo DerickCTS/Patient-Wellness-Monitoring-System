@@ -9,38 +9,50 @@ namespace Patient_Monitoring.Models
     public class RefreshToken
     {
         [Key]
-        public int Id { get; set; }
+        [Required]
+        [Display(Name = "Refresh Token Id")]
+        public int RefreshTokenId { get; set; }
+
 
         [Required]
-        public string Token { get; set; } = null!;
+        public required string Token { get; set; }
 
-        
+
         [Required]
-        public string JwtId { get; set; } = null!;
+        [Display(Name = "JWT ID")]
+        public required string JwtId { get; set; }
 
-  
+
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime Expires { get; set; }
 
-        
+
+        [Required]
         public bool IsRevoked { get; set; } = false;
+
 
         [DataType(DataType.DateTime)]
         public DateTime? RevokedAt { get; set; }
 
 
         [Required]
-        public string UserId { get; set; } = null!;
+        [Display(Name = "User ID")]
+        public required string UserId { get; set; }
+
 
         [Required]
+        [Display(Name = "User Type")]
         public UserType UserType { get; set; }
-        
+
+
         [NotMapped]
-        public object User { get; set; } = null!;
+        public required object User { get; set; }
+
 
         [Required]
         [DataType(DataType.DateTime)]
+        [Display(Name = "Created At")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         //The client associated with the refresh token

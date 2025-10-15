@@ -5,42 +5,48 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Monitoring.Models
 {
-    [Table("WellnessPlans")]
+
     public class WellnessPlan
     {
         [Key]
         [DisplayName("Plan Id")]
-        public string PlanId { get; set; } = null!;
+        public required string PlanId { get; set; }
 
 
         [Required]
-        [StringLength(20)]
+        [StringLength(50)]
         [DisplayName("Plan Name")]
-        public string PlanName { get; set; } = null!;
+        public required string PlanName { get; set; }
 
 
         [Required]
         [StringLength(35)]
-        public string Goal { get; set; } = null!;
+        public required string Goal { get; set; }
 
 
         [Required]
         [StringLength(255)]
         [DataType(DataType.Url)]
-        public string ImageUrl { get; set; } = null!;
+        public required string ImageUrl { get; set; }
 
 
         [Required]
-        public string Category { get; set; } = null!;
-
+        [StringLength(30)]
+        public required string Category { get; set; }
 
         [Required]
+        [Display(Name = "Is Template")]
+        public required bool IsTemplate { get; set; }
+
+
         [DisplayName("Created By")]
-        public string CreatedByDoctorId { get; set; } = null!;
-        
+        public string? CreatedByDoctorId { get; set; }
 
-        public  ICollection<WellnessPlanDetail>? WellnessPlanDetails { get; set; }
-        public  ICollection<PatientPlanAssignment>? AssignedPatients { get; set; }
+
+        public ICollection<WellnessPlanDetail>? WellnessPlanDetails { get; set; }
+        public ICollection<PatientPlanAssignment>? AssignedPatients { get; set; }
+
+        [ForeignKey(nameof(CreatedByDoctorId))]
         public Doctor CreatedByDoctor { get; set; } = null!;
     }
 }
