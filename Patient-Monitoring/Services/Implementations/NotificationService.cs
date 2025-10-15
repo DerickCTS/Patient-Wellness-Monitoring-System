@@ -1,9 +1,9 @@
-﻿using NuGet.Protocol.Core.Types;
+﻿
 using Patient_Monitoring.DTOs.Notification;
 using Patient_Monitoring.Enums;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repositories.Interface;
-using Patient_Monitoring.Services;
+using Patient_Monitoring.Repositories.Interfaces;
+using Patient_Monitoring.Services.Interfaces;
 
 public class NotificationService(INotificationRepository repo) : INotificationService
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.DTOs.Notification;
-using Patient_Monitoring.Services;
+using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Controllers
 {

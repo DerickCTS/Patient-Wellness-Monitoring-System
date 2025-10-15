@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.DTOs.WellnessPlan;
-using Patient_Monitoring.Models;
+
 using Patient_Monitoring.Services.Interfaces;
 using System.Net;
 

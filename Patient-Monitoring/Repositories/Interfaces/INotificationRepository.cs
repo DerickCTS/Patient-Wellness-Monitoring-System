@@ -1,6 +1,6 @@
 ﻿using Patient_Monitoring.Models;
 
-namespace Patient_Monitoring.Repositories.Interface
+namespace Patient_Monitoring.Repositories.Interfaces
 {
     /// <summary>
     /// Interface for notification data access.

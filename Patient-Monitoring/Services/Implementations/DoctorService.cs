@@ -1,12 +1,10 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
+﻿
 using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
 
-using Patient_Monitoring.Repository.Interface;
+using Patient_Monitoring.Repository.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
-using System.Numerics;
+
 
 namespace Patient_Monitoring.Services.Implementations
 {

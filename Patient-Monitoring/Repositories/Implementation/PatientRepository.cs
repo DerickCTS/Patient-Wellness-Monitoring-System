@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interface;
-using System.Runtime.Intrinsics.Arm;
+using Patient_Monitoring.Repository.Interfaces;
+
 
 namespace Patient_Monitoring.Repository.Implementation
 {
