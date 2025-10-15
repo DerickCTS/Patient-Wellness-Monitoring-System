@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Monitoring.Models
 {
@@ -7,41 +7,50 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        [StringLength(50, ErrorMessage = "AppointmentID cannot exceed 50 characters.")]
-        [DisplayName("Appointment Id")]
-        public required string AppointmentID { get; set; } // Primary Key
+        [Display(Name = "Appointment ID")]
+        public required string AppointmentId { get; set; }
 
 
         [Required]
-        [StringLength(50, ErrorMessage = "PatientID cannot exceed 50 characters.")]
-        [DisplayName("Patient Id")]
-        public required string PatientID { get; set; } // Foreign Key to Patient_Details
+        [Display(Name = "Patient ID")]
+        public required string PatientId { get; set; }
 
 
         [Required]
-        [StringLength(50, ErrorMessage = "DoctorID cannot exceed 50 characters.")]
-        [DisplayName("Doctor Id")]
-        public required string DoctorID { get; set; } // Foreign Key to Doctor_Details
+        [Display(Name = "Doctor ID")]
+        public required string DoctorId { get; set; }
 
 
         [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = "Appointment Date & Time")]
-        public DateTime Appointment_Date_Time { get; set; }
+        public DateTime AppointmentDate { get; set; }
 
 
         [Required]
-        [StringLength(200, ErrorMessage = "Reason cannot exceed 200 characters.")]
+        [StringLength(1000, ErrorMessage = "Reason cannot exceed 1000 characters.")]
         public required string Reason { get; set; }
 
 
-        [StringLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
-        public string? Notes { get; set; } // Nullable for optional notes
+        [Required]
+        [Display(Name = "Slot ID")]
+        public int SlotId { get; set; }
 
 
-        public AppointmentAlert? Alert { get; set; }
+        // 3. Status for approval workflow: 'Pending Approval', 'Confirmed', 'Rejected', etc.
+        [Required]
+        [StringLength(100)]
+        public string Status { get; set; } = "Pending Approval";
+
+
+        [StringLength(1000, ErrorMessage = "Rejection reason cannot exceed 1000 characters.")]
+        [Display(Name = "Rejection Reason")]
+        public string? RejectionReason { get; set; }
+
+        [ForeignKey("SlotId")]
+        public AppointmentSlot? AppointmentSlot { get; set; }
+        public ICollection<Diagnosis> Diagnoses { get; set; } = null!;
         public Patient Patient { get; set; } = null!;
         public Doctor Doctor { get; set; } = null!;
-        public ICollection<Diagnosis> Diagnoses { get; set; } = null!;
     }
 }

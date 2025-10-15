@@ -2,41 +2,46 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Patient_Monitoring.Models
 {
-    [Table("DailyTaskLog")]
-    public class DailyTaskLog
+    public class TaskLog
     {
         [Key]
         [DisplayName("Log Id")]
-        public string LogId { get; set; } = null!;
+        [Required]
+        public required string LogId { get; set; }
+
 
         [Required]
         [DisplayName("Assignment Id")]
-        public string AssignmentId { get; set; } = null!;
+        public required string AssignmentId { get; set; }
+
 
         [Required]
         [DataType(DataType.Date)]
-        [DisplayName("Task Date")]
-        public DateTime TaskDate { get; set; }
+        [DisplayName("Due Date")]
+        public DateTime DueDate { get; set; }
+
 
         [Required]
         [StringLength(50)]
-        public string Status { get; set; } = null!;
+        public required string Status { get; set; }
 
-        [Required]
+
         [DataType(DataType.Date)]
         [DisplayName("Completed At")]
-        public DateTime CompletedAt { get; set; }
+        public DateTime? CompletedAt { get; set; }
+
 
         [DataType(DataType.MultilineText)]
         [DisplayName("Patient Notes")]
         public string? PatientNotes { get; set; }
 
         // For quantifiable tasks like "Drink 8 glasses of water"
+
         //public int? CurrentProgress { get; set; }
 
         public PatientPlanAssignment PatientPlan { get; set; } = null!;
     }
+
 }
