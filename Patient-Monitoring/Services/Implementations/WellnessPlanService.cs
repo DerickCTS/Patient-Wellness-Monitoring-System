@@ -6,7 +6,6 @@ using Patient_Monitoring.Services.Interfaces;
 
 
 
-
 namespace Patient_Monitoring.Services.Implementations
 {
     public class WellnessPlanService : IWellnessPlanService

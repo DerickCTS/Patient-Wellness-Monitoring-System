@@ -1,6 +1,6 @@
 ﻿using Patient_Monitoring.Models;
 
- // Assuming models are here
+// Assuming models are here
 
 namespace Patient_Monitoring.Repositories.Interfaces
 {
