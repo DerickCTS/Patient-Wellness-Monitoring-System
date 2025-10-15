@@ -1,8 +1,8 @@
-﻿using Patient_Monitoring.Models;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
+using Patient_Monitoring.Models;
 namespace Patient_Monitoring.Models
 {
     public class Patient
@@ -28,6 +28,8 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Date of Birth")]
         [Required]
         public required DateTime DateOfBirth { get; set; }
+
+
         [Required]
         public required string Gender { get; set; }
 
@@ -43,6 +45,10 @@ namespace Patient_Monitoring.Models
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         [Required]
         public required string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Blood Group")]
+        public required string BloodGroup { get; set; } 
 
 
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
@@ -70,6 +76,8 @@ namespace Patient_Monitoring.Models
                     // Lifestyle & Medical Info
                     public bool? HasChronicConditions { get; set; } 
                     public required string ChronicConditionDetails { get; set; }*/
+
+        // System Info
         [Display(Name = "Registration Date")]
         [DataType(DataType.Date)]
         public DateTime RegistrationDate { get; set; }
@@ -82,8 +90,8 @@ namespace Patient_Monitoring.Models
         [Required]
         [DataType(DataType.Password)]
         public required string Password { get; set; }
-        
-        public string BloodGroup { get; set; }
+
+
         public ICollection<Prescription>? Prescriptions { get; set; }
         public ICollection<Notification>? Notifications { get; set; }
         public PatientDoctorMapper PersonalizedDoctorMapper { get; set; } = null!;

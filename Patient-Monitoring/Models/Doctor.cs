@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 using System.Security.Permissions;
+
 
 namespace Patient_Monitoring.Models
 {
@@ -54,6 +56,8 @@ namespace Patient_Monitoring.Models
         [DataType(DataType.Date)]
         [Display(Name = "Doctor Since")]
         public DateTime DoctorSince { get; set; }
+
+
         [Required]
         [DataType(DataType.Password)]
         public required string Password { get; set; }

@@ -14,19 +14,21 @@ namespace Patient_Monitoring.Models
         public required string AssignmentId { get; set; }
 
 
-      
+        [Required]
         [DisplayName("Patient Id")]
-        public  string PatientId { get; set; }
+        public required string PatientId { get; set; }
 
 
-        
+        [Required]
         [DisplayName("Plan Id")]
-        public string PlanId { get; set; }
+        public required string PlanId { get; set; }
 
 
-        
+        [Required]
         [DisplayName("Assigned By")]
-        public  string AssignedByDoctorId { get; set; }
+        public required string AssignedByDoctorId { get; set; }
+
+
         [Required]
         [Range(1, 100)]
         [DisplayName("Frequency Count")]
@@ -53,7 +55,10 @@ namespace Patient_Monitoring.Models
         [Required]
         [DisplayName("Patient Id")]
         public bool IsActive { get; set; }
-        [ForeignKey("PlanId")]
+
+
+        // Navigation properties
+        [ForeignKey(nameof(PlanId))]
         public WellnessPlan AssignedWellnessPlan { get; set; } = null!;
         public ICollection<AssignmentPlanDetail>? AssignmentPlanDetails { get; set; }
         public ICollection<TaskLog> TaskLogs { get; set; } = null!;

@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Patient_Monitoring.Models
 {
     public class TaskLog
-
     {
         [Key]
         [DisplayName("Log Id")]
@@ -20,7 +19,7 @@ namespace Patient_Monitoring.Models
 
         [Required]
         [DataType(DataType.Date)]
-        [DisplayName("Task Date")]
+        [DisplayName("Due Date")]
         public DateTime DueDate { get; set; }
 
 
@@ -29,7 +28,6 @@ namespace Patient_Monitoring.Models
         public required string Status { get; set; }
 
 
- 
         [DataType(DataType.Date)]
         [DisplayName("Completed At")]
         public DateTime? CompletedAt { get; set; }

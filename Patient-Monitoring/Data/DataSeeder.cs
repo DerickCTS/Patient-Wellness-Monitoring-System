@@ -922,6 +922,7 @@ namespace Patient_Monitoring.Data
                             {
                                 appointmentSlots.Add(new AppointmentSlot
                                 {
+
                                     DoctorId = doctor.DoctorId,
                                     StartDateTime = slotTime,
                                     EndDateTime = slotEnd,

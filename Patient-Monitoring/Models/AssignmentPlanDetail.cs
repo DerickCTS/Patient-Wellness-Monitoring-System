@@ -25,9 +25,7 @@ namespace Patient_Monitoring.Models
         [DataType(DataType.Text)]
         public required string Content { get; set; }
 
-
         [ForeignKey(nameof(AssignmentId))]
         public PatientPlanAssignment PatientPlan { get; set; } = null!;
-        
     }
 }
