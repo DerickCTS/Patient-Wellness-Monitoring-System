@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Patient_Monitoring.Services.Interface
+namespace Patient_Monitoring.Services.Interfaces
 {
     public interface IJwtService
     {

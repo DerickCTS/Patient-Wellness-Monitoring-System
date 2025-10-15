@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
-using Patient_Monitoring.Models;
+
 namespace Patient_Monitoring.Models
 {
     public class Patient

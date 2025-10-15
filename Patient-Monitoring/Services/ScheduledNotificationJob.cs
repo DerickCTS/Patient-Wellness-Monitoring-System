@@ -3,7 +3,7 @@ using Patient_Monitoring.Data;
 using Patient_Monitoring.DTOs.Notification;
 using Patient_Monitoring.Enums;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Services.Interface;
+using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Jobs
 {

@@ -1,13 +1,7 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
-using Patient_Monitoring.DTOs;
-using Patient_Monitoring.DTOs.WellnessPlan;
+﻿using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
-
-using Patient_Monitoring.Repository.Interface;
-using Patient_Monitoring.Services.Interface;
-using System.Numerics;
+using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Services.Implementations
 {
@@ -118,7 +112,7 @@ namespace Patient_Monitoring.Services.Implementations
         }
 
 
-        // Implementation for GetWellnessPlanDetailsAsync would go here.
+        // Implementations for GetWellnessPlanDetailsAsync would go here.
         public async Task AssignPlanAsync(AssignPlanRequest request)
         {
             // 1. Create the new AssignedWellnessPlan entity

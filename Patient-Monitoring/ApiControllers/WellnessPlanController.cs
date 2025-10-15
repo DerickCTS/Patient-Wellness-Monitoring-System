@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Patient_Monitoring.Services.Interface;
+using Patient_Monitoring.DTOs.WellnessPlan;
+using Patient_Monitoring.Services.Interfaces;
 
 
 namespace Patient_Monitoring.Controllers

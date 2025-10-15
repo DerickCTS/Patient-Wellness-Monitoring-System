@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Patient_Monitoring.Enums;
 
 namespace Patient_Monitoring.DTOs.Notification

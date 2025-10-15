@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Patient_Monitoring.DTOs;
-using Patient_Monitoring.DTOs.WellnessPlan;
+﻿using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interface;
-using Patient_Monitoring.Services.Interface;
+using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Services.Interfaces;
 
 
 

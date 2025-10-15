@@ -1,7 +1,7 @@
 ﻿using Patient_Monitoring.DTOs.Notification;
 using Patient_Monitoring.Models;
 
-namespace Patient_Monitoring.Services.Interface
+namespace Patient_Monitoring.Services.Interfaces
 {
     /// <summary>
     /// Interface for notification business logic.

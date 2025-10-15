@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Patient_Monitoring.DTOs.WellnessPlan
+﻿namespace Patient_Monitoring.DTOs.WellnessPlan
 {
     public class PatientSearchItemDto
     {

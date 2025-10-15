@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Patient_Monitoring.Data;
-using Patient_Monitoring.Repository.Implementation;
-using Patient_Monitoring.Repository.Interface;
-using Patient_Monitoring.Services.Interface;
+using Patient_Monitoring.Repository.Implementations;
+using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Services.Interfaces;
 using Patient_Monitoring.Jobs;
 using Patient_Monitoring.Services.Implementations;
 

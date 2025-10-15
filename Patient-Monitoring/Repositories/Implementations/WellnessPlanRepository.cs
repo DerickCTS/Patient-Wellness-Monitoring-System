@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interface;
+using Patient_Monitoring.Repository.Interfaces;
 
 
 
-namespace Patient_Monitoring.Repository.Implementation
+namespace Patient_Monitoring.Repository.Implementations
 {
     public class WellnessPlanRepository : IWellnessPlanRepository
     {

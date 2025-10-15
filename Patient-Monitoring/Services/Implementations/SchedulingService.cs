@@ -2,7 +2,7 @@
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
 
-namespace Patient_Monitoring.Services
+namespace Patient_Monitoring.Services.Implementations
 {
     public class SchedulingService
     {

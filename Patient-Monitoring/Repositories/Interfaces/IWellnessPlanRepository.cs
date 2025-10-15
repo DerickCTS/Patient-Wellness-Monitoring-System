@@ -1,9 +1,7 @@
 ﻿using Patient_Monitoring.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
  // Assuming models are here
 
-namespace Patient_Monitoring.Repository.Interface
+namespace Patient_Monitoring.Repository.Interfaces
 {
     public interface IWellnessPlanRepository
     {
