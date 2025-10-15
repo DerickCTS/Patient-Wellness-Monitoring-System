@@ -1,5 +1,6 @@
 ﻿using Patient_Monitoring.DTOs;
 
+
 namespace Patient_Monitoring.Services.Interfaces
 {
     public interface IAuthService

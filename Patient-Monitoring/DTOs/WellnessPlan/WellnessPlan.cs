@@ -8,17 +8,19 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
 
         //Reminde me to delete this later
         public int display_order { get; set; }
-        public string PlanID { get; internal set; }
+        public  string PlanID { get; set; }
     }
 
     public class AssignPlanRequestDto
     {
 
-        public string PlanId { get; set; }
-        // public string PatientId { get; set; }
-        public string PlanName { get; set; } // Only for Create from Scratch
-        public string Goal { get; set; } // Only for Create from Scratch
-        public string ImageUrl { get; set; } // Only for Create from Scratch
+        public string? PlanId { get; set; } 
+        public string PatientId { get; set; }
+        public string DoctorId { get; set; }
+        public string? PlanName { get; set; } // Only for Create from Scratch
+        public string? Goal { get; set; } // Only for Create from Scratch
+        public string Category { get; set; }
+        public string? ImageUrl { get; set; } // Only for Create from Scratch
 
         // Assignment Specifics (From the form - required for both)
         public int FrequencyCount { get; set; }
@@ -34,8 +36,6 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
         // Special field for template flow
         // Indicates if the Details list represents modified template data
         public bool DetailsModified { get; set; }
-        public string PatientId { get; internal set; }
-        public string DoctorId { get; internal set; }
     }
 
 
@@ -45,3 +45,4 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
 
     }
 }
+

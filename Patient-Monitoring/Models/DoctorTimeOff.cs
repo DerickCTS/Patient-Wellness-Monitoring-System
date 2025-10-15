@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace Patient_Monitoring.Models
 {
     public class DoctorTimeOff

@@ -1,5 +1,6 @@
 ﻿using Patient_Monitoring.DTOs.WellnessPlan;
 
+
 namespace Patient_Monitoring.Services.Interfaces
 {
     public interface IDoctorService

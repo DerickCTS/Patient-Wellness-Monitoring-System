@@ -1,5 +1,6 @@
 ﻿using Patient_Monitoring.Enums;
 
+
 namespace Patient_Monitoring.Services.Interfaces
 {
     public interface IJWTService2

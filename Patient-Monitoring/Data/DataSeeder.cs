@@ -1,5 +1,6 @@
 ﻿// You'll need to add 'using' statements for your project's Models and DbContext namespaces
 using Microsoft.AspNetCore.Identity;
+
 using Patient_Monitoring.Models;
 
 namespace Patient_Monitoring.Data

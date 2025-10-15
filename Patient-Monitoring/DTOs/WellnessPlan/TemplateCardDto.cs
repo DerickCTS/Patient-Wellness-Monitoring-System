@@ -1,5 +1,4 @@
-﻿
-namespace Patient_Monitoring.DTOs.WellnessPlan
+﻿namespace Patient_Monitoring.DTOs.WellnessPlan
 {
     public class TemplateCardDto
     {

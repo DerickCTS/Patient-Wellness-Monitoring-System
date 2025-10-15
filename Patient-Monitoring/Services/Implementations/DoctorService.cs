@@ -1,7 +1,10 @@
-﻿using Patient_Monitoring.DTOs.WellnessPlan;
+﻿
+using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
+
 using Patient_Monitoring.Repository.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
+
 
 namespace Patient_Monitoring.Services.Implementations
 {
@@ -112,7 +115,7 @@ namespace Patient_Monitoring.Services.Implementations
         }
 
 
-        // Implementations for GetWellnessPlanDetailsAsync would go here.
+        // Implementation for GetWellnessPlanDetailsAsync would go here.
         public async Task AssignPlanAsync(AssignPlanRequest request)
         {
             // 1. Create the new AssignedWellnessPlan entity
@@ -121,13 +124,12 @@ namespace Patient_Monitoring.Services.Implementations
                 // PlanId is generated as a unique identifier
                 PlanId = "Plan-" + Guid.NewGuid(),
                 PlanName = request.PlanName!,
+                IsTemplate = false,
                 Goal = request.Goal!,
                 Category = request.Category!,
                 // Using a default image URL
                 ImageUrl = "https://defaultimage.url/plan.png",
-                CreatedByDoctorId = request.DoctorId,
-                IsTemplate = false, // Since this is a custom plan for a patient
-
+                CreatedByDoctorId = request.DoctorId
             };
 
             await _patientRepository.AddWellnessPlanAsync(newWellnessPlan);
