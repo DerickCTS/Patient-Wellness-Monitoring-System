@@ -2,7 +2,7 @@
 
  // Assuming models are here
 
-namespace Patient_Monitoring.Repository.Interfaces
+namespace Patient_Monitoring.Repositories.Interfaces
 {
     public interface IWellnessPlanRepository
     {

@@ -2,7 +2,7 @@
 using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
 
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
 
 
@@ -115,7 +115,7 @@ namespace Patient_Monitoring.Services.Implementations
         }
 
 
-        // Implementation for GetWellnessPlanDetailsAsync would go here.
+        // Implementations for GetWellnessPlanDetailsAsync would go here.
         public async Task AssignPlanAsync(AssignPlanRequest request)
         {
             // 1. Create the new AssignedWellnessPlan entity

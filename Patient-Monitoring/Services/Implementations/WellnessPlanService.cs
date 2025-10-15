@@ -1,7 +1,7 @@
 ﻿
 using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
 
 
