@@ -12,8 +12,8 @@ using Patient_Monitoring.Data;
 namespace Patient_Monitoring.Migrations
 {
     [DbContext(typeof(PatientMonitoringDbContext))]
-    [Migration("20251014105810_Initial")]
-    partial class Initial
+    [Migration("20251015085629_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -311,8 +311,11 @@ namespace Patient_Monitoring.Migrations
 
             modelBuilder.Entity("Patient_Monitoring.Models.Notification", b =>
                 {
-                    b.Property<string>("NotificationId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -322,11 +325,8 @@ namespace Patient_Monitoring.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("NotificationType")
-                        .HasColumnType("int");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("PatientId")
                         .IsRequired()
@@ -337,14 +337,17 @@ namespace Patient_Monitoring.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("NotificationId");
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Notification");
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Patient_Monitoring.Models.Patient", b =>

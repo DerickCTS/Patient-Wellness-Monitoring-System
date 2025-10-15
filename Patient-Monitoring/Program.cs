@@ -2,10 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Patient_Monitoring.Data;
-using Patient_Monitoring.Repository.Implementation;
-using Patient_Monitoring.Repository.Interfaces;
 using Patient_Monitoring.Jobs;
-
 using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Repositories.Implementation;
 using Patient_Monitoring.Services.Implementations;
@@ -83,7 +80,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-DataSeeder.Seed(app);
+//DataSeeder.Seed(app);
 
 //DataSeeder.Seed(app);
 

@@ -1,6 +1,6 @@
-﻿namespace Patient_Monitoring.DTOs.WellnessPlan
+﻿
+namespace Patient_Monitoring.DTOs.WellnessPlan
 {
-
     public class AssignPlanRequest
     {
         public required string Category { get; set; }
@@ -26,3 +26,5 @@
         public DateTime EndDate { get; set; }
     }
 }
+
+
