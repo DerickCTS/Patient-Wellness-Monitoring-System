@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
-using Patient_Monitoring.DTOs;
+using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
 
 using Patient_Monitoring.Repository.Interface;

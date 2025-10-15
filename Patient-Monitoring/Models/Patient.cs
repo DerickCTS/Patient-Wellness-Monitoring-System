@@ -82,8 +82,9 @@ namespace Patient_Monitoring.Models
         [Required]
         [DataType(DataType.Password)]
         public required string Password { get; set; }
-        
-        public string BloodGroup { get; set; }
+        [Required]
+        [Display(Name = "Blood Group")]
+        public required string BloodGroup { get; set; }
         public ICollection<Prescription>? Prescriptions { get; set; }
         public ICollection<Notification>? Notifications { get; set; }
         public PatientDoctorMapper PersonalizedDoctorMapper { get; set; } = null!;
