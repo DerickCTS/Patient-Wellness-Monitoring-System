@@ -4,28 +4,29 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Monitoring.Models
 {
-    [Table("WellnessPlanDetails")]
+
     public class WellnessPlanDetail
     {
         [Key]
         [DisplayName("Detail Id")]
-        public string DetailId { get; set; } = null!;
+        public required string DetailId { get; set; }
 
         [Required]
         [DisplayName("Plan Id")]
-        public string PlanId { get; set; } = null!;
+        public required string PlanId { get; set; }
 
         [Required]
         [StringLength(50)]
         [DisplayName("Detail Type")]
-        public string DetailType { get; set; } = null!;
+        public required string DetailType { get; set; }
 
         [Required]
         [StringLength(600)]
         [DataType(DataType.Text)]
-        public string Content { get; set; } = null!;
+        public required string Content { get; set; }
 
 
+        [ForeignKey(nameof(PlanId))]
         public WellnessPlan WellnessPlan { get; set; } = null!;
     }
 }

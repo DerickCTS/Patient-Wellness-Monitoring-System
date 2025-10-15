@@ -4,33 +4,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Monitoring.Models
 {
-
-    [Table("AssignmentPlanDetails")]
     public class AssignmentPlanDetail
     {
         [Key]
         [Required]
         [DisplayName("Custom Detail Id")]
-        public string CustomDetailId { get; set; } = null!;
+        public required string CustomDetailId { get; set; }
 
         [Required]
         [DisplayName("Assignment Id")]
-        public string AssignmentId { get; set; } = null!;
+        public required string AssignmentId { get; set; }
 
         [Required]
         [StringLength(50)]
         [DisplayName("Detail Type")]
-        public string DetailType { get; set; } = null!;
+        public required string DetailType { get; set; }
 
         [Required]
         [StringLength(600)]
         [DataType(DataType.Text)]
-        public string Content { get; set; } = null!;
+        public required string Content { get; set; }
 
-        [Required]
-        [DisplayName("Display Order")]
-        public int DisplayOrder { get; set; }
-
+        [ForeignKey(nameof(AssignmentId))]
         public PatientPlanAssignment PatientPlan { get; set; } = null!;
     }
 }

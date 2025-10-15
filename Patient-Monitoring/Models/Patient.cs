@@ -2,18 +2,20 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
+using Patient_Monitoring.Models;
 namespace Patient_Monitoring.Models
 {
     public class Patient
     {
+
         [Key]
         [Display(Name = "Patient ID")]
-        public required string PatientID { get; set; } // Primary Key
+        public required string PatientId { get; set; } // Primary Key
 
 
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         [Display(Name = "First Name")]
-        [Required] 
+        [Required]
         public required string FirstName { get; set; }
 
 
@@ -24,11 +26,11 @@ namespace Patient_Monitoring.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
-        [Required] 
+        [Required]
         public required DateTime DateOfBirth { get; set; }
 
 
-        [Required] 
+        [Required]
         public required string Gender { get; set; }
 
 
@@ -41,27 +43,36 @@ namespace Patient_Monitoring.Models
 
 
         [EmailAddress(ErrorMessage = "Invalid email address.")]
-        [Required] 
+        [Required]
         public required string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Blood Group")]
+        public required string BloodGroup { get; set; } 
 
 
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
-        [Required] 
+        [Required]
         public required string Address { get; set; }
 
 
+        [Required]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
+        public required string EmergencyContactName { get; set; }
+
+
         [Phone(ErrorMessage = "Invalid emergency contact number.")]
-        [Display(Name = "Emergency Contact")]
-        [Required] 
-        public required string EmergencyContact { get; set; }
+        [Display(Name = "Emergency Contact Number")]
+        [Required]
+        public required string EmergencyContactNumber { get; set; }
 
         /*            // Physical Metrics
                     public decimal HeightCm { get; set; }
                     public decimal WeightKg { get; set; }
                     public decimal? BMI { get; set; } // Nullable
-
+ 
                     public required string BloodType { get; set; }
-
+ 
                     // Lifestyle & Medical Info
                     public bool? HasChronicConditions { get; set; } 
                     public required string ChronicConditionDetails { get; set; }*/
@@ -72,11 +83,17 @@ namespace Patient_Monitoring.Models
         public DateTime RegistrationDate { get; set; }
 
 
+        [Display(Name = "Profile Image")]
+        public string? ProfileImage { get; set; }
+
+
         [Required]
         [DataType(DataType.Password)]
         public required string Password { get; set; }
 
-        public ICollection<Medication>? Medications { get; set; }
+
+        public ICollection<Prescription>? Prescriptions { get; set; }
+        public ICollection<Notification>? Notifications { get; set; }
         public PatientDoctorMapper PersonalizedDoctorMapper { get; set; } = null!;
         public ICollection<Appointment>? Appointments { get; set; }
         public ICollection<Diagnosis>? Diagnoses { get; set; }
