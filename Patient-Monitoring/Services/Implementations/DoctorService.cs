@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
 using Patient_Monitoring.DTOs;
+using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
 
 using Patient_Monitoring.Repository.Interface;
@@ -130,7 +131,9 @@ namespace Patient_Monitoring.Services.Implementations
                 Category = request.Category!,
                 // Using a default image URL
                 ImageUrl = "https://defaultimage.url/plan.png",
-                CreatedByDoctorId = request.DoctorId
+                CreatedByDoctorId = request.DoctorId,
+                IsTemplate = false, // Since this is a custom plan for a patient
+
             };
 
             await _patientRepository.AddWellnessPlanAsync(newWellnessPlan);

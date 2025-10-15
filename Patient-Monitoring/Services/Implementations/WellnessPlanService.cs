@@ -1,10 +1,11 @@
-﻿using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Patient_Monitoring.DTOs;
+using Patient_Monitoring.DTOs.WellnessPlan;
+using Patient_Monitoring.Models;
+using Patient_Monitoring.Repository.Interface;
 using Patient_Monitoring.Services.Interface;
 
 
@@ -68,14 +69,18 @@ namespace Patient_Monitoring.Services.Implementations
             // 1. Create PatientPlan
             var assignment = new PatientPlanAssignment
             {
-                AssignmentId = Guid.NewGuid().ToString(), // Generate a unique ID
-              
+                AssignmentId = Guid.NewGuid().ToString(),
+                // Generate a unique ID
+                PatientId = request.PatientId,
                 FrequencyCount = request.FrequencyCount,
                 FrequencyUnit = request.FrequencyUnit,
                // PatientId=request.PatientId,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
-                IsActive = true
+                IsActive = true,
+                PlanId= request.PlanId,
+                AssignedByDoctorId = request.DoctorId
+
             };
 
             // a. Handle 'Use Template' flow

@@ -80,7 +80,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-DataSeeder.Seed(app);
+//DataSeeder.Seed(app);
 
 //DataSeeder.Seed(app);
 

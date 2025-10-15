@@ -33,6 +33,8 @@ public class AssignPlanRequestDto
     // Special field for template flow
     // Indicates if the Details list represents modified template data
     public bool DetailsModified { get; set; }
+    public string PatientId { get; internal set; }
+    public string DoctorId { get; internal set; }
 }
 
 

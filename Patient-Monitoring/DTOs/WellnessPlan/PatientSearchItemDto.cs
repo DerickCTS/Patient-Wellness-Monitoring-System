@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Patient_Monitoring.DTOs
+namespace Patient_Monitoring.DTOs.WellnessPlan
 {
     public class PatientSearchItemDto
     {
@@ -59,7 +59,7 @@ namespace Patient_Monitoring.DTOs
         public List<WellnessPlanDetailDto> WellnessPlans { get; set; } = new List<WellnessPlanDetailDto>();
 
     }
-    public class AssignPlanRequest
+    /*public class AssignPlanRequest
     {
         public string DoctorId { get; set; } = string.Empty;
         public string PatientId { get; set; } = string.Empty;
@@ -73,7 +73,7 @@ namespace Patient_Monitoring.DTOs
         public string FrequencyUnit { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-    }
+    }*/
     public class DiagnosisDetailsDto
     {
         
