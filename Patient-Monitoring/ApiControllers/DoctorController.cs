@@ -21,14 +21,14 @@ namespace Patient_Monitoring.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Doctor>>> GetDoctor_Details()
         {
-            return await _context.Doctor_Details.ToListAsync();
+            return await _context.Doctors.ToListAsync();
         }
 
         // GET: api/Doctor_Detail/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Doctor>> GetDoctor_Detail(string id)
         {
-            var doctor_Detail = await _context.Doctor_Details.FindAsync(id);
+            var doctor_Detail = await _context.Doctors.FindAsync(id);
 
             if (doctor_Detail == null)
             {
@@ -74,7 +74,7 @@ namespace Patient_Monitoring.Controllers
         [HttpPost]
         public async Task<ActionResult<Doctor>> PostDoctor_Detail(Doctor doctor_Detail)
         {
-            _context.Doctor_Details.Add(doctor_Detail);
+            _context.Doctors.Add(doctor_Detail);
             try
             {
                 await _context.SaveChangesAsync();
@@ -98,13 +98,13 @@ namespace Patient_Monitoring.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDoctor_Detail(string id)
         {
-            var doctor_Detail = await _context.Doctor_Details.FindAsync(id);
+            var doctor_Detail = await _context.Doctors.FindAsync(id);
             if (doctor_Detail == null)
             {
                 return NotFound();
             }
 
-            _context.Doctor_Details.Remove(doctor_Detail);
+            _context.Doctors.Remove(doctor_Detail);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -112,7 +112,7 @@ namespace Patient_Monitoring.Controllers
 
         private bool Doctor_DetailExists(string id)
         {
-            return _context.Doctor_Details.Any(e => e.DoctorId == id);
+            return _context.Doctors.Any(e => e.DoctorId == id);
         }
     }
 }

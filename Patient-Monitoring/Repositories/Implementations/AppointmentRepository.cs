@@ -22,7 +22,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         // ============================ GENERAL QUERIES ============================
         public async Task<List<string>> GetDistinctSpecializationsAsync()
         {
-            return await _context.Doctor_Details
+            return await _context.Doctors
                 .Select(d => d.Specialization)
                 .Distinct()
                 .ToListAsync();
@@ -30,7 +30,7 @@ namespace Patient_Monitoring.Repositories.Implementations
 
         public async Task<List<Doctor>> GetDoctorsBySpecializationAsync(string specialization)
         {
-            return await _context.Doctor_Details
+            return await _context.Doctors
                 .Where(d => d.Specialization == specialization)
                 .ToListAsync();
         }
@@ -38,7 +38,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         public async Task<List<AppointmentSlot>> GetDoctorAvailableSlotsAsync(string doctorId, DateTime cutoffDate)
         {
             return await _context.AppointmentSlots
-                .Where(s => s.DoctorID == doctorId &&
+                .Where(s => s.DoctorId == doctorId &&
                             s.IsBooked == false &&
                             s.StartDateTime >= DateTime.Now &&
                             s.StartDateTime <= cutoffDate)
@@ -50,14 +50,14 @@ namespace Patient_Monitoring.Repositories.Implementations
         public async Task<AppointmentSlot> GetSlotForBookingAsync(int slotId, string doctorId)
         {
             return await _context.AppointmentSlots
-                .FirstOrDefaultAsync(s => s.SlotId == slotId && s.DoctorID == doctorId);
+                .FirstOrDefaultAsync(s => s.SlotId == slotId && s.DoctorId == doctorId);
         }
 
         public async Task<Appointment> GetAppointmentByIdIncludeSlotAsync(string appointmentId)
         {
             return await _context.Appointments
                 .Include(a => a.AppointmentSlot)
-                .FirstOrDefaultAsync(a => a.AppointmentID == appointmentId);
+                .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
         }
 
         public async Task SaveChangesAsync()
@@ -72,7 +72,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         {
             // Step 1: Filter to get all AppointmentIDs that start with 'A'. (SQL translation is easy)
             var sequentialIds = await _context.Appointments
-                .Select(a => a.AppointmentID)
+                .Select(a => a.AppointmentId)
                 .Where(id => id.StartsWith("A"))
                 .ToListAsync(); // <-- Query executed here, bringing IDs into memory
 
@@ -114,7 +114,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         {
             // Includes Pending for accurate slot counts in Weekly Summary
             return await _context.Appointments
-                .Where(a => a.DoctorID == doctorId &&
+                .Where(a => a.DoctorId == doctorId &&
                             a.AppointmentDate >= startDate &&
                             a.AppointmentDate < endDate &&
                             (a.Status == "Confirmed" || a.Status == "Pending Approval"))
@@ -129,7 +129,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         public async Task<List<AppointmentSlot>> GetDoctorSlotsWithAppointmentDetailsAsync(string doctorId, DateTime date)
         {
             return await _context.AppointmentSlots
-                .Where(s => s.DoctorID == doctorId && s.StartDateTime.Date == date.Date)
+                .Where(s => s.DoctorId == doctorId && s.StartDateTime.Date == date.Date)
                 .OrderBy(s => s.StartDateTime)
                 // Assuming navigation properties:
                 // AppointmentSlot has a property named 'Appointment' (1:0 or 1:1)
@@ -142,7 +142,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         public async Task<List<Appointment>> GetPatientFutureAppointmentsAsync(string patientId)
         {
             return await _context.Appointments
-                .Where(a => a.PatientID == patientId && a.AppointmentDate >= DateTime.Today)
+                .Where(a => a.PatientId == patientId && a.AppointmentDate >= DateTime.Today)
                 .Include(a => a.Doctor) // Assuming a navigation property to Doctor_Details
                 .OrderBy(a => a.AppointmentDate)
                 .ToListAsync();
@@ -151,7 +151,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         public async Task<List<Appointment>> GetPatientPastAppointmentsAsync(string patientId)
         {
             return await _context.Appointments
-                .Where(a => a.PatientID == patientId &&
+                .Where(a => a.PatientId == patientId &&
                             (a.Status == "Confirmed" || a.Status == "Completed") &&
                             a.AppointmentDate < DateTime.Today)
                 .Include(a => a.Doctor) // Assuming a navigation property
@@ -162,7 +162,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         public async Task<List<Appointment>> GetPendingAppointmentsWithPatientDetailsAsync(string doctorId)
         {
             return await _context.Appointments
-                .Where(a => a.DoctorID == doctorId && a.Status == "Pending Approval")
+                .Where(a => a.DoctorId == doctorId && a.Status == "Pending Approval")
                 .Include(a => a.Patient) // Assuming a navigation property to Patient_Details
                 .OrderBy(a => a.AppointmentDate)
                 .ToListAsync();
@@ -173,7 +173,7 @@ namespace Patient_Monitoring.Repositories.Implementations
             // Note: This method is less useful for the Schedule API now.
             // Consider renaming it or replacing its usage with GetDoctorSlotsWithAppointmentDetailsAsync.
             return await _context.AppointmentSlots
-                .Where(s => s.DoctorID == doctorId && s.StartDateTime.Date == date.Date)
+                .Where(s => s.DoctorId == doctorId && s.StartDateTime.Date == date.Date)
                 .OrderBy(s => s.StartDateTime)
                 .ToListAsync();
         }
@@ -186,7 +186,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         public Task<bool> AppointmentSlotExistsAsync(string doctorId, DateTime startDateTime)
         {
             return _context.AppointmentSlots
-                .AnyAsync(s => s.DoctorID == doctorId && s.StartDateTime == startDateTime);
+                .AnyAsync(s => s.DoctorId == doctorId && s.StartDateTime == startDateTime);
         }
 
         // ============================ TRANSACTION MANAGEMENT ============================

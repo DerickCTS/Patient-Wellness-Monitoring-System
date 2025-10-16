@@ -47,12 +47,15 @@ namespace Patient_Monitoring.Models
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
         [Required] public required string Address { get; set; }
 
-        // Emergency Contact
+        [Required]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
+        public required string EmergencyContactName { get; set; }
+
 
         [Phone(ErrorMessage = "Invalid emergency contact number.")]
-        [Display(Name = "Emergency Contact")]
-
-        [Required] public required string EmergencyContact { get; set; }
+        [Display(Name = "Emergency Contact Number")]
+        [Required]
+        public required string EmergencyContactNumber { get; set; }
 
         /*            // Physical Metrics
                     public decimal HeightCm { get; set; }

@@ -9,6 +9,7 @@ namespace Patient_Monitoring.Data
         {
         }
 
+
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<WellnessPlan> WellnessPlans { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
@@ -29,58 +30,52 @@ namespace Patient_Monitoring.Data
         public DbSet<Notification> Notifications { get; set; }
 
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // ====================================================================
-            // CRITICAL FIX: Explicitly set table names to match SSMS PLURAL names.
-            // This prevents EF Core from looking for tables that don't exist.
-            // ====================================================================
 
-            // The table is MISSING, so we'll use the desired singular name for creation
-            modelBuilder.Entity<DoctorTimeOff>().ToTable("DoctorTimeOff");
+            modelBuilder.Entity<PatientPlanAssignment>()
+.HasOne(ppa => ppa.AssigningDoctor)
+.WithMany(d => d.PatientPlanAssignments) // Assuming Doctor has a collection named PatientPlanAssignments
+.HasForeignKey(ppa => ppa.AssignedByDoctorId)
+.OnDelete(DeleteBehavior.Restrict);
 
-            // Match the existing plural names in SSMS screenshots:
-            modelBuilder.Entity<DoctorAvailability>().ToTable("DoctorAvailabilities"); // Matches SSMS
-            modelBuilder.Entity<AppointmentSlot>().ToTable("AppointmentSlots");     // Matches SSMS
-            modelBuilder.Entity<Appointment>().ToTable("Appointments");             // Matches SSMS
-            modelBuilder.Entity<Doctor>().ToTable("Doctor_Details");         // Matches SSMS
-            modelBuilder.Entity<Patient>().ToTable("Patient_Details");       // Matches SSMS
+            modelBuilder.Entity<Diagnosis>()
+                .HasOne(d => d.Patient)
+                .WithMany(p => p.Diagnoses)
+                .HasForeignKey(d => d.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Prescription>()
+                .HasOne(p => p.Doctor)
+                .WithMany(d => d.PrescribedMedications)
+                .HasForeignKey(p => p.PrescribingDoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // --------------------------------------------------------------------------------
-            // 1. Configure the One-to-One Relationship between Appointment and AppointmentSlot
-            // --------------------------------------------------------------------------------
+            modelBuilder.Entity<Prescription>()
+                .HasOne(p => p.Patient)
+                .WithMany(p => p.Prescriptions)
+                .HasForeignKey(p => p.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.AppointmentSlot)
-                .WithOne(s => s.Appointment)
-                .HasForeignKey<Appointment>(a => a.SlotID)
-                .IsRequired(false);
-
-
-            // --------------------------------------------------------------------------------
-            // 2. Configure the Doctor relationships (One-to-Many)
-            // --------------------------------------------------------------------------------
-
-            // Doctor to DoctorAvailability
-            modelBuilder.Entity<DoctorAvailability>()
-                .HasOne(da => da.Doctor)
-                .WithMany(d => d.DoctorAvailabilities)
-                .HasForeignKey(da => da.DoctorID);
-
-            // Doctor to DoctorTimeOff
-            modelBuilder.Entity<DoctorTimeOff>()
-                .HasOne(dto => dto.Doctor)
-                .WithMany(d => d.DoctorTimeOffs)
-                .HasForeignKey(dto => dto.DoctorID);
-
-            // Doctor to AppointmentSlot
-            modelBuilder.Entity<AppointmentSlot>()
-                .HasOne(s => s.Doctor)
-                .WithMany()
-                .HasForeignKey(s => s.DoctorID);
-
-            // Call the base method last
-            base.OnModelCreating(modelBuilder);
+                .HasOne(p => p.Doctor)
+                .WithMany(d => d.Appointments)
+                .HasForeignKey(p => p.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
+
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+

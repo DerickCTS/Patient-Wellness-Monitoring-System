@@ -8,11 +8,11 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        public int AvailabilityID { get; set; } // Primary Key
+        public int AvailabilityId { get; set; } // Primary Key
 
         [Required]
         [StringLength(450)]
-        public required string DoctorID { get; set; } // Foreign Key to Doctor
+        public required string DoctorId { get; set; } // Foreign Key to Doctor
 
         [Required]
         [StringLength(10, ErrorMessage = "Day of week cannot exceed 10 characters.")]
@@ -32,8 +32,7 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Is Recurring")]
         public bool IsRecurring { get; set; } = true; // Default to true
 
-        // Navigation property for Foreign Key relationship
-        [ForeignKey("DoctorID")]
+        
         public Doctor? Doctor { get; set; }
     }
 }

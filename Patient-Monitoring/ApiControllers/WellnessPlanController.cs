@@ -19,16 +19,16 @@ namespace Patient_Monitoring.Controllers
 
         // GET: api/WellnessPlan
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Wellness_Plan>>> GetWellness_Plans()
+        public async Task<ActionResult<IEnumerable<WellnessPlan>>> GetWellness_Plans()
         {
-            return await _context.Wellness_Plans.ToListAsync();
+            return await _context.WellnessPlans.ToListAsync();
         }
 
         // GET: api/WellnessPlan/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Wellness_Plan>> GetWellness_Plan(string id)
+        public async Task<ActionResult<WellnessPlan>> GetWellness_Plan(string id)
         {
-            var wellness_Plan = await _context.Wellness_Plans.FindAsync(id);
+            var wellness_Plan = await _context.WellnessPlans.FindAsync(id);
 
             if (wellness_Plan == null)
             {
@@ -41,9 +41,9 @@ namespace Patient_Monitoring.Controllers
         // PUT: api/WellnessPlan/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWellness_Plan(string id, Wellness_Plan wellness_Plan)
+        public async Task<IActionResult> PutWellness_Plan(string id, WellnessPlan wellness_Plan)
         {
-            if (id != wellness_Plan.PlanID)
+            if (id != wellness_Plan.PlanId)
             {
                 return BadRequest();
             }
@@ -72,16 +72,16 @@ namespace Patient_Monitoring.Controllers
         // POST: api/WellnessPlan
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Wellness_Plan>> PostWellness_Plan(Wellness_Plan wellness_Plan)
+        public async Task<ActionResult<WellnessPlan>> PostWellness_Plan(WellnessPlan wellness_Plan)
         {
-            _context.Wellness_Plans.Add(wellness_Plan);
+            _context.WellnessPlans.Add(wellness_Plan);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (Wellness_PlanExists(wellness_Plan.PlanID))
+                if (Wellness_PlanExists(wellness_Plan.PlanId))
                 {
                     return Conflict();
                 }
@@ -91,20 +91,20 @@ namespace Patient_Monitoring.Controllers
                 }
             }
 
-            return CreatedAtAction("GetWellness_Plan", new { id = wellness_Plan.PlanID }, wellness_Plan);
+            return CreatedAtAction("GetWellness_Plan", new { id = wellness_Plan.PlanId }, wellness_Plan);
         }
 
         // DELETE: api/WellnessPlan/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWellness_Plan(string id)
         {
-            var wellness_Plan = await _context.Wellness_Plans.FindAsync(id);
+            var wellness_Plan = await _context.WellnessPlans.FindAsync(id);
             if (wellness_Plan == null)
             {
                 return NotFound();
             }
 
-            _context.Wellness_Plans.Remove(wellness_Plan);
+            _context.WellnessPlans.Remove(wellness_Plan);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -112,7 +112,7 @@ namespace Patient_Monitoring.Controllers
 
         private bool Wellness_PlanExists(string id)
         {
-            return _context.Wellness_Plans.Any(e => e.PlanID == id);
+            return _context.WellnessPlans.Any(e => e.PlanId == id);
         }
     }
 }

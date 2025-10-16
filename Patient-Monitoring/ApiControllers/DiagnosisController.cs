@@ -18,16 +18,16 @@ namespace Patient_Monitoring.Controllers
 
         // GET: api/Diagnosis
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patient_Diagnosis>>> GetPatient_Diagnoses()
+        public async Task<ActionResult<IEnumerable<Diagnosis>>> GetPatient_Diagnoses()
         {
-            return await _context.Patient_Diagnoses.ToListAsync();
+            return await _context.Diagnoses.ToListAsync();
         }
 
         // GET: api/Diagnosis/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Patient_Diagnosis>> GetPatient_Diagnosis(string id)
+        public async Task<ActionResult<Diagnosis>> GetPatient_Diagnosis(string id)
         {
-            var patient_Diagnosis = await _context.Patient_Diagnoses.FindAsync(id);
+            var patient_Diagnosis = await _context.Diagnoses.FindAsync(id);
 
             if (patient_Diagnosis == null)
             {
@@ -40,9 +40,9 @@ namespace Patient_Monitoring.Controllers
         // PUT: api/Diagnosis/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPatient_Diagnosis(string id, Patient_Diagnosis patient_Diagnosis)
+        public async Task<IActionResult> PutPatient_Diagnosis(string id, Diagnosis patient_Diagnosis)
         {
-            if (id != patient_Diagnosis.DiagnosisID)
+            if (id != patient_Diagnosis.DiagnosisId)
             {
                 return BadRequest();
             }
@@ -71,16 +71,16 @@ namespace Patient_Monitoring.Controllers
         // POST: api/Diagnosis
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Patient_Diagnosis>> PostPatient_Diagnosis(Patient_Diagnosis patient_Diagnosis)
+        public async Task<ActionResult<Diagnosis>> PostPatient_Diagnosis(Diagnosis patient_Diagnosis)
         {
-            _context.Patient_Diagnoses.Add(patient_Diagnosis);
+            _context.Diagnoses.Add(patient_Diagnosis);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (Patient_DiagnosisExists(patient_Diagnosis.DiagnosisID))
+                if (Patient_DiagnosisExists(patient_Diagnosis.DiagnosisId))
                 {
                     return Conflict();
                 }
@@ -90,20 +90,20 @@ namespace Patient_Monitoring.Controllers
                 }
             }
 
-            return CreatedAtAction("GetPatient_Diagnosis", new { id = patient_Diagnosis.DiagnosisID }, patient_Diagnosis);
+            return CreatedAtAction("GetPatient_Diagnosis", new { id = patient_Diagnosis.DiagnosisId }, patient_Diagnosis);
         }
 
         // DELETE: api/Diagnosis/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient_Diagnosis(string id)
         {
-            var patient_Diagnosis = await _context.Patient_Diagnoses.FindAsync(id);
+            var patient_Diagnosis = await _context.Diagnoses.FindAsync(id);
             if (patient_Diagnosis == null)
             {
                 return NotFound();
             }
 
-            _context.Patient_Diagnoses.Remove(patient_Diagnosis);
+            _context.Diagnoses.Remove(patient_Diagnosis);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -111,7 +111,7 @@ namespace Patient_Monitoring.Controllers
 
         private bool Patient_DiagnosisExists(string id)
         {
-            return _context.Patient_Diagnoses.Any(e => e.DiagnosisID == id);
+            return _context.Diagnoses.Any(e => e.DiagnosisId == id);
         }
     }
 }

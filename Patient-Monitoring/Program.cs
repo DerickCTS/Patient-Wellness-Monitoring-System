@@ -36,6 +36,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+DataSeeder.Seed(app);
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

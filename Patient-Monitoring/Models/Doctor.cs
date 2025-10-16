@@ -44,19 +44,23 @@ namespace Patient_Monitoring.Models
         [Required]
         public required string Email { get; set; }
 
+
         [Display(Name = "Profile Image URL")]
         public string? ProfileImage { get; set; }
+
 
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Doctor Since")]
+        public DateTime DoctorSince { get; set; }
+
 
         [Required]
         [DataType(DataType.Password)]
         public required string Password { get; set; }
 
+
         public PatientDoctorMapper AssignedPatient { get; set; } = null!;
-        public required DateTime DoctorSince { get; set; }
 
         public ICollection<Appointment>? Appointments { get; set; }
 

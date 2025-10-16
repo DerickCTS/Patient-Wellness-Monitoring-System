@@ -147,15 +147,14 @@ namespace Patient_Monitoring.Services.Implementations
                 // 2. Create the new Appointment record
                 var appointment = new Appointment
                 {
-                    AppointmentID = newAppointmentId, // <-- Use the sequential ID
-                    PatientID = bookingDto.PatientID,
-                    DoctorID = bookingDto.DoctorID,
-                    SlotID = slot.SlotId,
+                    AppointmentId = newAppointmentId, // <-- Use the sequential ID
+                    PatientId = bookingDto.PatientID,
+                    DoctorId = bookingDto.DoctorID,
+                    SlotId = slot.SlotId,
                     AppointmentDate = slot.StartDateTime,
                     Reason = bookingDto.Reason,
                     Status = "Pending Approval",
                     RequestedOn = requestedOn,
-                    Notes = null
                 };
                 _repository.AddAppointment(appointment);
 
@@ -163,7 +162,7 @@ namespace Patient_Monitoring.Services.Implementations
                 await _repository.SaveChangesAsync();
                 await transaction.CommitAsync();
 
-                return new CreatedAtActionResult(nameof(BookSlotAsync), "Appointment", new { id = appointment.AppointmentID }, new { message = "Appointment requested successfully. Awaiting doctor approval." });
+                return new CreatedAtActionResult(nameof(BookSlotAsync), "Appointment", new { id = appointment.AppointmentId }, new { message = "Appointment requested successfully. Awaiting doctor approval." });
             }
             catch (Exception)
             {
@@ -179,7 +178,7 @@ namespace Patient_Monitoring.Services.Implementations
 
             var appointmentsDto = appointments.Select(a => new
             {
-                a.AppointmentID,
+                a.AppointmentId,
                 a.AppointmentDate,
                 a.Reason,
                 a.Status,
@@ -223,9 +222,9 @@ namespace Patient_Monitoring.Services.Implementations
         {
             var today = DateTime.Today;
 
-            var pendingCountTask = await _repository.CountAppointmentsAsync(a => a.DoctorID == doctorId && a.Status == "Pending Approval");
-            var todayCountTask = await _repository.CountAppointmentsAsync(a => a.DoctorID == doctorId && a.AppointmentDate.Date == today && a.Status == "Confirmed");
-            var availableCountTask = await _repository.CountAppointmentSlotsAsync(s => s.DoctorID == doctorId && s.StartDateTime >= DateTime.Now && s.IsBooked == false);
+            var pendingCountTask = await _repository.CountAppointmentsAsync(a => a.DoctorId == doctorId && a.Status == "Pending Approval");
+            var todayCountTask = await _repository.CountAppointmentsAsync(a => a.DoctorId == doctorId && a.AppointmentDate.Date == today && a.Status == "Confirmed");
+            var availableCountTask = await _repository.CountAppointmentSlotsAsync(s => s.DoctorId == doctorId && s.StartDateTime >= DateTime.Now && s.IsBooked == false);
 
             return new OkObjectResult(new
             {
@@ -241,8 +240,8 @@ namespace Patient_Monitoring.Services.Implementations
 
             var pendingListDto = pendingAppointments.Select(a => new PendingApprovalDto
             {
-                AppointmentID = a.AppointmentID,
-                PatientID = a.PatientID,
+                AppointmentID = a.AppointmentId,
+                PatientID = a.PatientId,
                 PatientName = $"{a.Patient?.FirstName} {a.Patient?.LastName}",
                 PatientAge = a.Patient != null ? DateTime.Today.Year - a.Patient.DateOfBirth.Year : 0,
                 PatientGender = a.Patient?.Gender,
@@ -277,7 +276,7 @@ namespace Patient_Monitoring.Services.Implementations
                     else if (appointment.Status == "Pending Approval") status = "Pending";
                     else if (appointment.Status == "Rejected") status = "Available"; // Slot is theoretically free if rejected
 
-                    appointmentId = appointment.AppointmentID;
+                    appointmentId = appointment.AppointmentId;
 
                     // 2. USE NULL-CONDITIONAL OPERATOR ON THE EAGERLY LOADED PATIENT OBJECT
                     if (appointment.Patient != null)
@@ -304,7 +303,7 @@ namespace Patient_Monitoring.Services.Implementations
             var startDate = DateTime.Today;
             var endDate = startDate.AddDays(7);
 
-            var allSlotsTask = await _repository.CountAppointmentSlotsAsync(s => s.DoctorID == doctorId && s.StartDateTime >= startDate && s.StartDateTime < endDate);
+            var allSlotsTask = await _repository.CountAppointmentSlotsAsync(s => s.DoctorId == doctorId && s.StartDateTime >= startDate && s.StartDateTime < endDate);
             var confirmedAppointmentsTask = await _repository.GetConfirmedAppointmentsForDoctor(doctorId, startDate, endDate);
 
            // await Task.WhenAll(allSlotsTask, confirmedAppointmentsTask);
@@ -351,7 +350,7 @@ namespace Patient_Monitoring.Services.Implementations
                 {
                     newSlots.Add(new AppointmentSlot
                     {
-                        DoctorID = model.DoctorID,
+                        DoctorId = model.DoctorID,
                         StartDateTime = currentTime,
                         EndDateTime = slotEnd,
                         IsBooked = false
@@ -416,7 +415,7 @@ namespace Patient_Monitoring.Services.Implementations
                 await _repository.SaveChangesAsync();
                 await transaction.CommitAsync();
 
-                return new OkObjectResult(new { message = $"Appointment {appointment.AppointmentID} successfully set to {appointment.Status}." });
+                return new OkObjectResult(new { message = $"Appointment {appointment.AppointmentId} successfully set to {appointment.Status}." });
             }
             catch (Exception)
             {

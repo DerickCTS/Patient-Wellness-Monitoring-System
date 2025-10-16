@@ -17,7 +17,7 @@ namespace Patient_Monitoring.Services.Implementations
         // Main method to run periodically (e.g., daily or weekly)
         public async Task GenerateUpcomingSlots(int daysInAdvance = 60)
         {
-            var doctors = await _context.Doctor_Details.ToListAsync();
+            var doctors = await _context.Doctors.ToListAsync();
             var startDate = DateTime.Today;
             var endDate = startDate.AddDays(daysInAdvance);
 
@@ -30,11 +30,11 @@ namespace Patient_Monitoring.Services.Implementations
         private async Task GenerateSlotsForDoctor(string doctorId, DateTime start, DateTime end)
         {
             var availabilities = await _context.DoctorAvailabilities
-                                                .Where(da => da.DoctorID == doctorId)
+                                                .Where(da => da.DoctorId == doctorId)
                                                 .ToListAsync();
 
             var timeOff = await _context.DoctorTimeOffs
-                                         .Where(dto => dto.DoctorID == doctorId)
+                                         .Where(dto => dto.DoctorId == doctorId)
                                          .ToListAsync();
 
             // Loop through each day (date) in the range
@@ -63,13 +63,13 @@ namespace Patient_Monitoring.Services.Implementations
 
                         // Check if the slot already exists (to prevent duplicates if job runs twice)
                         bool exists = await _context.AppointmentSlots.AnyAsync(s =>
-                            s.DoctorID == doctorId && s.StartDateTime == slotStartDateTime);
+                            s.DoctorId == doctorId && s.StartDateTime == slotStartDateTime);
 
                         if (!isBlocked && !exists)
                         {
                             _context.AppointmentSlots.Add(new AppointmentSlot
                             {
-                                DoctorID = doctorId,
+                                DoctorId = doctorId,
                                 StartDateTime = slotStartDateTime,
                                 EndDateTime = slotEndDateTime,
                                 IsBooked = false

@@ -8,11 +8,11 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        public int TimeOffID { get; set; } // Primary Key
+        public int TimeOffId { get; set; } // Primary Key
 
         [Required]
         [StringLength(450)]
-        public required string DoctorID { get; set; } // Foreign Key to Doctor
+        public required string DoctorId { get; set; } // Foreign Key to Doctor
 
         [Required]
         [DataType(DataType.DateTime)]
@@ -27,8 +27,7 @@ namespace Patient_Monitoring.Models
         [StringLength(255)]
         public string? Reason { get; set; }
 
-        // Navigation property for Foreign Key relationship
-        [ForeignKey("DoctorID")]
+        
         public Doctor? Doctor { get; set; }
     }
 }
