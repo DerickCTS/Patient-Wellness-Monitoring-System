@@ -8,47 +8,47 @@ namespace Patient_Monitoring.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DoctorController : ControllerBase
+    public class PatientController : ControllerBase
     {
         private readonly PatientMonitoringDbContext _context;
 
-        public DoctorController(PatientMonitoringDbContext context)
+        public PatientController(PatientMonitoringDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Doctor_Detail
+        // GET: api/Patient_Detail
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Doctor_Detail>>> GetDoctor_Details()
+        public async Task<ActionResult<IEnumerable<Patient>>> GetPatient_Details()
         {
-            return await _context.Doctor_Details.ToListAsync();
+            return await _context.Patient_Details.ToListAsync();
         }
 
-        // GET: api/Doctor_Detail/5
+        // GET: api/Patient_Detail/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Doctor_Detail>> GetDoctor_Detail(string id)
+        public async Task<ActionResult<Patient>> GetPatient_Detail(string id)
         {
-            var doctor_Detail = await _context.Doctor_Details.FindAsync(id);
+            var patient_Detail = await _context.Patient_Details.FindAsync(id);
 
-            if (doctor_Detail == null)
+            if (patient_Detail == null)
             {
                 return NotFound();
             }
 
-            return doctor_Detail;
+            return patient_Detail;
         }
 
-        // PUT: api/Doctor_Detail/5
+        // PUT: api/Patient_Detail/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDoctor_Detail(string id, Doctor_Detail doctor_Detail)
+        public async Task<IActionResult> PutPatient_Detail(string id, Patient patient_Detail)
         {
-            if (id != doctor_Detail.DoctorId)
+            if (id != patient_Detail.PatientId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(doctor_Detail).State = EntityState.Modified;
+            _context.Entry(patient_Detail).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace Patient_Monitoring.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Doctor_DetailExists(id))
+                if (!Patient_DetailExists(id))
                 {
                     return NotFound();
                 }
@@ -69,19 +69,19 @@ namespace Patient_Monitoring.Controllers
             return NoContent();
         }
 
-        // POST: api/Doctor_Detail
+        // POST: api/Patient_Detail
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Doctor_Detail>> PostDoctor_Detail(Doctor_Detail doctor_Detail)
+        public async Task<ActionResult<Patient>> PostPatient_Detail(Patient patient_Detail)
         {
-            _context.Doctor_Details.Add(doctor_Detail);
+            _context.Patient_Details.Add(patient_Detail);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (Doctor_DetailExists(doctor_Detail.DoctorId))
+                if (Patient_DetailExists(patient_Detail.PatientId))
                 {
                     return Conflict();
                 }
@@ -91,28 +91,28 @@ namespace Patient_Monitoring.Controllers
                 }
             }
 
-            return CreatedAtAction("GetDoctor_Detail", new { id = doctor_Detail.DoctorId }, doctor_Detail);
+            return CreatedAtAction("GetPatient_Detail", new { id = patient_Detail.PatientId }, patient_Detail);
         }
 
-        // DELETE: api/Doctor_Detail/5
+        // DELETE: api/Patient_Detail/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDoctor_Detail(string id)
+        public async Task<IActionResult> DeletePatient_Detail(string id)
         {
-            var doctor_Detail = await _context.Doctor_Details.FindAsync(id);
-            if (doctor_Detail == null)
+            var patient_Detail = await _context.Patient_Details.FindAsync(id);
+            if (patient_Detail == null)
             {
                 return NotFound();
             }
 
-            _context.Doctor_Details.Remove(doctor_Detail);
+            _context.Patient_Details.Remove(patient_Detail);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool Doctor_DetailExists(string id)
+        private bool Patient_DetailExists(string id)
         {
-            return _context.Doctor_Details.Any(e => e.DoctorId == id);
+            return _context.Patient_Details.Any(e => e.PatientId == id);
         }
     }
 }

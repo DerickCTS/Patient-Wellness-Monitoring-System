@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
+using Patient_Monitoring.Repositories.Implementations;
+using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Services.Implementations;
+using Patient_Monitoring.Services.Interfaces;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +14,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PatientMonitoringDbContext") ?? throw new InvalidOperationException("Connection string 'PatientMonitoringContext' not found.")));
 
-// Registers the SchedulingService with the dependency injection container.
+// --- Repository Registration (Data Access Layer) ---
+// Registers the repository interfaces with their concrete implementations.
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
+
+// --- Service Registration (Business Logic Layer) ---
+// Registers the service interfaces with their concrete implementations.
+// Note: Assuming 'SchedulingService' implements 'ISchedulingService' for better practice.
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<SchedulingService>();
+
 
 var app = builder.Build();
 
@@ -29,6 +42,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",

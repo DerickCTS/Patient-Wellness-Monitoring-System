@@ -1,4 +1,6 @@
-﻿namespace Patient_Monitoring.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Patient_Monitoring.DTOs.Appointment
 {
     public class ManualSlotCreationDto
     {

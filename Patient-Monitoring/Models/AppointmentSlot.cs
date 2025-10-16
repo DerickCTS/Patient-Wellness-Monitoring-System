@@ -8,7 +8,7 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        public int SlotID { get; set; } // Primary Key
+        public int SlotId { get; set; } // Primary Key
 
         [Required]
         [StringLength(450)]
@@ -30,7 +30,7 @@ namespace Patient_Monitoring.Models
 
         // Navigation property for Foreign Key relationship
         [ForeignKey("DoctorID")]
-        public Doctor_Detail? Doctor { get; set; }
+        public Doctor? Doctor { get; set; }
 
         // Navigation property for 1-to-0/1 relationship (an Appointment may use this slot)
         public Appointment? Appointment { get; set; }

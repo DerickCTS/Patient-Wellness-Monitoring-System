@@ -50,11 +50,11 @@ namespace Patient_Monitoring.Models
         [ForeignKey("SlotID")]
         public AppointmentSlot? AppointmentSlot { get; set; }
 
-        public required DateTime RequestedOn { get; set; } 
+        public required DateTime RequestedOn { get; set; }
         // Assuming you have Doctor and Patient models for these:
-        // [ForeignKey("DoctorID")]
-        // public Doctor? Doctor { get; set; }
-        // [ForeignKey("PatientID")]
-        // public Patient? Patient { get; set; }
+        [ForeignKey("DoctorID")]
+        public Doctor? Doctor { get; set; }
+        [ForeignKey("PatientID")]
+        public Patient? Patient { get; set; }
     }
 }

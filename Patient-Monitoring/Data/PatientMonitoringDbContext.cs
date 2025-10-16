@@ -9,20 +9,24 @@ namespace Patient_Monitoring.Data
         {
         }
 
-        // DbSets (No changes needed here, EF Core maps the models)
-        public DbSet<Appointment_Alert> Appointment_Alerts { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<Wellness_Plan> Wellness_Plans { get; set; }
-        public DbSet<Doctor_Detail> Doctor_Details { get; set; }
+        public DbSet<WellnessPlan> WellnessPlans { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Disease> Diseases { get; set; }
-        public DbSet<Patient_Detail> Patient_Details { get; set; }
-        public DbSet<Patient_Diagnosis> Patient_Diagnoses { get; set; }
-        public DbSet<Patient_Medication> Patient_Medications { get; set; }
-        public DbSet<Patient_Doctor_Mapper> Patient_Doctor_Mapper { get; set; }
-        public DbSet<Patient_Plan_Mapper> Patient_Plan_Mapper { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Diagnosis> Diagnoses { get; set; }
+        public DbSet<MedicationSchedule> MedicationSchedules { get; set; }
+        public DbSet<PatientDoctorMapper> PatientDoctorMapper { get; set; }
+        public DbSet<PatientPlanAssignment> PatientPlanAssignments { get; set; }
+        public DbSet<Prescription> Prescriptions { get; set; }
+        public DbSet<WellnessPlanDetail> WellnessPlanDetails { get; set; }
+        public DbSet<AssignmentPlanDetail> AssignmentPlanDetails { get; set; }
+        public DbSet<TaskLog> TaskLogs { get; set; }
+        public DbSet<AppointmentSlot> AppointmentSlots { get; set; }
         public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
         public DbSet<DoctorTimeOff> DoctorTimeOffs { get; set; }
-        public DbSet<AppointmentSlot> AppointmentSlots { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,8 +43,8 @@ namespace Patient_Monitoring.Data
             modelBuilder.Entity<DoctorAvailability>().ToTable("DoctorAvailabilities"); // Matches SSMS
             modelBuilder.Entity<AppointmentSlot>().ToTable("AppointmentSlots");     // Matches SSMS
             modelBuilder.Entity<Appointment>().ToTable("Appointments");             // Matches SSMS
-            modelBuilder.Entity<Doctor_Detail>().ToTable("Doctor_Details");         // Matches SSMS
-            modelBuilder.Entity<Patient_Detail>().ToTable("Patient_Details");       // Matches SSMS
+            modelBuilder.Entity<Doctor>().ToTable("Doctor_Details");         // Matches SSMS
+            modelBuilder.Entity<Patient>().ToTable("Patient_Details");       // Matches SSMS
 
 
             // --------------------------------------------------------------------------------

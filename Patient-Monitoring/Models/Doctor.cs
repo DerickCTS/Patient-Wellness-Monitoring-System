@@ -2,7 +2,7 @@
 
 namespace Patient_Monitoring.Models
 {
-    public class Doctor_Detail
+    public class Doctor
     {
         [Required]
         [Display(Name = "Doctor ID")]
@@ -44,16 +44,29 @@ namespace Patient_Monitoring.Models
         [Required]
         public required string Email { get; set; }
 
+        [Display(Name = "Profile Image URL")]
+        public string? ProfileImage { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Doctor Since")]
+
+        [Required]
+        [DataType(DataType.Password)]
+        public required string Password { get; set; }
+
+        public PatientDoctorMapper AssignedPatient { get; set; } = null!;
         public required DateTime DoctorSince { get; set; }
 
         public ICollection<Appointment>? Appointments { get; set; }
 
+        public ICollection<Prescription>? PrescribedMedications { get; set; }
+
+        public ICollection<WellnessPlan>? FormulatedWellnessPlans { get; set; }
+        public ICollection<PatientPlanAssignment>? PatientPlanAssignments { get; set; }
+
         public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; } = null!;
 
-        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; } = null!;
+        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; }
     }
 }

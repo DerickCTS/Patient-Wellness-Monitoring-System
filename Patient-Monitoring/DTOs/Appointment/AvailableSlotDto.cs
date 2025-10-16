@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Patient_Monitoring.DTOs
+namespace Patient_Monitoring.DTOs.Appointment
 {
     public class AvailableSlotDto
     {

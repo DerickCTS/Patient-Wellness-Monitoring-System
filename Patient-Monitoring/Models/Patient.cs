@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 namespace Patient_Monitoring.Models
 {
-    public class Patient_Detail
+    public class Patient
     {
         [Display(Name = "Patient ID")]
         [Key]
-        [Required] public required string PatientID { get; set; } // Primary Key
+        public required string PatientId { get; set; } // Primary Key
 
         // Personal Info
 
@@ -33,10 +34,16 @@ namespace Patient_Monitoring.Models
         [Required]
         [Phone(ErrorMessage = "Invalid phone number.")]
         [StringLength(15, MinimumLength = 10, ErrorMessage = "Contact number must be between 10 and 15 digits.")]
-
+        [DisplayName("Contact Number")]
+        [DataType(DataType.PhoneNumber)]
         public required string ContactNumber { get; set; }
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         [Required] public required string Email { get; set; }
+        [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
+
+        [Required]
+        [Display(Name = "Blood Group")]
+        public string BloodGroup { get; set; }
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
         [Required] public required string Address { get; set; }
 
@@ -60,7 +67,25 @@ namespace Patient_Monitoring.Models
 
         // System Info
         [Display(Name = "Registration Date")]
+        [DataType(DataType.Date)]
         public DateTime RegistrationDate { get; set; }
+
+
+        [Display(Name = "Profile Image")]
+        public string? ProfileImage { get; set; }
+
+
+        [Required]
+        [DataType(DataType.Password)]
+        public required string Password { get; set; }
+
+
+        public ICollection<Prescription>? Prescriptions { get; set; }
+        public ICollection<Notification>? Notifications { get; set; }
+        public PatientDoctorMapper PersonalizedDoctorMapper { get; set; } = null!;
+        public ICollection<Appointment>? Appointments { get; set; }
+        public ICollection<Diagnosis>? Diagnoses { get; set; }
+        public ICollection<PatientPlanAssignment>? AssignedPlans { get; set; }
     }
 
 }

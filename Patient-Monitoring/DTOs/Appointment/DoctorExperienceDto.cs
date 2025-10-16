@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Patient_Monitoring.DTOs
+namespace Patient_Monitoring.DTOs.Appointment
 {
     public class DoctorExperienceDto
     {

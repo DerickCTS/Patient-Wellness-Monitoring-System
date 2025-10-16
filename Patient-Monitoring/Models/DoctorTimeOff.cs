@@ -29,6 +29,6 @@ namespace Patient_Monitoring.Models
 
         // Navigation property for Foreign Key relationship
         [ForeignKey("DoctorID")]
-        public Doctor_Detail? Doctor { get; set; }
+        public Doctor? Doctor { get; set; }
     }
 }
