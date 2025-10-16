@@ -8,15 +8,13 @@ namespace Patient_Monitoring.Repository.Interfaces
     {
         Task<Patient?> GetByEmail(string email);
         Task AddPatient(Patient patient);
-        // CRUD operations (assumed to exist)
         Task<Patient> GetPatientByIdAsync(string patientId);
         Task UpdatePatientAsync(Patient patient);
-
-        // --- New method for Dashboard Data Retrieval ---
         Task<PatientDashboardDTO> GetPatientDashboardDataAsync(string patientId);
 
-        // --- New methods for Modal Updates ---
-        //Task<bool> UpdatePatientContactInfoAsync(string patientId, UpdateContactInfoDto updateDto);
-        //Task<bool> UpdatePatientPasswordAsync(string patientId, ChangePasswordDTO passwordDto);
+        // Fix for CS1061: Add missing method signature
+        Task<int> GetTotalPatientsCountAsync();
+        Task<IEnumerable<PatientManagementDTO>> GetAllPatientsWithAssignedDoctorAsync();
+        Task<IEnumerable<object>> GetPatientsWithoutMappingAsync();
     }
 }

@@ -10,5 +10,7 @@ namespace Patient_Monitoring.Services.Interfaces
         Task<(bool success, string? message)> Login(UserLoginDTO user);
 
         Task<bool> RegisterDoctor(DoctorRegisterDTO patient);
+
+        Task<AdminResponseDTO> AdminLogin(AdminLoginDTO loginDto);
     }
 }

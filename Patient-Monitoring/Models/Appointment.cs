@@ -52,5 +52,6 @@ namespace Patient_Monitoring.Models
         public ICollection<Diagnosis> Diagnoses { get; set; } = null!; 
         public Patient Patient { get; set; } = null!;
         public Doctor Doctor { get; set; } = null!;
+
     }
 }

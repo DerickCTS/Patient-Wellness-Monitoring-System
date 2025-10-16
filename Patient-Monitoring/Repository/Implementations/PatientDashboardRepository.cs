@@ -13,6 +13,7 @@ namespace Patient_Monitoring.Repository.Implementations
         {
             _context = context;
         }
+        // Dashboard Overview: Total patient count
 
         public async Task<Patient> GetPatientByIdAsync(string patientId)
         {

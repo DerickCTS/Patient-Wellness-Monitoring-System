@@ -27,7 +27,7 @@ namespace Patient_Monitoring.Controllers.API
         /// </summary>
         /// <param name="patientId">Patient ID</param>
         /// <returns>Complete dashboard data including patient info, doctor, prescriptions, and task logs</returns>
-        [HttpGet("{patientId:regex(^[a-zA-Z0-9\\\\-]+$)}")]
+        [HttpGet("{patientId}")]
         [ProducesResponseType(typeof(PatientDashboardDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -63,7 +63,7 @@ namespace Patient_Monitoring.Controllers.API
         /// </summary>
         /// <param name="patientId">Patient ID</param>
         /// <returns>Patient information</returns>
-        [HttpGet("{patientId::regex(^[a-zA-Z0-9\\\\-]+$)}/info")]
+        [HttpGet("{patientId}/info")]
         [ProducesResponseType(typeof(PatientInfoDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetPatientInfo(string patientId)
@@ -98,7 +98,7 @@ namespace Patient_Monitoring.Controllers.API
         /// <param name="patientId">Patient ID</param>
         /// <param name="updateDTO">Updated patient information</param>
         /// <returns>Updated patient information</returns>
-        [HttpPut("{patientId:regex(^[a-zA-Z0-9\\\\-]+$)}/info")]
+        [HttpPut("{patientId}/info")]
         [ProducesResponseType(typeof(PatientInfoDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -139,7 +139,7 @@ namespace Patient_Monitoring.Controllers.API
         /// <param name="patientId">Patient ID</param>
         /// <param name="uploadDTO">Base64 encoded image</param>
         /// <returns>Image URL or base64 string</returns>
-        [HttpPost("{patientId:regex(^[a-zA-Z0-9\\\\-]+$)}/profile-image")]
+        [HttpPost("{patientId}/profile-image")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -184,7 +184,7 @@ namespace Patient_Monitoring.Controllers.API
         /// </summary>
         /// <param name="patientId">Patient ID</param>
         /// <returns>Assigned doctor details</returns>
-        [HttpGet("{patientId:regex(^[a-zA-Z0-9\\\\-]+$)}/doctor")]
+        [HttpGet("{patientId}/doctor")]
         [ProducesResponseType(typeof(AssignedDoctorDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAssignedDoctor(string patientId)
@@ -218,7 +218,7 @@ namespace Patient_Monitoring.Controllers.API
         /// </summary>
         /// <param name="patientId">Patient ID</param>
         /// <returns>List of active prescriptions</returns>
-        [HttpGet("{patientId:regex(^[a-zA-Z0-9\\\\-]+$)}/prescriptions")]
+        [HttpGet("{patientId}/prescriptions")]
         [ProducesResponseType(typeof(List<PrescriptionDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetActivePrescriptions(string patientId)
         {
@@ -246,7 +246,7 @@ namespace Patient_Monitoring.Controllers.API
         /// <param name="patientId">Patient ID</param>
         /// <param name="limit">Number of records to return (default: 10)</param>
         /// <returns>List of recent task logs</returns>
-        [HttpGet("{patientId:regex(^[a-zA-Z0-9\\\\-]+$)}/task-logs")]
+        [HttpGet("{patientId}/task-logs")]
         [ProducesResponseType(typeof(List<DailyTaskLogDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRecentTaskLogs(string patientId, [FromQuery] int limit = 10)
         {

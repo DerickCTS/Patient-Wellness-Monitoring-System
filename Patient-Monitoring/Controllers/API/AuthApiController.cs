@@ -62,6 +62,25 @@ namespace Patient_Monitoring.Controllers.API
             return Ok(new { message = "Registration successful" });
         }
         #endregion
+        // POST: api/auth/admin/login
+
+        [HttpPost("admin/login")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdminResponseDTO))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> AdminLogin([FromBody] AdminLoginDTO loginDto)
+        {
+            var adminResponse = await _authService.AdminLogin(loginDto);
+
+            if (adminResponse == null)
+            {
+                // Note: It's a security best practice to use a generic error message
+                return Unauthorized(new { Message = "Invalid credentials." });
+            }
+
+            return Ok(adminResponse);
+        }
+
+
 
     }
 }

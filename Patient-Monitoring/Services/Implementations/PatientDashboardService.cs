@@ -337,6 +337,45 @@ namespace Patient_Monitoring.Services.Implementations
             }
         }
 
+//        private static PatientInfoDTO EmptyPatientInfo() => new PatientInfoDTO
+//{
+//    PatientId = "",
+//    FirstName = "",
+//    LastName = "",
+//    DateOfBirth = DateTime.MinValue,
+//    Gender = "",
+//    ContactNumber = "",
+//    Email = "",
+//    Address = "",
+//    EmergencyContactName = "",
+//    EmergencyContactNumber = "",
+//    RegistrationDate = DateTime.MinValue,
+//    ProfileImage = ""
+//};
+
+//private static AssignedDoctorDTO EmptyAssignedDoctor() => new AssignedDoctorDTO
+//{
+//    DoctorId = "",
+//    FirstName = "",
+//    LastName = "",
+//    Specialization = "",
+//    ContactNumber = "",
+//    Email = "",
+//    Image = "",
+//    Schedule = "",
+//    Rating = 0,
+//    Experience = 0,
+//    Education = "",
+//    Languages = new List<string>(),
+//    TotalPatients = 0,
+//    Relationship = new DoctorRelationshipDTO
+//    {
+//        AssignedDate = DateTime.MinValue,
+//        Duration = "",
+//        TotalVisits = 0,
+//        LastVisit = DateTime.MinValue
+//    }
+//};
         #endregion
     }
 }
