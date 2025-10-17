@@ -10,7 +10,7 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [DisplayName("Plan Id")]
-        public required string PlanId { get; set; }
+        public int PlanId { get; set; }
 
 
         [Required]
@@ -40,7 +40,7 @@ namespace Patient_Monitoring.Models
 
 
         [DisplayName("Created By")]
-        public string? CreatedByDoctorId { get; set; }
+        public int? CreatedByDoctorId { get; set; }
 
 
         public ICollection<WellnessPlanDetail>? WellnessPlanDetails { get; set; }

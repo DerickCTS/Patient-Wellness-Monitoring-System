@@ -31,7 +31,7 @@ namespace Patient_Monitoring.Models
 
 
         [Required]
-        public string UserId { get; set; } = null!;
+        public int UserId { get; set; }
 
         [Required]
         public UserType UserType { get; set; }

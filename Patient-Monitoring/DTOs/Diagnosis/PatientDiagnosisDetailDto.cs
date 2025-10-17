@@ -8,7 +8,7 @@
 public class PatientDetail
 {
     public string Name { get; set; }
-    public string PatientId { get; set; }
+    public int PatientId { get; set; }
     public int Age { get; set; }
     public DateTime DateOfBirth { get; set; }
     public string Gender { get; set; }

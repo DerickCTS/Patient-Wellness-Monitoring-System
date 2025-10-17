@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Patient_Monitoring.DTOs;
 using Patient_Monitoring.DTOs.Authentication;
 using Patient_Monitoring.Services.Interfaces;
 

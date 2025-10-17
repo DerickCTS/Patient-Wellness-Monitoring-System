@@ -35,7 +35,7 @@ namespace Patient_Monitoring.Data
 
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Eleanor",
         LastName = "Vance",
         Specialization = "General Practice",
@@ -49,7 +49,7 @@ namespace Patient_Monitoring.Data
 
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "John",
         LastName = "Montague",
         Specialization = "Cardiology",
@@ -63,7 +63,7 @@ namespace Patient_Monitoring.Data
 
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Theodora",
         LastName = "Crain",
         Specialization = "Psychiatry",
@@ -77,7 +77,7 @@ namespace Patient_Monitoring.Data
 
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Luke",
         LastName = "Sanderson",
         Specialization = "Family Medicine",
@@ -90,7 +90,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Jonas",
         LastName = "Salk",
         Specialization = "Pediatrics",
@@ -103,7 +103,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Marie",
         LastName = "Curie",
         Specialization = "Oncology",
@@ -116,7 +116,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Alexander",
         LastName = "Fleming",
         Specialization = "Immunology",
@@ -129,7 +129,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Rosalind",
         LastName = "Franklin",
         Specialization = "Genetics",
@@ -142,7 +142,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Edward",
         LastName = "Jenner",
         Specialization = "Dermatology",
@@ -155,7 +155,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Florence",
         LastName = "Nightingale",
         Specialization = "Internal Medicine",
@@ -168,7 +168,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Joseph",
         LastName = "Lister",
         Specialization = "General Surgery",
@@ -181,7 +181,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Clara",
         LastName = "Barton",
         Specialization = "Emergency Medicine",
@@ -194,7 +194,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Elizabeth",
         LastName = "Blackwell",
         Specialization = "Obstetrics and Gynecology",
@@ -207,7 +207,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Charles",
         LastName = "Drew",
         Specialization = "Hematology",
@@ -220,7 +220,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Virginia",
         LastName = "Apgar",
         Specialization = "Anesthesiology",
@@ -233,7 +233,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Benjamin",
         LastName = "Spock",
         Specialization = "Pediatrics",
@@ -246,11 +246,12 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Christiaan",
         LastName = "Barnard",
         Specialization = "Cardiothoracic Surgery",
         Education = "MD, University of Cape Town",
+
         ContactNumber = "5550101717",
         Email = "christiaan.barnard@wellnessclinic.com",
         ProfileImage = "/images/doctors/christiaan_barnard.png",
@@ -259,7 +260,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "William",
         LastName = "Osler",
         Specialization = "Internal Medicine",
@@ -272,7 +273,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Michael",
         LastName = "DeBakey",
         Specialization = "Vascular Surgery",
@@ -285,7 +286,7 @@ namespace Patient_Monitoring.Data
     },
     new Doctor
     {
-        DoctorId = Guid.NewGuid().ToString(),
+        //DoctorId = Guid.NewGuid().ToString(),
         FirstName = "Gertrude",
         LastName = "Elion",
         Specialization = "Pharmacology",
@@ -307,7 +308,7 @@ namespace Patient_Monitoring.Data
 {
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Leia",
         LastName = "Organa",
         DateOfBirth = new DateTime(1977, 5, 25),
@@ -323,7 +324,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Luke",
         LastName = "Skywalker",
         DateOfBirth = new DateTime(1977, 5, 25),
@@ -339,7 +340,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Anakin",
         LastName = "Skywalker",
         DateOfBirth = new DateTime(1955, 1, 15),
@@ -355,7 +356,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Padmé",
         LastName = "Amidala",
         DateOfBirth = new DateTime(1975, 11, 20),
@@ -371,7 +372,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Han",
         LastName = "Solo",
         DateOfBirth = new DateTime(1970, 7, 3),
@@ -387,7 +388,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Obi-Wan",
         LastName = "Kenobi",
         DateOfBirth = new DateTime(1945, 3, 10),
@@ -403,7 +404,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Ahsoka",
         LastName = "Tano",
         DateOfBirth = new DateTime(1982, 4, 1),
@@ -419,7 +420,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Din",
         LastName = "Djarin",
         DateOfBirth = new DateTime(1980, 6, 22),
@@ -435,7 +436,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Boba",
         LastName = "Fett",
         DateOfBirth = new DateTime(1968, 9, 30),
@@ -451,7 +452,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Jyn",
         LastName = "Erso",
         DateOfBirth = new DateTime(1988, 12, 12),
@@ -467,7 +468,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Cassian",
         LastName = "Andor",
         DateOfBirth = new DateTime(1984, 2, 18),
@@ -483,7 +484,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Rey",
         LastName = null,
         DateOfBirth = new DateTime(2000, 10, 5),
@@ -499,7 +500,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Finn",
         LastName = "FN-2187",
         DateOfBirth = new DateTime(1998, 3, 28),
@@ -515,7 +516,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Poe",
         LastName = "Dameron",
         DateOfBirth = new DateTime(1986, 1, 9),
@@ -531,7 +532,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Mace",
         LastName = "Windu",
         DateOfBirth = new DateTime(1950, 8, 8),
@@ -547,7 +548,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Sheev",
         LastName = "Palpatine",
         DateOfBirth = new DateTime(1932, 5, 20),
@@ -563,7 +564,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Mon",
         LastName = "Mothma",
         DateOfBirth = new DateTime(1952, 11, 11),
@@ -579,7 +580,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Lando",
         LastName = "Calrissian",
         DateOfBirth = new DateTime(1965, 4, 4),
@@ -595,7 +596,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Qui-Gon",
         LastName = "Jinn",
         DateOfBirth = new DateTime(1940, 2, 2),
@@ -611,7 +612,7 @@ namespace Patient_Monitoring.Data
     },
     new Patient
     {
-        PatientID = Guid.NewGuid().ToString(),
+        //PatientID = Guid.NewGuid().ToString(),
         FirstName = "Hera",
         LastName = "Syndulla",
         DateOfBirth = new DateTime(1978, 9, 9),
@@ -635,123 +636,123 @@ namespace Patient_Monitoring.Data
 {
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Hypertension",
-        DiseaseDescription = "A condition in which the force of the blood against the artery walls is consistently too high."
+        Description = "A condition in which the force of the blood against the artery walls is consistently too high."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Type 2 Diabetes",
-        DiseaseDescription = "A chronic condition that affects the way the body metabolizes sugar (glucose), its main source of fuel."
+        Description = "A chronic condition that affects the way the body metabolizes sugar (glucose), its main source of fuel."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Asthma",
-        DiseaseDescription = "A respiratory condition where airways narrow and swell and may produce extra mucus, making breathing difficult."
+        Description = "A respiratory condition where airways narrow and swell and may produce extra mucus, making breathing difficult."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+       
         DiseaseName = "Coronary Artery Disease",
-        DiseaseDescription = "Damage or disease in the heart's major blood vessels, typically caused by a buildup of plaque."
+        Description = "Damage or disease in the heart's major blood vessels, typically caused by a buildup of plaque."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Migraine",
-        DiseaseDescription = "A type of headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head."
+        Description = "A type of headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Gastroesophageal Reflux Disease (GERD)",
-        DiseaseDescription = "A digestive disorder that affects the ring of muscle between the esophagus and stomach, causing acid reflux."
+        Description = "A digestive disorder that affects the ring of muscle between the esophagus and stomach, causing acid reflux."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Major Depressive Disorder",
-        DiseaseDescription = "A mood disorder causing a persistent feeling of sadness and loss of interest."
+        Description = "A mood disorder causing a persistent feeling of sadness and loss of interest."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Osteoarthritis",
-        DiseaseDescription = "The most common form of arthritis, occurring when the protective cartilage that cushions the ends of bones wears down over time."
+        Description = "The most common form of arthritis, occurring when the protective cartilage that cushions the ends of bones wears down over time."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Chronic Kidney Disease (CKD)",
-        DiseaseDescription = "A condition characterized by a gradual loss of kidney function over time."
+        Description = "A condition characterized by a gradual loss of kidney function over time."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Allergic Rhinitis",
-        DiseaseDescription = "An allergic response causing itchy, watery eyes, sneezing, and other similar symptoms, commonly known as hay fever."
+        Description = "An allergic response causing itchy, watery eyes, sneezing, and other similar symptoms, commonly known as hay fever."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Hypothyroidism",
-        DiseaseDescription = "A condition in which the thyroid gland doesn't produce enough of certain crucial hormones."
+        Description = "A condition in which the thyroid gland doesn't produce enough of certain crucial hormones."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Iron Deficiency Anemia",
-        DiseaseDescription = "A condition in which blood lacks adequate healthy red blood cells due to insufficient iron."
+        Description = "A condition in which blood lacks adequate healthy red blood cells due to insufficient iron."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Insomnia",
-        DiseaseDescription = "A common sleep disorder that can make it hard to fall asleep, hard to stay asleep, or cause you to wake up too early."
+        Description = "A common sleep disorder that can make it hard to fall asleep, hard to stay asleep, or cause you to wake up too early."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+       
         DiseaseName = "Influenza",
-        DiseaseDescription = "A viral infection that attacks your respiratory system — your nose, throat and lungs."
+        Description = "A viral infection that attacks your respiratory system — your nose, throat and lungs."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+       
         DiseaseName = "Pneumonia",
-        DiseaseDescription = "An infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus."
+        Description = "An infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+       
         DiseaseName = "Acne Vulgaris",
-        DiseaseDescription = "A common skin condition that occurs when hair follicles become plugged with oil and dead skin cells."
+        Description = "A common skin condition that occurs when hair follicles become plugged with oil and dead skin cells."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Eczema (Atopic Dermatitis)",
-        DiseaseDescription = "A condition that causes dry, itchy and inflamed skin. It's common in young children but can occur at any age."
+        Description = "A condition that causes dry, itchy and inflamed skin. It's common in young children but can occur at any age."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+        
         DiseaseName = "Gout",
-        DiseaseDescription = "A common and complex form of arthritis characterized by sudden, severe attacks of pain, swelling, and redness in the joints."
+        Description = "A common and complex form of arthritis characterized by sudden, severe attacks of pain, swelling, and redness in the joints."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+       
         DiseaseName = "Urinary Tract Infection (UTI)",
-        DiseaseDescription = "An infection in any part of the urinary system, the kidneys, bladder, or urethra."
+        Description = "An infection in any part of the urinary system, the kidneys, bladder, or urethra."
     },
     new Disease
     {
-        DiseaseId = Guid.NewGuid().ToString(),
+       
         DiseaseName = "Glaucoma",
-        DiseaseDescription = "A group of eye conditions that damage the optic nerve, the health of which is vital for good vision."
+        Description = "A group of eye conditions that damage the optic nerve, the health of which is vital for good vision."
     }
 };
 
@@ -761,9 +762,9 @@ namespace Patient_Monitoring.Data
 
                 // Seeding 'PatientDoctorMappers' Table
                 // ------------------------------------
-                // Randomly 5 doctors are chosen to be personlized doctors for all patients in the DB.
+                // Randomly 3 doctors are chosen to be personlized doctors for all patients in the DB.
 
-                var selectedPersonalizedDoctors = doctors.OrderBy(d => Guid.NewGuid()).Take(5).ToList();
+                var selectedPersonalizedDoctors = doctors.OrderBy(d => d.FirstName).Take(3).ToList();
 
                 var patientDoctorMaps = new List<PatientDoctorMapper>();
 
@@ -776,8 +777,8 @@ namespace Patient_Monitoring.Data
 
                     patientDoctorMaps.Add(new PatientDoctorMapper
                     {
-                        PatientID = patient.PatientID,
-                        DoctorID = assignedDoctor.DoctorId,
+                        PatientId = patient.PatientID,
+                        DoctorId = assignedDoctor.DoctorId,
                         AssignedDate = DateTime.UtcNow.AddDays(-random.Next(30, 1825))
                     });
                 }
@@ -850,7 +851,7 @@ namespace Patient_Monitoring.Data
                     {
                         doctorTimeOffs.Add(new DoctorTimeOff
                         {
-                            DoctorID = leaveDoctor.DoctorId,
+                            DoctorId = leaveDoctor.DoctorId,
                             StartDateTime = targetDay.Date.AddDays(random.Next(0, 6)).Add(leaveDayAvailability.StartTime),
                             EndDateTime = targetDay.Date.AddDays(random.Next(0, 6)).Add(leaveDayAvailability.EndTime),
                             Reason = "Work Leave"
@@ -873,7 +874,7 @@ namespace Patient_Monitoring.Data
 
                 foreach (var doctor in doctors)
                 {
-                    for (var day = targetDay.Date; day < endDate.Date; day = day.AddDays(1))
+                    for (var day = today; day < endDate.Date; day = day.AddDays(1))
                     {
                         var availability = doctorAvailabilities.FirstOrDefault(a =>
                             a.DoctorId == doctor.DoctorId &&
@@ -883,7 +884,7 @@ namespace Patient_Monitoring.Data
                         if (availability == null) continue;
 
                         var timeOffsForDay = doctorTimeOffs
-                            .Where(t => t.DoctorID == doctor.DoctorId && t.StartDateTime.Date == day.Date)
+                            .Where(t => t.DoctorId == doctor.DoctorId && t.StartDateTime.Date == day.Date)
                             .ToList();
 
                         var shiftStart = day.Date.Add(availability.StartTime);
@@ -924,7 +925,7 @@ namespace Patient_Monitoring.Data
 
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "DASH Diet Template",
                     Goal = "Blueprint for Lowering BP",
                     ImageUrl = "/images/wellness/template_diet.png",
@@ -934,7 +935,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Cardio Start Template",
                     Goal = "Blueprint for Heart Health",
                     ImageUrl = "/images/wellness/template_cardio.png",
@@ -944,7 +945,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Stress Relief Templ.",
                     Goal = "Blueprint for Mindfulness",
                     ImageUrl = "/images/wellness/template_mindfulness.png",
@@ -954,7 +955,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Strength Base Templ.",
                     Goal = "Blueprint for Muscle Gain",
                     ImageUrl = "/images/wellness/template_strength.png",
@@ -964,7 +965,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Post-Op Recovery T.",
                     Goal = "Blueprint for Healing",
                     ImageUrl = "/images/wellness/template_recovery.png",
@@ -975,7 +976,7 @@ namespace Patient_Monitoring.Data
 
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Hydration Challenge",
                     Goal = "Drink 8 Glasses of Water Daily",
                     ImageUrl = "/images/wellness/general_hydration.png",
@@ -985,7 +986,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                   
                     PlanName = "Sleep Hygiene Basics",
                     Goal = "Achieve 7-8 Hours of Sleep",
                     ImageUrl = "/images/wellness/general_sleep.png",
@@ -995,7 +996,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Daily Stretching",
                     Goal = "Improve Flexibility",
                     ImageUrl = "/images/wellness/general_stretching.png",
@@ -1005,7 +1006,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Balanced Plate Guide",
                     Goal = "Eat a Balanced Meal",
                     ImageUrl = "/images/wellness/general_diet.png",
@@ -1015,7 +1016,7 @@ namespace Patient_Monitoring.Data
                 });
 
 
-                var customPlanAuthors = patientDoctorMaps.Select(pdm => pdm.DoctorID).Distinct().ToList();
+                var customPlanAuthors = patientDoctorMaps.Select(pdm => pdm.DoctorId).Distinct().ToList();
                 //var customPlanAuthors = doctors.OrderBy(d => Guid.NewGuid()).Take(8).ToList();
                 var categories = new[] { "Diet", "Exercise", "Recovery", "Mental Wellness" };
 
@@ -1026,7 +1027,7 @@ namespace Patient_Monitoring.Data
 
                     wellnessPlans.Add(new WellnessPlan
                     {
-                        PlanId = Guid.NewGuid().ToString(),
+                        
                         PlanName = $"Flu Recovery #{i + 1}",
                         Goal = $"Regain strength after illness",
                         ImageUrl = $"/images/wellness/custom_plan_{i + 1}.png",
@@ -1083,7 +1084,6 @@ namespace Patient_Monitoring.Data
 
                     appointments.Add(new Appointment
                     {
-                        AppointmentId = Guid.NewGuid().ToString(),
                         PatientId = patient.PatientID,
                         DoctorId = slot.DoctorId,
                         AppointmentDate = slot.StartDateTime,
@@ -1119,7 +1119,7 @@ namespace Patient_Monitoring.Data
 
                     wellnessPlanDetails.Add(new WellnessPlanDetail
                     {
-                        DetailId = Guid.NewGuid().ToString(),
+                        
                         PlanId = plan.PlanId,
                         DetailType = "Description",
                         Content = $"A comprehensive plan designed to help you achieve your goal of '{plan.Goal}'. {generalDescription}"
@@ -1131,7 +1131,7 @@ namespace Patient_Monitoring.Data
                     {
                         wellnessPlanDetails.Add(new WellnessPlanDetail
                         {
-                            DetailId = Guid.NewGuid().ToString(),
+                            
                             PlanId = plan.PlanId,
                             DetailType = "Instruction",
                             Content = dietInstructions[random.Next(dietInstructions.Length)]
@@ -1143,7 +1143,7 @@ namespace Patient_Monitoring.Data
                     {
                         wellnessPlanDetails.Add(new WellnessPlanDetail
                         {
-                            DetailId = Guid.NewGuid().ToString(),
+                            
                             PlanId = plan.PlanId,
                             DetailType = "Benefit",
                             Content = exerciseBenefits[random.Next(exerciseBenefits.Length)]
@@ -1155,7 +1155,7 @@ namespace Patient_Monitoring.Data
                     {
                         wellnessPlanDetails.Add(new WellnessPlanDetail
                         {
-                            DetailId = Guid.NewGuid().ToString(),
+                           
                             PlanId = plan.PlanId,
                             DetailType = "Safety",
                             Content = mentalWellnessSafety[random.Next(mentalWellnessSafety.Length)]
@@ -1179,7 +1179,7 @@ namespace Patient_Monitoring.Data
                 foreach (var plan in customPlans)
                 {
                     var eligiblePatients = patientDoctorMaps
-                        .Where(m => m.DoctorID == plan.CreatedByDoctorId)
+                        .Where(m => m.DoctorId == plan.CreatedByDoctorId)
                         .ToList();
 
                     if (eligiblePatients.Any())
@@ -1188,8 +1188,8 @@ namespace Patient_Monitoring.Data
 
                         patientPlanAssignments.Add(new PatientPlanAssignment
                         {
-                            AssignmentId = Guid.NewGuid().ToString(),
-                            PatientId = patientToAssign.PatientID,
+                            
+                            PatientId = patientToAssign.PatientId,
                             PlanId = plan.PlanId,
                             AssignedByDoctorId = plan.CreatedByDoctorId!, // The author is also the first assigner.
                             FrequencyCount = 1,
@@ -1205,18 +1205,18 @@ namespace Patient_Monitoring.Data
 
                 foreach (var plan in templatePlans)
                 {
-                    var randomPatients = patientDoctorMaps.Select(pdm => pdm.PatientID).Distinct().ToList();
+                    var randomPatients = patientDoctorMaps.Select(pdm => pdm.PatientId).Distinct().ToList();
 
                     foreach (var patient in randomPatients)
                     {
-                        var assigner = patientDoctorMaps.FirstOrDefault(m => m.PatientID == patient);
+                        var assigner = patientDoctorMaps.FirstOrDefault(m => m.PatientId == patient);
 
                         patientPlanAssignments.Add(new PatientPlanAssignment
                         {
-                            AssignmentId = Guid.NewGuid().ToString(),
+                            
                             PatientId = patient,
                             PlanId = plan.PlanId,
-                            AssignedByDoctorId = assigner!.DoctorID,
+                            AssignedByDoctorId = assigner!.DoctorId,
                             FrequencyCount = 1,
                             FrequencyUnit = "Daily",
                             StartDate = DateTime.Today,
@@ -1274,7 +1274,7 @@ namespace Patient_Monitoring.Data
 
                         prescriptions.Add(new Prescription
                         {
-                            PrescriptionId = Guid.NewGuid().ToString(),
+                            
                             // All key IDs are now sourced directly from the appointment record.
                             PatientId = appointment.PatientId,
                             PrescribingDoctorId = appointment.DoctorId,
@@ -1328,7 +1328,7 @@ namespace Patient_Monitoring.Data
                     {
                         diagnoses.Add(new Diagnosis
                         {
-                            DiagnosisId = Guid.NewGuid().ToString(),
+                           
                             AppointmentId = appointment.AppointmentId,
                             PatientId = appointment.PatientId,
                             DiseaseId = disease.DiseaseId,
@@ -1372,7 +1372,7 @@ namespace Patient_Monitoring.Data
                 {
                     assignmentPlanDetails.Add(new AssignmentPlanDetail
                     {
-                        CustomDetailId = Guid.NewGuid().ToString(),
+                        
                         AssignmentId = assignment.AssignmentId,
                         DetailType = "Description",
                         Content = "This is a personalized version of the plan, modified by your doctor to better suit your specific health goals and current condition."
@@ -1383,7 +1383,7 @@ namespace Patient_Monitoring.Data
                     {
                         assignmentPlanDetails.Add(new AssignmentPlanDetail
                         {
-                            CustomDetailId = Guid.NewGuid().ToString(),
+                            
                             AssignmentId = assignment.AssignmentId,
                             DetailType = "Instruction",
                             Content = customInstructions[random.Next(customInstructions.Length)]
@@ -1395,7 +1395,7 @@ namespace Patient_Monitoring.Data
                     {
                         assignmentPlanDetails.Add(new AssignmentPlanDetail
                         {
-                            CustomDetailId = Guid.NewGuid().ToString(),
+                            
                             AssignmentId = assignment.AssignmentId,
                             DetailType = "Benefit",
                             Content = customBenefits[random.Next(customBenefits.Length)]
@@ -1407,7 +1407,7 @@ namespace Patient_Monitoring.Data
                     {
                         assignmentPlanDetails.Add(new AssignmentPlanDetail
                         {
-                            CustomDetailId = Guid.NewGuid().ToString(),
+                            
                             AssignmentId = assignment.AssignmentId,
                             DetailType = "Safety",
                             Content = customSafety[random.Next(customSafety.Length)]
@@ -1477,11 +1477,11 @@ namespace Patient_Monitoring.Data
                 context.TaskLogs.AddRange(taskLogs);
 
                 // Helper function to create a TaskLog instance. (This remains unchanged)
-                TaskLog CreateTaskLog(string assignmentId, DateTime dueDate, string status, DateTime? completedAt, string? note)
+                TaskLog CreateTaskLog(int assignmentId, DateTime dueDate, string status, DateTime? completedAt, string? note)
                 {
                     return new TaskLog
                     {
-                        LogId = Guid.NewGuid().ToString(),
+                       
                         AssignmentId = assignmentId,
                         DueDate = dueDate,
                         Status = status,
@@ -1546,7 +1546,7 @@ namespace Patient_Monitoring.Data
                     {
                         medicationSchedules.Add(new MedicationSchedule
                         {
-                            ScheduleId = Guid.NewGuid().ToString(),
+                            
                             PrescriptionId = prescription.PrescriptionId,
                             TimeOfDay = time,
                             Quantity = commonQuantities[random.Next(commonQuantities.Length)]

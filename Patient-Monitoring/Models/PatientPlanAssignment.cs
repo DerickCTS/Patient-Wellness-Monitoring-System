@@ -11,22 +11,22 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [DisplayName("Assignment Id")]
-        public required string AssignmentId { get; set; }
+        public int AssignmentId { get; set; }
 
 
         [Required]
         [DisplayName("Patient Id")]
-        public required string PatientId { get; set; }
+        public required int PatientId { get; set; }
 
 
         [Required]
         [DisplayName("Plan Id")]
-        public required string PlanId { get; set; }
+        public required int PlanId { get; set; }
 
 
         [Required]
         [DisplayName("Assigned By")]
-        public required string AssignedByDoctorId { get; set; }
+        public required int? AssignedByDoctorId { get; set; }
 
 
         [Required]

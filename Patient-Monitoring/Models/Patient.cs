@@ -10,7 +10,7 @@ namespace Patient_Monitoring.Models
 
         [Key]
         [Display(Name = "Patient ID")]
-        public required string PatientID { get; set; } // Primary Key
+        public int PatientID { get; set; } // Primary Key
 
 
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]

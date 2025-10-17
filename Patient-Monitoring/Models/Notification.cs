@@ -43,8 +43,8 @@ namespace Patient_Monitoring.Models
 
 
         [Required]
-        [Display(Name = "Patient ID")]
-        public required string PatientId { get; set; }
+        [Display(Name = "Patient Id")]
+        public required int PatientId { get; set; }
 
         public Patient Patient { get; set; } = null!;
     }

@@ -9,11 +9,11 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required]
         [DisplayName("Custom Detail Id")]
-        public required string CustomDetailId { get; set; }
+        public int CustomDetailId { get; set; }
 
         [Required]
         [DisplayName("Assignment Id")]
-        public required string AssignmentId { get; set; }
+        public required int AssignmentId { get; set; }
 
         [Required]
         [StringLength(50)]

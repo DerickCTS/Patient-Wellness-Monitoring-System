@@ -15,7 +15,7 @@ namespace Patient_Monitoring.Services.Implementations
             _diagnosisRepository = diagnosisRepository;
         }
 
-        public async Task<List<TodaysAppointmentCardDto>> GetTodaysAppointmentsAsync(string doctorId)
+        public async Task<List<TodaysAppointmentCardDto>> GetTodaysAppointmentsAsync(int doctorId)
         {
             var appointments = await _diagnosisRepository.GetTodaysAppointmentsForDoctorAsync(doctorId);
 
@@ -25,7 +25,6 @@ namespace Patient_Monitoring.Services.Implementations
                 AppointmentId = app.AppointmentId,
                 PatientName = $"{app.Patient.FirstName} {app.Patient.LastName}",
                 Gender = app.Patient.Gender,
-                // Calculate age from Date of Birth
                 Age = (DateTime.Today.Year - app.Patient.DateOfBirth.Year - (app.Patient.DateOfBirth.DayOfYear > DateTime.Today.DayOfYear ? 1 : 0)),
                 AppointmentTime = $"{app.AppointmentDate:hh:mm tt} - {app.AppointmentSlot.EndDateTime:hh:mm tt}",
                 ContactNumber = app.Patient.ContactNumber,
@@ -34,7 +33,7 @@ namespace Patient_Monitoring.Services.Implementations
             }).ToList();
         }
 
-        public async Task<PatientDiagnosisDetailDto?> GetPatientDiagnosisDetailsAsync(string appointmentId)
+        public async Task<PatientDiagnosisDetailDto?> GetPatientDiagnosisDetailsAsync(int appointmentId)
         {
             var appointment = await _diagnosisRepository.GetAppointmentWithPatientDetailsAsync(appointmentId);
 
@@ -85,75 +84,52 @@ namespace Patient_Monitoring.Services.Implementations
             }).ToList();
         }
 
-        public async Task<bool> SaveDiagnosisAndPrescriptionsAsync(string appointmentId, string doctorId, SaveDiagnosisDto data)
+        public async Task<bool> SaveDiagnosisAndPrescriptionsAsync(int appointmentId, int doctorId, SaveDiagnosisDto data)
         {
             var appointment = await _diagnosisRepository.GetAppointmentWithPatientDetailsAsync(appointmentId);
             if (appointment == null) return false;
 
-            // --- (The code for newDiagnoses remains the same) ---
             var newDiagnoses = data.Diagnoses.Select(d => new Diagnosis
             {
-                DiagnosisId = Guid.NewGuid().ToString(),
                 AppointmentId = appointmentId,
                 PatientId = appointment.PatientId,
                 DiseaseId = d.DiseaseId,
                 Description = d.Description
             }).ToList();
 
-            // =======================================================
-            // REVISED LOGIC FOR PRESCRIPTIONS
-            // =======================================================
             var newPrescriptions = new List<Prescription>();
-            foreach (var p_dto in data.Prescriptions)
+            foreach (var prescription in data.Prescriptions)
             {
-                // 1. Create the parent Prescription object first and generate its ID.
                 var newPrescription = new Prescription
                 {
-                    PrescriptionId = Guid.NewGuid().ToString(),
                     PatientId = appointment.PatientId,
                     PrescribingDoctorId = doctorId,
                     AppointmentId = appointmentId,
-                    MedicationName = p_dto.MedicationName,
-                    Dosage = p_dto.Dosage,
-                    StartDate = p_dto.StartDate,
-                    EndDate = p_dto.EndDate,
-                    Instructions = p_dto.Instructions
+                    MedicationName = prescription.MedicationName,
+                    Dosage = prescription.Dosage,
+                    StartDate = prescription.StartDate,
+                    EndDate = prescription.EndDate,
+                    Instructions = prescription.Instructions
                 };
 
-                // 2. Now, create the child MedicationSchedule objects.
-                var schedules = p_dto.Schedules.Select(s_dto => new MedicationSchedule
+                var schedules = prescription.Schedules.Select(schedule => new MedicationSchedule
                 {
-                    ScheduleId = Guid.NewGuid().ToString(),
-                    TimeOfDay = s_dto.TimeOfDay,
-                    Quantity = s_dto.Quantity,
-                    // 3. Link the child to the parent using the ID we just created.
+                    TimeOfDay = schedule.TimeOfDay,
+                    Quantity = schedule.Quantity,
                     PrescriptionId = newPrescription.PrescriptionId
                 }).ToList();
 
-                // 4. Assign the created children back to the parent's navigation property.
+                // Assigning the created schedules back to the parent's navigation property.
                 newPrescription.MedicationSchedules = schedules;
 
-                // 5. Add the fully constructed Prescription object (with its children) to the final list.
                 newPrescriptions.Add(newPrescription);
             }
-            // =======================================================
 
-            // Use a transaction to ensure all data is saved, or none is.
-            await using var transaction = await _diagnosisRepository.BeginTransactionAsync();
-            try
-            {
-                if (newDiagnoses.Any()) await _diagnosisRepository.AddDiagnosesAsync(newDiagnoses);
-                if (newPrescriptions.Any()) await _diagnosisRepository.AddPrescriptionsAsync(newPrescriptions);
+            await _diagnosisRepository.AddDiagnosesAsync(newDiagnoses);
+            await _diagnosisRepository.AddPrescriptionsAsync(newPrescriptions);
+            await _diagnosisRepository.SaveChangesAsync();
 
-                await _diagnosisRepository.SaveChangesAsync();
-                await transaction.CommitAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync();
-                return false;
-            }
+            return true;
         }
     }
     

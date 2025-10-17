@@ -70,7 +70,7 @@ namespace Patient_Monitoring.Services.Implementations
         #endregion
 
         #region Generate Refresh Token
-        public async Task<string> GenerateRefreshToken(string jwtId, string userId, UserType userType)
+        public async Task<string> GenerateRefreshToken(string jwtId, int userId, UserType userType)
         {
             var randomBytes = new byte[64];
             using var rng = RandomNumberGenerator.Create();

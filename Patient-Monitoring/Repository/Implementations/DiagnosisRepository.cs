@@ -14,7 +14,7 @@ public class DiagnosisRepository : IDiagnosisRepository
 
 
 
-    public async Task<List<Appointment>> GetTodaysAppointmentsForDoctorAsync(string doctorId)
+    public async Task<List<Appointment>> GetTodaysAppointmentsForDoctorAsync(int doctorId)
     {
         return await _context.Appointments
             .Include(a => a.Patient)
@@ -24,14 +24,9 @@ public class DiagnosisRepository : IDiagnosisRepository
             .ToListAsync();
     }
 
-    public async Task<Appointment?> GetAppointmentWithPatientDetailsAsync(string appointmentId)
+    public async Task<Appointment?> GetAppointmentWithPatientDetailsAsync(int appointmentId)
     {
         return await _context.Appointments
-            .Include(a => a.Patient)
-            .Include(a => a.Diagnoses)
-                .ThenInclude(d => d.Disease) // Eager load the Disease name for the diagnosis
-                                             // This is a filtered include for prescriptions related ONLY to this appointment
-            .Include(a => a.Patient).ThenInclude(p => p.Prescriptions.Where(m => m.AppointmentId == appointmentId))
             .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
     }
 

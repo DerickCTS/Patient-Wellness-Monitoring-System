@@ -8,11 +8,11 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Display(Name = "Prescription ID")]
-        public required string PrescriptionId { get; set; }
+        public int PrescriptionId { get; set; }
 
         [Required]
         [Display(Name = "Patient ID")]
-        public required string PatientId { get; set; }
+        public required int PatientId { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -35,7 +35,7 @@ namespace Patient_Monitoring.Models
 
         [Required]
         [Display(Name = "Prescribing Doctor ID")]
-        public required string PrescribingDoctorId { get; set; }
+        public required int PrescribingDoctorId { get; set; }
 
         [MaxLength(255)]
         public string? Instructions { get; set; } // Optional notes (e.g., "Take with food")
@@ -43,7 +43,7 @@ namespace Patient_Monitoring.Models
 
         [Required]
         [Display(Name = "Appointment Id")]
-        public required string AppointmentId { get; set; }
+        public required int AppointmentId { get; set; }
 
         // Navigation Properties        
         public Patient Patient { get; set; } = null!;

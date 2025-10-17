@@ -9,7 +9,7 @@ namespace Patient_Monitoring.Models
         [Required]
         [Display(Name = "Doctor ID")]
         [Key]
-        public required string DoctorId { get; set; }
+        public int DoctorId { get; set; }
 
 
         [Required]

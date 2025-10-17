@@ -6,7 +6,7 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        public required string DiseaseId { get; set; } // Primary Key
+        public int DiseaseId { get; set; } // Primary Key
 
 
         [Required]
@@ -15,7 +15,7 @@ namespace Patient_Monitoring.Models
 
 
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
-        public string? DiseaseDescription { get; set; }
+        public string? Description { get; set; }
 
         public ICollection<Diagnosis>? Diagnosis { get; set; }
     }

@@ -10,6 +10,6 @@ namespace Patient_Monitoring.Services.Interfaces
         string GenerateAccessToken(dynamic user, string role, out string jwtId);
 
         //RefreshToken GenerateRefreshToken(string ipAddress, string jwtId, Client client, int userId);
-        Task<string> GenerateRefreshToken(string jwtId, string userId, UserType userType);
+        Task<string> GenerateRefreshToken(string jwtId, int userId, UserType userType);
     }
 }

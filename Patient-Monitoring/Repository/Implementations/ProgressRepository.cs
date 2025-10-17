@@ -11,20 +11,16 @@ public class ProgressRepository : IProgressRepository
         _context = context;
     }
 
-    public async Task<List<PatientPlanAssignment>> GetActiveAssignmentsWithTasksAsync(string patientId)
+    public async Task<List<PatientPlanAssignment>> GetActiveAssignmentsWithTasksAsync(int patientId)
     {
-        var today = DateTime.Today;
-        // Logic to find the start of the current week (assuming Sunday is the start)
-        var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
-
         return await _context.PatientPlanAssignments
             .Include(a => a.AssignedWellnessPlan)
             .Include(a => a.TaskLogs) 
-            .Where(a => a.PatientId == patientId && a.IsActive && a.StartDate <= today)
+            .Where(a => a.PatientId == patientId && a.IsActive)
             .ToListAsync();
     }
 
-    public async Task<PatientPlanAssignment?> GetAssignmentDetailsAsync(string assignmentId)
+    public async Task<PatientPlanAssignment?> GetAssignmentDetailsAsync(int assignmentId)
     {
         return await _context.PatientPlanAssignments
             .Include(a => a.AssignedWellnessPlan)
@@ -34,12 +30,12 @@ public class ProgressRepository : IProgressRepository
             .FirstOrDefaultAsync(a => a.AssignmentId == assignmentId);
     }
 
-    public async Task<TaskLog?> GetTaskLogByIdAsync(string taskLogId)
+    public async Task<TaskLog?> GetTaskLogByIdAsync(int taskLogId)
     {
         return await _context.TaskLogs.FirstOrDefaultAsync(t => t.LogId == taskLogId);
     }
 
-    public async Task<List<TaskLog>> GetTaskLogsForPeriodAsync(string patientId, DateTime startDate, DateTime endDate)
+    public async Task<List<TaskLog>> GetTaskLogsForPeriodAsync(int patientId, DateTime startDate, DateTime endDate)
     {
         var assignmentIds = await _context.PatientPlanAssignments
             .Where(a => a.PatientId == patientId)

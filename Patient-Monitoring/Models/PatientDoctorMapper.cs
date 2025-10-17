@@ -7,12 +7,12 @@ namespace Patient_Monitoring.Models
         [Required]
         [Display(Name = "Patient ID")]
         [Key]
-        public required string PatientID { get; set; }
+        public required int PatientId { get; set; }
 
 
         [Required]
         [Display(Name = "Doctor ID")]
-        public required string DoctorID { get; set; }
+        public required int DoctorId { get; set; }
 
         [Required]
         [Display(Name = "Patient Since")]

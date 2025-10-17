@@ -8,17 +8,17 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required]
         [Display(Name = "Appointment ID")]
-        public required string AppointmentId { get; set; }
+        public int AppointmentId { get; set; }
 
 
         [Required]
         [Display(Name = "Patient ID")]
-        public required string PatientId { get; set; }
+        public required int PatientId { get; set; }
 
 
         [Required]
         [Display(Name = "Doctor ID")]
-        public required string DoctorId { get; set; }
+        public required int DoctorId { get; set; }
 
 
         [Required]

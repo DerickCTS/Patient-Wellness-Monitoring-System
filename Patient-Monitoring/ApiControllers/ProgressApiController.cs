@@ -7,37 +7,35 @@ using System.Security.Claims;
 public class ProgressApiController : ControllerBase
 {
     private readonly IProgressService _progressService;
-    private readonly string patientId;
+    private readonly int patientId;
     public ProgressApiController(IProgressService progressService)
     {
         _progressService = progressService;
         patientId = GetCurrentPatientId();
     }
 
-    private string GetCurrentPatientId()
+    private int GetCurrentPatientId()
     {
-        var patientId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //var patientId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (string.IsNullOrEmpty(patientId))
-        {
-            throw new InvalidOperationException("Patient ID claim (sub) not found in token.");
-        }
-
-        return patientId;
+        return 15;
     }
-
+    #region Retrieve Plan Task Cards
     [HttpGet("plans")]
     public async Task<IActionResult> GetAssignedPlanCards(
         [FromQuery] string status = "All",
         [FromQuery] string category = "All",
-        [FromQuery] string date = "This Week")
+        [FromQuery] string date = "Today")
     {
         var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, status, category, date);
         return Ok(cards);
     }
+    #endregion
 
+
+    #region Retrieve Plan Card Details
     [HttpGet("plans/{assignmentId}/details")]
-    public async Task<IActionResult> GetPlanDetails(string assignmentId)
+    public async Task<IActionResult> GetPlanDetails(int assignmentId)
     {
         var details = await _progressService.GetPlanDetailsAsync(assignmentId);
         if (details == null)
@@ -46,23 +44,39 @@ public class ProgressApiController : ControllerBase
         }
         return Ok(details);
     }
+    #endregion
 
+
+    #region Updating Plan Task Status
     [HttpPatch("tasks/{taskLogId}/status")]
-    public async Task<IActionResult> UpdateTaskStatus(string taskLogId, [FromBody] UpdateTaskStatusDto updateDto)
+    public async Task<IActionResult> UpdateTaskStatus(int taskLogId, [FromBody] UpdateTaskStatusDto updateDto)
     {
         var success = await _progressService.UpdateTaskStatusAsync(taskLogId, updateDto);
         if (!success)
         {
             return NotFound("Task log not found or failed to update.");
         }
-        return NoContent(); // Success, no content to return
+        return Ok("Status updated successfully");
     }
+    #endregion
 
+
+    #region Retrive Dashboard Details
     [HttpGet("dashboard")]
     public async Task<IActionResult> GetDashboardData()
     {
-        var patientId = GetCurrentPatientId();
         var dashboardData = await _progressService.GetDashboardDataAsync(patientId);
         return Ok(dashboardData);
     }
+    #endregion
+
+
+    #region Retrieve Activity Calendar Data
+    [HttpGet("dashboard/{year}")]
+    public async Task<IActionResult> GetActivityCalendarAsync(int year)
+    {
+        var calendarData = await _progressService.GetActivityCalendarAsync(patientId, year);
+        return Ok(calendarData);
+    }
+    #endregion
 }

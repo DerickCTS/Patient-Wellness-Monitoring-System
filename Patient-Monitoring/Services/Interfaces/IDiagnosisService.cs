@@ -1,7 +1,7 @@
 ﻿public interface IDiagnosisService
 {
-    Task<List<TodaysAppointmentCardDto>> GetTodaysAppointmentsAsync(string doctorId);
-    Task<PatientDiagnosisDetailDto?> GetPatientDiagnosisDetailsAsync(string appointmentId);
+    Task<List<TodaysAppointmentCardDto>> GetTodaysAppointmentsAsync(int doctorId);
+    Task<PatientDiagnosisDetailDto?> GetPatientDiagnosisDetailsAsync(int appointmentId);
     Task<List<DiseaseDto>> GetAllDiseasesAsync();
-    Task<bool> SaveDiagnosisAndPrescriptionsAsync(string appointmentId, string doctorId, SaveDiagnosisDto data);
+    Task<bool> SaveDiagnosisAndPrescriptionsAsync(int appointmentId, int doctorId, SaveDiagnosisDto data);
 }

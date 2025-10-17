@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Patient_Monitoring.DTOs
+namespace Patient_Monitoring.DTOs.Authentication
 {
     public class DoctorRegisterDTO
     {

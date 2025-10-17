@@ -6,7 +6,7 @@
 
 public class NewDiagnosisDto
 {
-    public string DiseaseId { get; set; }
+    public int DiseaseId { get; set; }
     public string Description { get; set; }
 }
 

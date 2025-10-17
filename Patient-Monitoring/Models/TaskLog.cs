@@ -9,12 +9,12 @@ namespace Patient_Monitoring.Models
         [Key]
         [DisplayName("Log Id")]
         [Required]
-        public required string LogId { get; set; }
+        public int LogId { get; set; }
 
 
         [Required]
         [DisplayName("Assignment Id")]
-        public required string AssignmentId { get; set; }
+        public required int AssignmentId { get; set; }
 
 
         [Required]
@@ -41,6 +41,7 @@ namespace Patient_Monitoring.Models
 
         //public int? CurrentProgress { get; set; }
 
+        [ForeignKey(nameof(AssignmentId))]
         public PatientPlanAssignment PatientPlan { get; set; } = null!;
     }
 

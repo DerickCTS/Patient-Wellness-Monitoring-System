@@ -1,6 +1,5 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
-using Patient_Monitoring.DTOs;
 using Patient_Monitoring.DTOs.Authentication;
 using Patient_Monitoring.Models;
 using Patient_Monitoring.Repository.Interfaces;
@@ -42,7 +41,7 @@ namespace Patient_Monitoring.Services.Implementations
 
             Patient newPatient = new Patient
             {
-                PatientID = "P" + Guid.NewGuid().ToString(),
+                
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 DateOfBirth = patient.DateOfBirth,
@@ -81,7 +80,6 @@ namespace Patient_Monitoring.Services.Implementations
 
             Doctor newDoctor = new Doctor
             {
-                DoctorId = "D" + Guid.NewGuid().ToString(),
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 Specialization = doctor.Specialization,

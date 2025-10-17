@@ -8,13 +8,13 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [Required]
-        [Display(Name = "Slot ID")]
+        [Display(Name = "Slot Id")]
         public int SlotId { get; set; } // Primary Key
 
 
         [Required]
-        [Display(Name = "Doctor ID")]
-        public required string DoctorId { get; set; } // Foreign Key to Doctor
+        [Display(Name = "Doctor Id")]
+        public required int DoctorId { get; set; } // Foreign Key to Doctor
 
 
         [Required]
@@ -35,5 +35,6 @@ namespace Patient_Monitoring.Models
 
 
         public Appointment? Appointment { get; set; }
+        public Doctor Doctor { get; set; } = null!;
     }
 }

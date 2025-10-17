@@ -14,7 +14,7 @@ namespace Patient_Monitoring.Models
 
         [Required]
         [Display(Name = "Doctor ID")]
-        public required string DoctorId { get; set; } // Foreign Key to Doctor
+        public required int DoctorId { get; set; } // Foreign Key to Doctor
 
 
         [Required]
