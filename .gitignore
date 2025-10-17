@@ -25,3 +25,6 @@ wwwroot/lib/
 *.pdb
 *.cache
 *.editorconfig
+
+Migrations/
+Patient-Wellness-Monitoring-System/

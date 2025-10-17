@@ -35,7 +35,6 @@
   <ItemGroup>
     <None Include="PatientMonitoringSystem.csproj" />
     <None Include="PatientMonitoringSystem.csproj.user" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
