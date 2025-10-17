@@ -1,35 +1,36 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
+
 namespace Patient_Monitoring.Models
 {
     public class Patient
     {
-        [Display(Name = "Patient ID")]
+
         [Key]
+        [Display(Name = "Patient ID")]
         public required string PatientId { get; set; } // Primary Key
 
-        // Personal Info
 
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         [Display(Name = "First Name")]
+        [Required]
+        public required string FirstName { get; set; }
 
-        [Required] public required string FirstName { get; set; }
 
         [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         [Display(Name = "Last Name")]
-
         public string? LastName { get; set; }
 
 
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
+        [Required]
+        public required DateTime DateOfBirth { get; set; }
 
-        [Required] public required DateTime DateOfBirth { get; set; }
-        [Required] public required string Gender { get; set; }
 
-        // Contact Info
+        [Required]
+        public required string Gender { get; set; }
+
 
         [Required]
         [Phone(ErrorMessage = "Invalid phone number.")]
@@ -37,15 +38,21 @@ namespace Patient_Monitoring.Models
         [DisplayName("Contact Number")]
         [DataType(DataType.PhoneNumber)]
         public required string ContactNumber { get; set; }
+
+
         [EmailAddress(ErrorMessage = "Invalid email address.")]
-        [Required] public required string Email { get; set; }
-        [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
+        [Required]
+        public required string Email { get; set; }
 
         [Required]
         [Display(Name = "Blood Group")]
-        public string BloodGroup { get; set; }
+        public required string BloodGroup { get; set; } 
+
+
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
-        [Required] public required string Address { get; set; }
+        [Required]
+        public required string Address { get; set; }
+
 
         [Required]
         [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
@@ -61,9 +68,9 @@ namespace Patient_Monitoring.Models
                     public decimal HeightCm { get; set; }
                     public decimal WeightKg { get; set; }
                     public decimal? BMI { get; set; } // Nullable
-
+ 
                     public required string BloodType { get; set; }
-
+ 
                     // Lifestyle & Medical Info
                     public bool? HasChronicConditions { get; set; } 
                     public required string ChronicConditionDetails { get; set; }*/
@@ -89,6 +96,7 @@ namespace Patient_Monitoring.Models
         public ICollection<Appointment>? Appointments { get; set; }
         public ICollection<Diagnosis>? Diagnoses { get; set; }
         public ICollection<PatientPlanAssignment>? AssignedPlans { get; set; }
+
     }
 
 }
