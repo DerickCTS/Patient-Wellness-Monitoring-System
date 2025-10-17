@@ -1110,7 +1110,8 @@ namespace Patient_Monitoring.Data
                         Reason = appointmentReasons[random.Next(appointmentReasons.Length)],
                         SlotId = slot.SlotId,
                         Status = status,
-                        RejectionReason = rejectionReason
+                        RejectionReason = rejectionReason,
+                        RequestedOn = DateTime.Now.AddDays(-random.Next(15))
                     });
                 }
 

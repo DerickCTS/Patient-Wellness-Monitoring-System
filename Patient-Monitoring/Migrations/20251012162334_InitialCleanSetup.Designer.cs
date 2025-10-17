@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Patient_Monitoring.Data;
 
@@ -11,9 +12,11 @@ using Patient_Monitoring.Data;
 namespace Patient_Monitoring.Migrations
 {
     [DbContext(typeof(PatientMonitoringDbContext))]
-    partial class PatientMonitoringDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251012162334_InitialCleanSetup")]
+    partial class InitialCleanSetup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,9 +132,10 @@ namespace Patient_Monitoring.Migrations
             modelBuilder.Entity("Patient_Monitoring.Models.Disease", b =>
                 {
                     b.Property<string>("DiseaseId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("DiseaseDescription")
+                    b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -145,62 +149,13 @@ namespace Patient_Monitoring.Migrations
                     b.ToTable("Diseases");
                 });
 
-            modelBuilder.Entity("Patient_Monitoring.Models.Doctor", b =>
-                {
-                    b.Property<string>("DoctorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ContactNumber")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<DateTime>("DoctorSince")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Education")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfileImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Specialization")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("DoctorId");
-
-                    b.ToTable("Doctors");
-                });
-
             modelBuilder.Entity("Patient_Monitoring.Models.DoctorAvailability", b =>
                 {
-                    b.Property<int>("AvailabilityId")
+                    b.Property<int>("AvailabilityID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AvailabilityId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AvailabilityID"));
 
                     b.Property<string>("DayOfWeek")
                         .IsRequired()

@@ -61,6 +61,18 @@ builder.Services.AddScoped<IWellnessPlanService, WellnessPlanService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IWellnessPlanRepository, WellnessPlanRepository>();
 
+// --- Repository Registration (Data Access Layer) ---
+// Registers the repository interfaces with their concrete implementations.
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
+
+// --- Service Registration (Business Logic Layer) ---
+// Registers the service interfaces with their concrete implementations.
+// Note: Assuming 'SchedulingService' implements 'ISchedulingService' for better practice.
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<SchedulingService>();
+
+
 var app = builder.Build();
 
 // 🔹 Enable Hangfire dashboard
@@ -92,12 +104,17 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Patient Monitoring API v1");
 });
 
+DataSeeder.Seed(app);
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// 🔹 Map API routes
 app.MapControllers();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

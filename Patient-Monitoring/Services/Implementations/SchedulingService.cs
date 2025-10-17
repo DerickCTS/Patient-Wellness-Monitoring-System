@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
+using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Services.Implementations
 {
-    public class SchedulingService
+    public class SchedulingService 
     {
         private readonly PatientMonitoringDbContext _context;
 
