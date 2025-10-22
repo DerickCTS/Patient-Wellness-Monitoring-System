@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.DTOs;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
 
 namespace Patient_Monitoring.Services.Implementations

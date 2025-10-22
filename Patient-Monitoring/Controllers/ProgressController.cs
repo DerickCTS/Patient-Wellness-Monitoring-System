@@ -7,11 +7,10 @@ using System.Security.Claims;
 public class ProgressController : ControllerBase
 {
     private readonly IProgressService _progressService;
-    private readonly int patientId;
+    private int patientId;
     public ProgressController(IProgressService progressService)
     {
         _progressService = progressService;
-        patientId = GetCurrentPatientId();
     }
 
     #region Initialize - Get Current Patient Id from JWT Token
@@ -46,6 +45,7 @@ public class ProgressController : ControllerBase
         [FromQuery] string category = "All",
         [FromQuery] string date = "Today")
     {
+        patientId = GetCurrentPatientId();
         var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, status, category, date);
         return Ok(cards);
     }
@@ -84,6 +84,7 @@ public class ProgressController : ControllerBase
     [HttpGet("dashboard")]
     public async Task<IActionResult> GetDashboardData()
     {
+        patientId = GetCurrentPatientId();
         var dashboardData = await _progressService.GetDashboardDataAsync(patientId);
         return Ok(dashboardData);
     }
@@ -94,6 +95,7 @@ public class ProgressController : ControllerBase
     [HttpGet("dashboard/{year}")]
     public async Task<IActionResult> GetActivityCalendarAsync(int year)
     {
+        patientId = GetCurrentPatientId();
         var calendarData = await _progressService.GetActivityCalendarAsync(patientId, year);
         return Ok(calendarData);
     }

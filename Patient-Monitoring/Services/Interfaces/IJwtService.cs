@@ -11,5 +11,7 @@ namespace Patient_Monitoring.Services.Interfaces
 
         //RefreshToken GenerateRefreshToken(string ipAddress, string jwtId, Client client, int userId);
         Task<string> GenerateRefreshToken(string jwtId, int userId, UserType userType);
+
+        //Task<AuthResponseDTO?> RefreshTokenAsync(string refreshToken, string clientId, string ipAddress);
     }
 }

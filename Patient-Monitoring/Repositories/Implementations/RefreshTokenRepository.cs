@@ -1,8 +1,9 @@
-﻿using Patient_Monitoring.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Interfaces;
 
-namespace Patient_Monitoring.Repository.Implementations
+namespace Patient_Monitoring.Repositories.Implementations
 {
     public class RefreshTokenRepository : IRefreshTokenRepository
     {
@@ -16,6 +17,11 @@ namespace Patient_Monitoring.Repository.Implementations
         {
             await _context.RefreshTokens.AddAsync(refreshToken);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<RefreshToken?>FetchRefreshToken(string token)
+        {
+            return await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == token);
         }
     }
 }

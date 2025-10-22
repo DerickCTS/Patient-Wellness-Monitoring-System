@@ -215,7 +215,6 @@ namespace Patient_Monitoring.Data
                 {
                     new Disease
                     {
-        
                         DiseaseName = "Hypertension",
                         DiseaseDescription = "A condition in which the force of the blood against the artery walls is consistently too high."
                     },
@@ -289,6 +288,7 @@ namespace Patient_Monitoring.Data
                     {
         
                         DiseaseName = "Insomnia",
+                        DiseaseDescription = "A condition in a person is incapable of falling asleep."
                     },
                     new Disease
                     {

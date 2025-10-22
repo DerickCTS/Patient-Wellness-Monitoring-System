@@ -8,11 +8,10 @@ public class DiagnosisController : ControllerBase
 {
     //😍
     private readonly IDiagnosisService _diagnosisService;
-    private readonly int doctorId;
+    private int doctorId;
     public DiagnosisController(IDiagnosisService diagnosisService)
     {
         _diagnosisService = diagnosisService;
-        doctorId = GetCurrentDoctorId();
     }
 
 
@@ -45,6 +44,7 @@ public class DiagnosisController : ControllerBase
     [HttpGet("today")]
     public async Task<IActionResult> GetTodaysAppointments()
     {
+        doctorId = GetCurrentDoctorId();
         var appointments = await _diagnosisService.GetTodaysAppointmentsAsync(doctorId);
         return Ok(appointments);
     }
@@ -76,6 +76,7 @@ public class DiagnosisController : ControllerBase
     [HttpPost("appointment/{appointmentId}/save")]
     public async Task<IActionResult> SaveDiagnosis(int appointmentId, [FromBody] SaveDiagnosisDto data)
     {
+        doctorId = GetCurrentDoctorId();
         var success = await _diagnosisService.SaveDiagnosisAndPrescriptionsAsync(appointmentId, doctorId, data);
         if (!success)
         {

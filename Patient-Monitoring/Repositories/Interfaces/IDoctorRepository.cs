@@ -1,6 +1,6 @@
 ﻿using Patient_Monitoring.Models;
 
-namespace Patient_Monitoring.Repository.Interfaces
+namespace Patient_Monitoring.Repositories.Interfaces
 {
     public interface IDoctorRepository
     {

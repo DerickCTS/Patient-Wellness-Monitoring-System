@@ -1,8 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Enums;
 using Patient_Monitoring.Models;
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -32,20 +34,22 @@ namespace Patient_Monitoring.Services.Implementations
         }
 
         #region Generate Access Token
-        public string GenerateAccessToken(dynamic user, string role, out string jwtId)
+        public string GenerateAccessToken(dynamic userInfo, string role, out string jwtId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var keyBytes = Convert.FromBase64String("kGv/rT4iXb+ZcE7qFjJ8pL9sW0uYvN3xH6aV2dC5bO4=");
+            var keyBytes = Convert.FromBase64String(_key);
             var key = new SymmetricSecurityKey(keyBytes);
 
             jwtId = Guid.NewGuid().ToString();
 
+            string userId = (role == "Patient") ? userInfo.PatientId.ToString() : userInfo.DoctorId.ToString();
+
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.PatientID.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, userId),
                 new Claim(JwtRegisteredClaimNames.Jti, jwtId),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
                 new Claim(ClaimTypes.Role, role)
 
                 //// Custom claim specifying the client id (helps identify which client requested the token)
@@ -93,5 +97,42 @@ namespace Patient_Monitoring.Services.Implementations
             return newRefreshToken.Token;
         }
         #endregion
+
+
+        //public async Task<AuthResponseDTO?> RefreshTokenAsync(string refreshToken)
+        //{
+        //    var existingToken = await _repository.FetchRefreshToken(refreshToken);
+           
+        //    if (existingToken == null || existingToken.IsRevoked || existingToken.Expires <= DateTime.UtcNow)
+        //        return null; 
+                             
+        //    existingToken.IsRevoked = true;
+        //    existingToken.RevokedAt = DateTime.UtcNow;
+
+        //    var role = existingToken.UserType.ToString();
+        //    string accessToken;
+          
+
+        //    if (role == UserType.Patient.ToString())
+        //    {
+        //        accessToken = GenerateAccessToken(user, role, )
+        //    }
+
+        //    var accessToken = GenerateAccessToken(user, role, out string newJwtId);
+            
+        //    var newRefreshToken = GenerateRefreshToken(newJwtId, );
+        //    // Store the new refresh token in the database
+        //    _dbContext.RefreshTokens.Add(newRefreshToken);
+        //    await _dbContext.SaveChangesAsync();
+        //    // Read access token expiration duration from config or default to 15 minutes
+        //    var accessTokenExpiryMinutes = int.TryParse(_configuration["JwtSettings:AccessTokenExpirationMinutes"], out var val) ? val : 15;
+        //    // Return the new tokens and expiry info
+        //    return new AuthResponseDTO
+        //    {
+        //        AccessToken = accessToken,
+        //        RefreshToken = newRefreshToken.Token,
+        //        AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(accessTokenExpiryMinutes)
+        //    };
+        //}
     } 
 }
