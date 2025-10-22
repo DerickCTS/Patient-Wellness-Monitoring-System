@@ -1,5 +1,6 @@
-﻿using Patient_Monitoring.Enums;
+﻿
 using System.ComponentModel.DataAnnotations;
+using Patient_Monitoring.Enums;
 
 namespace Patient_Monitoring.Models
 {
@@ -8,11 +9,11 @@ namespace Patient_Monitoring.Models
         [Key]
         [Display(Name = "Notification ID")]
         [Required]
-        public required string NotificationId { get; set; }
+        public int NotificationId { get; set; }
 
 
         [Required]
-        [StringLength(20, ErrorMessage = "Notification Titile cannot exceed more than 20 characters")]
+        [StringLength(100, ErrorMessage = "Notification Titile cannot exceed more than 100 characters")]
         public required string Title { get; set; }
 
 
@@ -36,15 +37,16 @@ namespace Patient_Monitoring.Models
         [Required]
         public bool IsRead { get; set; } = false;
 
-
+       
         [Required]
         [Display(Name = "Notification Type")]
-        public NotificationType NotificationType { get; set; }
-
+        public NotificationType Type { get; set; }
+       
 
         [Required]
         [Display(Name = "Patient Id")]
         public required int PatientId { get; set; }
+
 
         public Patient Patient { get; set; } = null!;
     }

@@ -14,20 +14,18 @@ namespace Patient_Monitoring.Repository.Implementations
             _context = context;
         }
 
-        #region Get Doctor by Email
-        public async Task<Doctor?> GetByEmail(string email)
+        //✅ Confirmed
+        public async Task<Doctor?> GetDoctorByEmailAsync(string email)
         {
             return await _context.Doctors.FirstOrDefaultAsync(d => d.Email == email);
         }
 
-        #endregion
 
-        #region Add New Doctor to DB
-        public async Task AddDoctor(Doctor doctor)
+        public async Task<bool> AddNewDoctorAsync(Doctor doctor)
         {
             await _context.Doctors.AddAsync(doctor);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
-        #endregion
+
     }
 }

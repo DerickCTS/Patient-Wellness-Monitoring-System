@@ -24,6 +24,11 @@ namespace Patient_Monitoring.DTOs.Authentication
 
 
         [Required]
+        [Display(Name = "Blood Group")]
+        public required string BloodGroup { get; set; }
+
+
+        [Required]
         [Phone(ErrorMessage = "Invalid phone number.")]
         [StringLength(15, MinimumLength = 10, ErrorMessage = "Contact number must be between 10 and 15 digits.")]
         public required string ContactNumber { get; set; }

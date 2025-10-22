@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Numerics;
 
 namespace Patient_Monitoring.Models
 {
@@ -9,7 +7,7 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required]
         [Display(Name = "Time Off ID")]
-        public int TimeOffID { get; set; } // Primary Key
+        public int TimeOffId { get; set; } // Primary Key
 
 
         [Required]

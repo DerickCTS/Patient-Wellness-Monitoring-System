@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,7 +28,6 @@ namespace Patient_Monitoring.Models
         [StringLength(255)]
         [DataType(DataType.Url)]
         public required string ImageUrl { get; set; }
-
 
         [Required]
         [StringLength(30)]

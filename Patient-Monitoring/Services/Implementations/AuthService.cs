@@ -1,7 +1,9 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
+using Patient_Monitoring.DTOs;
 using Patient_Monitoring.DTOs.Authentication;
 using Patient_Monitoring.Models;
+using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Repository.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
 
@@ -27,7 +29,7 @@ namespace Patient_Monitoring.Services.Implementations
         #region Register New Patient
         public async Task<(bool success, string message)> RegisterPatient(PatientRegisterDTO patient)
         {
-            var patientDetail = await _patientRepository.GetByEmail(patient.Email);
+            var patientDetail = await _patientRepository.GetPatientByEmailAsync(patient.Email);
 
             if (patientDetail != null)
             {
@@ -41,7 +43,6 @@ namespace Patient_Monitoring.Services.Implementations
 
             Patient newPatient = new Patient
             {
-                
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 DateOfBirth = patient.DateOfBirth,
@@ -50,23 +51,33 @@ namespace Patient_Monitoring.Services.Implementations
                 Email = patient.Email,
                 Address = patient.Address,
                 EmergencyContactName = patient.EmergencyContactName,
-                EmergencyContactNumber = patient.EmergencyContactNumber,
+                EmergencyContactNumber = patient.EmergencyContactNumber,    
+                BloodGroup = patient.BloodGroup,
                 RegistrationDate = DateTime.UtcNow,
                 Password = patient.Password
             };
 
             newPatient.Password = _patientPasswordHasher.HashPassword(newPatient, patient.Password);
 
-            await _patientRepository.AddPatient(newPatient);
+            bool result = await _patientRepository.AddNewPatientAsync(newPatient);
 
-            return (true, "Registration successful");
+            if (result)
+            {
+                return (true, "Registration successful");
+            }
+            else
+            {
+                return (false, "Registration failed due to an internal error");
+            }
+            
         }
         #endregion
+
 
         #region Register New Doctor
         public async Task<(bool success, string message)> RegisterDoctor(DoctorRegisterDTO doctor)
         {
-            var doctorDetails = await _doctorRepository.GetByEmail(doctor.Email);
+            var doctorDetails = await _doctorRepository.GetDoctorByEmailAsync(doctor.Email);
 
             if (doctorDetails != null)
             {
@@ -83,26 +94,33 @@ namespace Patient_Monitoring.Services.Implementations
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 Specialization = doctor.Specialization,
-                Education = doctor.Education,
                 ContactNumber = doctor.ContactNumber,
+                Education = doctor.Education,
                 Email = doctor.Email,
                 Password = doctor.Password
             };
 
             newDoctor.Password = _doctorPasswordHasher.HashPassword(newDoctor, doctor.Password);
 
-            await _doctorRepository.AddDoctor(newDoctor);
+            bool result = await _doctorRepository.AddNewDoctorAsync(newDoctor);
+
+            if (!result)
+            {
+                return (false, "Registration failed due to an internal error");
+            }
 
             return (true, "Registration successful");
         }
         #endregion
+
 
         #region Login
         public async Task<(bool success, string? message, string? token, string? refreshToken)> Login(UserLoginDTO user)
         {
             if (user.Role == "Patient")
             {
-                var patient = await _patientRepository.GetByEmail(user.Email);
+                var patient = await _patientRepository.GetPatientByEmailAsync(user.Email);
+
                 if (patient == null)
                 {
                     return (false, "Patient does not exists!", null, null);
@@ -117,12 +135,13 @@ namespace Patient_Monitoring.Services.Implementations
 
                 var token = _jwtService.GenerateAccessToken(patient, "Patient", out string jwtId);
 
-                var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, patient.PatientID, Enums.UserType.Patient);
+                var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, patient.PatientId, Enums.UserType.Patient);
 
-                return (true, null, token, refreshToken);   
+                return (true, null, token, refreshToken);
             }
-            else { 
-                var doctor = await _doctorRepository.GetByEmail(user.Email);
+            else
+            {
+                var doctor = await _doctorRepository.GetDoctorByEmailAsync(user.Email);
 
                 if (doctor == null)
                 {

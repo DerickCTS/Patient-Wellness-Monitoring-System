@@ -69,11 +69,10 @@ namespace Patient_Monitoring.Models
         public ICollection<Prescription>? PrescribedMedications { get; set; }
 
         public ICollection<WellnessPlan>? FormulatedWellnessPlans { get; set; }
-
         public ICollection<PatientPlanAssignment>? PatientPlanAssignments { get; set; }
 
         public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; } = null!;
 
-        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; } = null!;
+        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; }
     }
 }

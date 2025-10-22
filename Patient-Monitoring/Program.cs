@@ -1,49 +1,117 @@
+﻿using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Patient_Monitoring.Data;
-using Patient_Monitoring.Repository.Implementations;
-using Patient_Monitoring.Repository.Interfaces;
+using Patient_Monitoring.Repositories.Implementations;
+using Patient_Monitoring.Repositories.Interfaces;
+using Patient_Monitoring.Jobs;
+
+
 using Patient_Monitoring.Services.Implementations;
 using Patient_Monitoring.Services.Interfaces;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+const string AllowSpecificOrigins = "_allowSpecificOrigins";
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowSpecificOrigins,
+                      policy =>
+                      {
+                          // WARNING: AllowAnyOrigin is for TESTING/DEVELOPMENT only.
+                          policy.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
+// 🔹 Add controllers and Swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Patient Monitoring API",
+        Version = "v1"
+    });
+});
+
+// 🔹 Configure Entity Framework
 builder.Services.AddDbContext<PatientMonitoringDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PatientMonitoringDbContext") ?? throw new InvalidOperationException("Connection string 'PatientMonitoringContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PatientMonitoringDbContext")
+        ?? throw new InvalidOperationException("Connection string 'PatientMonitoringDbContext' not found.")));
 
+// 🔹 Register repositories and services
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<ScheduledNotificationJob>();
 
-builder.Services.AddScoped<IAuthService, AuthService>();
+// 🔹 Configure Hangfire
+builder.Services.AddHangfire(config =>
+    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("PatientMonitoringDbContext")));
+builder.Services.AddHangfireServer();
+
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+
+builder.Services.AddScoped<IWellnessPlanService, WellnessPlanService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
-builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
-builder.Services.AddScoped<IJwtService, JwtService2>();
-builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-builder.Services.AddScoped<IProgressService, ProgressService>();
-builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
-builder.Services.AddScoped<IDiagnosisService, DiagnosisService>();
-builder.Services.AddScoped<IDiagnosisRepository, DiagnosisRepository>();
+builder.Services.AddScoped<IWellnessPlanRepository, WellnessPlanRepository>();
+
+// --- Repository Registration (Data Access Layer) ---
+// Registers the repository interfaces with their concrete implementations.
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
+
+// --- Service Registration (Business Logic Layer) ---
+// Registers the service interfaces with their concrete implementations.
+// Note: Assuming 'SchedulingService' implements 'ISchedulingService' for better practice.
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<SchedulingService>();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 🔹 Enable Hangfire dashboard
+app.UseHangfireDashboard();
+
+// 🔹 Register recurring jobs
+RecurringJob.AddOrUpdate<ScheduledNotificationJob>(
+    "medicine-reminders", job => job.SendMedicineRemindersAsync(), Cron.Minutely);
+
+RecurringJob.AddOrUpdate<ScheduledNotificationJob>(
+    "appointment-reminders", job => job.SendAppointmentRemindersAsync(), Cron.Daily);
+
+RecurringJob.AddOrUpdate<ScheduledNotificationJob>(
+    "daily-wellness-reminders", job => job.SendDailyWellnessRemindersAsync(), Cron.Daily(8));
+
+// 🔹 Middleware pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
     
 }
 DataSeeder.Seed(app);
+
+//DataSeeder.Seed(app);
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Patient Monitoring API v1");
+});
+
+DataSeeder.Seed(app);
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Auth}/{action=Something}/{id?}");
+app.MapControllers();
 
 app.Run();

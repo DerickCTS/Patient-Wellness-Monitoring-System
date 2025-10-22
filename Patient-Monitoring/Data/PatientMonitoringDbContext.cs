@@ -27,6 +27,7 @@ namespace Patient_Monitoring.Data
         public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
         public DbSet<DoctorTimeOff> DoctorTimeOffs { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
 
 
@@ -68,7 +69,6 @@ namespace Patient_Monitoring.Data
     }
 
 }
-
 
 
 

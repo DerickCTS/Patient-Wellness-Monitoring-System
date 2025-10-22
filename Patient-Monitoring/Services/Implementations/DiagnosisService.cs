@@ -15,6 +15,7 @@ namespace Patient_Monitoring.Services.Implementations
             _diagnosisRepository = diagnosisRepository;
         }
 
+        #region Retrieving Todays Active Appointment
         public async Task<List<TodaysAppointmentCardDto>> GetTodaysAppointmentsAsync(int doctorId)
         {
             var appointments = await _diagnosisRepository.GetTodaysAppointmentsForDoctorAsync(doctorId);
@@ -26,29 +27,32 @@ namespace Patient_Monitoring.Services.Implementations
                 PatientName = $"{app.Patient.FirstName} {app.Patient.LastName}",
                 Gender = app.Patient.Gender,
                 Age = (DateTime.Today.Year - app.Patient.DateOfBirth.Year - (app.Patient.DateOfBirth.DayOfYear > DateTime.Today.DayOfYear ? 1 : 0)),
-                AppointmentTime = $"{app.AppointmentDate:hh:mm tt} - {app.AppointmentSlot.EndDateTime:hh:mm tt}",
+                AppointmentTime = $"{app.AppointmentDate:hh:mm tt} - {app.AppointmentSlot!.EndDateTime:hh:mm tt}",
                 ContactNumber = app.Patient.ContactNumber,
-                PatientId = app.Patient.PatientID,
+                PatientId = app.Patient.PatientId,
                 ChiefComplaint = app.Reason
             }).ToList();
         }
+        #endregion
 
+
+        #region Retrieving Patient Details & Existing Diagnosis Details
         public async Task<PatientDiagnosisDetailDto?> GetPatientDiagnosisDetailsAsync(int appointmentId)
         {
             var appointment = await _diagnosisRepository.GetAppointmentWithPatientDetailsAsync(appointmentId);
 
             if (appointment == null)
             {
-                return null; // Appointment not found
+                return null;
             }
 
-            // Map the comprehensive appointment details to our DTO
+
             var detailsDto = new PatientDiagnosisDetailDto
             {
                 PatientInfo = new PatientDetail
                 {
                     Name = $"{appointment.Patient.FirstName} {appointment.Patient.LastName}",
-                    PatientId = appointment.Patient.PatientID,
+                    PatientId = appointment.Patient.PatientId,
                     Age = (DateTime.Today.Year - appointment.Patient.DateOfBirth.Year - (appointment.Patient.DateOfBirth.DayOfYear > DateTime.Today.DayOfYear ? 1 : 0)),
                     DateOfBirth = appointment.Patient.DateOfBirth,
                     Gender = appointment.Patient.Gender,
@@ -62,9 +66,9 @@ namespace Patient_Monitoring.Services.Implementations
                 ExistingDiagnoses = appointment.Diagnoses.Select(d => new ExistingDiagnosisDto
                 {
                     DiseaseName = d.Disease.DiseaseName,
-                    Description = d.Description
+                    Description = d.DiagnosisDescription
                 }).ToList(),
-                ExistingPrescriptions = appointment.Patient.Prescriptions.Select(p => new ExistingPrescriptionDto
+                ExistingPrescriptions = appointment.Patient.Prescriptions!.Select(p => new ExistingPrescriptionDto
                 {
                     MedicationName = p.MedicationName,
                     Dosage = p.Dosage
@@ -73,7 +77,10 @@ namespace Patient_Monitoring.Services.Implementations
 
             return detailsDto;
         }
+        #endregion
 
+
+        #region Get All Existing Disease For Drop-Down Form Population
         public async Task<List<DiseaseDto>> GetAllDiseasesAsync()
         {
             var diseases = await _diagnosisRepository.GetAllDiseasesAsync();
@@ -83,7 +90,10 @@ namespace Patient_Monitoring.Services.Implementations
                 DiseaseName = d.DiseaseName
             }).ToList();
         }
+        #endregion
 
+
+        #region Save New Diagnosis and Prescriptions
         public async Task<bool> SaveDiagnosisAndPrescriptionsAsync(int appointmentId, int doctorId, SaveDiagnosisDto data)
         {
             var appointment = await _diagnosisRepository.GetAppointmentWithPatientDetailsAsync(appointmentId);
@@ -94,7 +104,7 @@ namespace Patient_Monitoring.Services.Implementations
                 AppointmentId = appointmentId,
                 PatientId = appointment.PatientId,
                 DiseaseId = d.DiseaseId,
-                Description = d.Description
+                DiagnosisDescription = d.Description
             }).ToList();
 
             var newPrescriptions = new List<Prescription>();
@@ -131,6 +141,7 @@ namespace Patient_Monitoring.Services.Implementations
 
             return true;
         }
+        #endregion
     }
-    
+
 }

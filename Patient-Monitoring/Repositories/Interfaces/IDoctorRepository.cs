@@ -4,8 +4,9 @@ namespace Patient_Monitoring.Repository.Interfaces
 {
     public interface IDoctorRepository
     {
-        Task<Doctor?> GetByEmail(string email);
+        //✅ Confirmed
+        Task<Doctor?> GetDoctorByEmailAsync(string email);
 
-        Task AddDoctor(Doctor doctor);
+        Task<bool> AddNewDoctorAsync(Doctor doctor);
     }
 }

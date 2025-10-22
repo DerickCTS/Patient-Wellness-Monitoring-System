@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 
+
 namespace Patient_Monitoring.Models
 {
     public class AppointmentSlot
@@ -33,8 +34,8 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Is Booked")]
         public bool IsBooked { get; set; } = false; // Default to available
 
+        public Doctor Doctor { get; set; } = null!;
 
         public Appointment? Appointment { get; set; }
-        public Doctor Doctor { get; set; } = null!;
     }
 }

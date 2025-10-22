@@ -1,4 +1,6 @@
-﻿public class ProgressService : IProgressService
+﻿using Patient_Monitoring.DTOs.WellnessPlan;
+
+public class ProgressService : IProgressService
 {
     private readonly IProgressRepository _progressRepository;
 
@@ -7,6 +9,7 @@
         _progressRepository = progressRepository;
     }
 
+    #region Retrieving Assigned Plan Cards
     public async Task<List<AssignedPlanCardDto>> GetAssignedPlanCardsAsync(int patientId, string statusFilter, string categoryFilter, string dateFilter)
     {
         // Each card needs data from PatientPlanAssignement, WellnessPlan, DailyTaskLogs. All these tables are connected & hence all the data
@@ -63,8 +66,11 @@
 
         return finalCards;
     }
+    #endregion
 
-    public async Task<PlanDetailDto?> GetPlanDetailsAsync(int assignmentId)
+
+    #region Retrieve Detailed Plan Card
+    public async Task<PlanCardDetailDto?> GetPlanDetailsAsync(int assignmentId)
     {
         var assignment = await _progressRepository.GetAssignmentDetailsAsync(assignmentId);
         if (assignment == null) return null;
@@ -73,7 +79,7 @@
         bool hasCustomDetails = assignment.AssignmentPlanDetails != null && assignment.AssignmentPlanDetails.Any();
 
 
-        var planDetails = new PlanDetailDto
+        var planDetails = new PlanCardDetailDto
         {
             PlanName = assignment.AssignedWellnessPlan.PlanName,
             Goal = assignment.AssignedWellnessPlan.Goal,
@@ -101,7 +107,10 @@
 
         return planDetails;
     }
+    #endregion
 
+
+    #region Updating Task Status
     public async Task<bool> UpdateTaskStatusAsync(int taskLogId, UpdateTaskStatusDto updateDto)
     {
         var taskLog = await _progressRepository.GetTaskLogByIdAsync(taskLogId);
@@ -122,7 +131,10 @@
 
         return await _progressRepository.SaveChangesAsync();
     }
+    #endregion
 
+
+    #region Retrieving Dashboard Data
     public async Task<DashboardDto> GetDashboardDataAsync(int patientId, int? year = null)
     {
         var today = DateTime.Today;
@@ -212,7 +224,10 @@
             ActivityCalendar = await GetActivityCalendarAsync(patientId, year ?? (int)today.Year)
         };
     }
+    #endregion
 
+
+    #region Retrieving Activity Calendar Data
     public async Task<List<ActivityCalendarDay>> GetActivityCalendarAsync(int patientId, int year)
     {
         var startOfYear = new DateTime(year, 1, 1);
@@ -232,4 +247,5 @@
 
         return calendarData;
     }
+    #endregion
 }

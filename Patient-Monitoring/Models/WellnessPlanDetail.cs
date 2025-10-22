@@ -25,6 +25,7 @@ namespace Patient_Monitoring.Models
         [DataType(DataType.Text)]
         public required string Content { get; set; }
 
+
         [ForeignKey(nameof(PlanId))]
         public WellnessPlan WellnessPlan { get; set; } = null!;
     }

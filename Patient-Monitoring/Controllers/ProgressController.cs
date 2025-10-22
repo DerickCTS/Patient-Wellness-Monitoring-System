@@ -4,22 +4,41 @@ using System.Security.Claims;
 [ApiController]
 [Route("api/[controller]")]
 // [Authorize] // You would add this to protect the endpoint
-public class ProgressApiController : ControllerBase
+public class ProgressController : ControllerBase
 {
     private readonly IProgressService _progressService;
     private readonly int patientId;
-    public ProgressApiController(IProgressService progressService)
+    public ProgressController(IProgressService progressService)
     {
         _progressService = progressService;
         patientId = GetCurrentPatientId();
     }
 
+    #region Initialize - Get Current Patient Id from JWT Token
     private int GetCurrentPatientId()
     {
-        //var patientId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
 
-        return 15;
+        if (userIdClaim == null)
+        {
+            throw new UnauthorizedAccessException("User ID claim not found in token.");
+        }
+
+        if (int.TryParse(userIdClaim.Value, out int patientId))
+        {
+            return patientId;
+        }
+        else
+        {
+            throw new UnauthorizedAccessException("Invalid User ID claim value.");
+        }
+
+        // Use this to hard code a doctor id for testing purposes. But comment the above codes.
+        //return 1;
     }
+    #endregion
+
+
     #region Retrieve Plan Task Cards
     [HttpGet("plans")]
     public async Task<IActionResult> GetAssignedPlanCards(

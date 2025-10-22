@@ -28,7 +28,7 @@ namespace Patient_Monitoring.Models
         [Required(ErrorMessage = "Description is required.")]
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         [Display(Name = "Diagnosis Description")]
-        public required string? Description { get; set; }
+        public required string? DiagnosisDescription { get; set; }
 
 
         public Patient Patient { get; set; } = null!;

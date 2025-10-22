@@ -2,15 +2,16 @@
 using Patient_Monitoring.DTOs.Authentication;
 using Patient_Monitoring.Services.Interfaces;
 
-namespace Patient_Monitoring.Controllers.API
+namespace Patient_Monitoring.Controllers
 {
+    //😍 
     [Route("[controller]")]
     [ApiController]
-    public class AuthApiController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
 
-        public AuthApiController(IAuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
@@ -43,8 +44,8 @@ namespace Patient_Monitoring.Controllers.API
                 return Unauthorized(new { message });
             }
 
-            Response.Cookies.Append("AuthToken", token!, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
-            Response.Cookies.Append("RefreshToken", refreshToken!, new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = true, Secure = false });
+            Response.Cookies.Append("AuthToken", token!, new CookieOptions { HttpOnly = true, Secure = false });
+            Response.Cookies.Append("RefreshToken", refreshToken!, new CookieOptions { HttpOnly = true, Secure = false });
 
             return Ok(new { message = "Login successful" });
         }

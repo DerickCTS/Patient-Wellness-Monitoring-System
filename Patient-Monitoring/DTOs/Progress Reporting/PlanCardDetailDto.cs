@@ -1,4 +1,4 @@
-﻿public class PlanDetailDto
+﻿public class PlanCardDetailDto
 {
     public string ImageUrl { get; set; }
     public string PlanName { get; set; }

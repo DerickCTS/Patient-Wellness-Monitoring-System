@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Numerics;
+
 
 namespace Patient_Monitoring.Models
 {
@@ -28,7 +27,7 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Start Time")]
         public required TimeSpan StartTime { get; set; } // Use TimeSpan for time of day
 
-
+      
         [Required]
         [DataType(DataType.Time)]
         [Display(Name = "End Time")]
@@ -39,7 +38,7 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Is Recurring")]
         public bool IsRecurring { get; set; } = true; // Default to true
 
-
+        
         public Doctor? Doctor { get; set; }
     }
 }

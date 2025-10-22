@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace Patient_Monitoring.Models
 {
     public class Prescription
@@ -53,5 +54,6 @@ namespace Patient_Monitoring.Models
         public Doctor Doctor { get; set; } = null!;
 
         public ICollection<MedicationSchedule> MedicationSchedules { get; set; } = null!;
+
     }
 }
