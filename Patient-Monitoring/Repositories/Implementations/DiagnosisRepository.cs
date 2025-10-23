@@ -27,6 +27,10 @@ public class DiagnosisRepository : IDiagnosisRepository
     public async Task<Appointment?> GetAppointmentWithPatientDetailsAsync(int appointmentId)
     {
         return await _context.Appointments
+            .Include(a => a.Patient)
+            .Include(a => a.Prescriptions)
+            .Include(a => a.Diagnoses)
+            .ThenInclude(d => d.Disease)
             .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
     }
 

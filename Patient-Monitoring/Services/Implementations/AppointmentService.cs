@@ -136,40 +136,28 @@ namespace Patient_Monitoring.Services.Implementations
 
             // --- FIX: Generate the next sequential ID ---
             //int newAppointmentId = await GenerateNextAppointmentId();
+            // 1. Mark the slot as booked/reserved
+            slot.IsBooked = true;
+            await _repository.UpdateAppointmentSlot(slot);
 
-            using var transaction = await _repository.BeginTransactionAsync();
-            try
+            // 2. Create the new Appointment record
+            var appointment = new Appointment
             {
-                // 1. Mark the slot as booked/reserved
-                slot.IsBooked = true;
-                _repository.UpdateAppointmentSlot(slot);
+                PatientId = bookingDto.PatientId,
+                DoctorId = bookingDto.DoctorId,
+                SlotId = slot.SlotId,
+                AppointmentDate = slot.StartDateTime,
+                Reason = bookingDto.Reason,
+                Status = "Pending Approval",
+                RequestedOn = requestedOn,
+            };
 
-                // 2. Create the new Appointment record
-                var appointment = new Appointment
-                {
-                    PatientId = bookingDto.PatientId,
-                    DoctorId = bookingDto.DoctorId,
-                    SlotId = slot.SlotId,
-                    AppointmentDate = slot.StartDateTime,
-                    Reason = bookingDto.Reason,
-                    Status = "Pending Approval",
-                    RequestedOn = requestedOn,
-                };
+            await _repository.AddAppointment(appointment);
 
-                _repository.AddAppointment(appointment);
+            // 3. Save changes and commit transaction
+            await _repository.SaveChangesAsync();
 
-                // 3. Save changes and commit transaction
-                await _repository.SaveChangesAsync();
-                await transaction.CommitAsync();
-
-                return new CreatedAtActionResult(nameof(BookSlotAsync), "Appointment", new { id = appointment.AppointmentId }, new { message = "Appointment requested successfully. Awaiting doctor approval." });
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync();
-                // In a real app, log the exception here
-                return new StatusCodeResult(500);
-            }
+            return new OkObjectResult(new { id = appointment.AppointmentId, message = "Success" });
         }
 
         public async Task<ActionResult<object>> GetPatientAppointmentsByStatusAsync(int patientId)

@@ -5,12 +5,11 @@ using Patient_Monitoring.Services.Interfaces;
 namespace Patient_Monitoring.Controllers
 {
     //😍 
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-
         public AuthController(IAuthService authService)
         {
             _authService = authService;
@@ -22,10 +21,9 @@ namespace Patient_Monitoring.Controllers
         public async Task<IActionResult> RegisterPatient([FromBody] PatientRegisterDTO registerDTO)
         {
             (bool success, string message) = await _authService.RegisterPatient(registerDTO);
-
             if (!success)
             {
-                return BadRequest(new { Message = message });
+                return BadRequest(new {Message = message });
             }
 
             return Ok(new { Message = message });
@@ -38,7 +36,6 @@ namespace Patient_Monitoring.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginDTO loginDTO)
         {
             var (success, message, token, refreshToken) = await _authService.Login(loginDTO);
-
             if (!success)
             {
                 return Unauthorized(new { message });

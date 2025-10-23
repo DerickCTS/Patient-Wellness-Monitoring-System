@@ -16,10 +16,10 @@ namespace Patient_Monitoring.Repositories.Interfaces
         Task<AppointmentSlot> GetSlotForBookingAsync(int slotId, int doctorId);
         Task<Appointment> GetAppointmentByIdIncludeSlotAsync(int appointmentId);
         Task SaveChangesAsync();
-
+        void SaveChanges();
         // Appointment Management
-        void AddAppointment(Appointment appointment);
-        void UpdateAppointmentSlot(AppointmentSlot slot);
+        Task AddAppointment(Appointment appointment);
+        Task UpdateAppointmentSlot(AppointmentSlot slot);
         void UpdateAppointment(Appointment appointment);
 
         // --- NEW METHOD FOR SEQUENTIAL ID GENERATION ---

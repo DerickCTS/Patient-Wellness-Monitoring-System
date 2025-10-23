@@ -17,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 const string AllowSpecificOrigins = "_allowSpecificOrigins";
 
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowSpecificOrigins,

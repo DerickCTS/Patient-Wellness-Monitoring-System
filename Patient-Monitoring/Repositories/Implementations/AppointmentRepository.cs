@@ -89,14 +89,15 @@ namespace Patient_Monitoring.Repositories.Implementations
         }
 
         // ============================ APPOINTMENT MANAGEMENT ============================
-        public void AddAppointment(Appointment appointment)
+        public async Task AddAppointment(Appointment appointment)
         {
-            _context.Appointments.Add(appointment);
+            await _context.Appointments.AddAsync(appointment);
         }
 
-        public void UpdateAppointmentSlot(AppointmentSlot slot)
+        public async Task UpdateAppointmentSlot(AppointmentSlot slot)
         {
             _context.AppointmentSlots.Update(slot);
+            await _context.SaveChangesAsync();
         }
 
         public void UpdateAppointment(Appointment appointment)
@@ -104,6 +105,10 @@ namespace Patient_Monitoring.Repositories.Implementations
             _context.Appointments.Update(appointment);
         }
 
+        public void SaveChanges() 
+        {             
+            _context.SaveChanges();
+        }
         // ============================ METRICS/SCHEDULE QUERIES ============================
         public Task<int> CountAppointmentsAsync(Expression<Func<Appointment, bool>> predicate)
         {

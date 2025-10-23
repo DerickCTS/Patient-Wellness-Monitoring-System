@@ -58,6 +58,7 @@ namespace Patient_Monitoring.Models
 
         [ForeignKey("SlotId")]
         public AppointmentSlot? AppointmentSlot { get; set; }
+        public ICollection<Prescription>? Prescriptions { get; set; }
         public ICollection<Diagnosis> Diagnoses { get; set; } = null!;
         public Patient Patient { get; set; } = null!;
         public Doctor Doctor { get; set; } = null!;
