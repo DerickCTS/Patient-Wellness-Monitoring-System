@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Models;
+using System.Composition.Hosting.Core;
 
 namespace Patient_Monitoring.Data
 {
@@ -9,6 +10,7 @@ namespace Patient_Monitoring.Data
         {
         }
 
+ 
 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<WellnessPlan> WellnessPlans { get; set; }

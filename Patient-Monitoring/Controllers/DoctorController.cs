@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Services.Interfaces;
 using System.Net;
@@ -7,7 +8,7 @@ namespace Patient_Monitoring.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-
+[Authorize(Roles = "Doctor")]
 public class DoctorController : ControllerBase
 {
     private readonly IDoctorService _doctorService;

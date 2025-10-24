@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Patient_Monitoring.DTOs.Notification;
 using Patient_Monitoring.Services.Interfaces;
 
@@ -6,6 +7,7 @@ namespace Patient_Monitoring.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Patient")]
     public class NotificationController(INotificationService service) : ControllerBase
     {
         private readonly INotificationService _service = service;

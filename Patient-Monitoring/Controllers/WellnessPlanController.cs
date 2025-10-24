@@ -2,12 +2,14 @@
 
 using Patient_Monitoring.Services.Interfaces;
 using Patient_Monitoring.DTOs.WellnessPlan;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Patient_Monitoring.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Patient")]
     public class WellnessPlanController : ControllerBase
     {
         private readonly IWellnessPlanService _service;

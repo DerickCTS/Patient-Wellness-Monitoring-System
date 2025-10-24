@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
-// [Authorize] // You would add this to protect the endpoint
+[Authorize(Roles = "Patient")] // You would add this to protect the endpoint
 public class ProgressController : ControllerBase
 {
     private readonly IProgressService _progressService;
