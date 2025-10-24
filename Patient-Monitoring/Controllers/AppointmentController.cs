@@ -20,11 +20,6 @@ namespace Patient_Monitoring.Controllers
         {
             _appointmentService = appointmentService;
         }
-
-        // ====================================================================
-        // 1. PATIENT ENDPOINTS
-        // ====================================================================
-
         // GET /api/appointment/specializations
         [Authorize(Roles = "Patient")]
         [HttpGet("specializations")]
@@ -35,7 +30,7 @@ namespace Patient_Monitoring.Controllers
 
         // GET /api/appointment/doctors/slots/specialization/{specialization}
         [HttpGet("doctors/slots/specialization/{specialization}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Patient")]
         public Task<ActionResult<IEnumerable<DoctorExperienceDto>>> GetDoctorsAndSlots(string specialization)
         {
             return _appointmentService.GetDoctorsAndSlotsBySpecializationAsync(specialization);
