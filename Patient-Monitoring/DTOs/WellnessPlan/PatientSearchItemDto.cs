@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Patient_Monitoring.DTOs
+﻿namespace Patient_Monitoring.DTOs.WellnessPlan
 {
     public class PatientSearchItemDto
     {
-        public string PatientID { get; set; }
+        public int PatientId { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
@@ -12,7 +10,7 @@ namespace Patient_Monitoring.DTOs
     public class DiagnosisDetailDto
     {
         public string DiseaseName { get; set; } = string.Empty;
-        public string DiagnosisId { get; set; } = string.Empty;
+        public int DiagnosisId { get; set; }
         public string DoctorName { get; set; } = string.Empty;
         public DateTime DiagnosisDate { get; set; }
 
@@ -36,7 +34,7 @@ namespace Patient_Monitoring.DTOs
     public class PatientFullDetailDto
     {
         // Patient Model Details (Personal/Contact Info)
-        public string PatientID { get; set; } = string.Empty;
+        public int PatientId { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -59,21 +57,21 @@ namespace Patient_Monitoring.DTOs
         public List<WellnessPlanDetailDto> WellnessPlans { get; set; } = new List<WellnessPlanDetailDto>();
 
     }
-    public class AssignPlanRequest
-    {
-        public string DoctorId { get; set; } = string.Empty;
-        public string PatientId { get; set; } = string.Empty;
-        public string PlanName { get; set; } = string.Empty;
-        public string Goal { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public List<string> Instruction { get; set; } = new List<string>();
-        public List<string> Benefits { get; set; } = new List<string>();
-        public List<string> Safety { get; set; } = new List<string>();
-        public int FrequencyCount { get; set; }
-        public string FrequencyUnit { get; set; } = string.Empty;
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-    }
+    //public class AssignPlanRequest
+    //{
+    //    public string DoctorId { get; set; } = string.Empty;
+    //    public string PatientId { get; set; } = string.Empty;
+    //    public string PlanName { get; set; } = string.Empty;
+    //    public string Goal { get; set; } = string.Empty;
+    //    public string Description { get; set; } = string.Empty;
+    //    public List<string> Instruction { get; set; } = new List<string>();
+    //    public List<string> Benefits { get; set; } = new List<string>();
+    //    public List<string> Safety { get; set; } = new List<string>();
+    //    public int FrequencyCount { get; set; }
+    //    public string FrequencyUnit { get; set; } = string.Empty;
+    //    public DateTime StartDate { get; set; }
+    //    public DateTime EndDate { get; set; }
+    //}
     public class DiagnosisDetailsDto
     {
         

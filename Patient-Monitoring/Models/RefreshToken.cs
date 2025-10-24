@@ -37,8 +37,7 @@ namespace Patient_Monitoring.Models
 
 
         [Required]
-        [Display(Name = "User ID")]
-        public required string UserId { get; set; }
+        public int UserId { get; set; }
 
 
         [Required]
@@ -47,7 +46,7 @@ namespace Patient_Monitoring.Models
 
 
         [NotMapped]
-        public required object User { get; set; }
+        public object User { get; set; }
 
 
         [Required]

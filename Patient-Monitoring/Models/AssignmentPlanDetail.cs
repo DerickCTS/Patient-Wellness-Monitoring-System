@@ -9,11 +9,11 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required]
         [DisplayName("Custom Detail Id")]
-        public required string CustomDetailId { get; set; }
+        public int CustomDetailId { get; set; }
 
         [Required]
         [DisplayName("Assignment Id")]
-        public required string AssignmentId { get; set; }
+        public required int AssignmentId { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -24,6 +24,7 @@ namespace Patient_Monitoring.Models
         [StringLength(600)]
         [DataType(DataType.Text)]
         public required string Content { get; set; }
+
 
         [ForeignKey(nameof(AssignmentId))]
         public PatientPlanAssignment PatientPlan { get; set; } = null!;

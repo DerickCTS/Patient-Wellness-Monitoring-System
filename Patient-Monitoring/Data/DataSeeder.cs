@@ -10,9 +10,6 @@ namespace Patient_Monitoring.Data
     {
         public static void Seed(IApplicationBuilder applicationBuilder)
         {
-
-
-
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<PatientMonitoringDbContext>();
@@ -23,767 +20,334 @@ namespace Patient_Monitoring.Data
                 {
                     return;
                 }
-
-                //Deletes the existing DB mentioned in the appsetting.json
-                context.Database.EnsureDeleted();
-                //Creates the DB with tables from scratch using the Models as blueprint.
+                
+                //Creates the DB with tables from scratch only if the db does not exists using the Models
+                //as blueprint. If the db exists, it doesn't do anything.
                 context.Database.EnsureCreated();
 
+                if (context.Patients.Any())
+                {
+                    Console.WriteLine("--- Database already contains data. Skipping seed. ---");
+                    return;
+                }
+
+                #region Seeding Doctors Data
                 // Seeding 'Doctors' Table
                 var doctors = new List<Doctor>
-{
+                {
 
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Eleanor",
-        LastName = "Vance",
-        Specialization = "General Practice",
-        Education = "MD, Johns Hopkins University",
-        ContactNumber = "5550100111",
-        Email = "eleanor.vance@wellnessclinic.com",
-        ProfileImage = "/images/doctors/eleanor_vance.png",
-        DoctorSince = new DateTime(2010, 8, 15),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
+                    new Doctor
+                    {
+                        //DoctorId = Guid.NewGuid().ToString(),
+                        FirstName = "Eleanor",
+                        LastName = "Vance",
+                        Specialization = "General Practice",
+                        Education = "MD, Johns Hopkins University",
+                        ContactNumber = "5550100111",
+                        Email = "eleanor.vance@wellnessclinic.com",
+                        ProfileImage = "/images/doctors/eleanor_vance.png",
+                        DoctorSince = new DateTime(2010, 8, 15),
+                        Password = passwordHasher.HashPassword(null, "DoctorPass123")
+                    },
 
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "John",
-        LastName = "Montague",
-        Specialization = "Cardiology",
-        Education = "MD, Harvard Medical School",
-        ContactNumber = "5550100222",
-        Email = "john.montague@wellnessclinic.com",
-        ProfileImage = "/images/doctors/john_montague.png",
-        DoctorSince = new DateTime(2005, 6, 20),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
+                    new Doctor
+                    {
+                        //DoctorId = Guid.NewGuid().ToString(),
+                        FirstName = "John",
+                        LastName = "Montague",
+                        Specialization = "Cardiology",
+                        Education = "MD, Harvard Medical School",
+                        ContactNumber = "5550100222",
+                        Email = "john.montague@wellnessclinic.com",
+                        ProfileImage = "/images/doctors/john_montague.png",
+                        DoctorSince = new DateTime(2005, 6, 20),
+                        Password = passwordHasher.HashPassword(null, "DoctorPass123")
+                    },
 
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Theodora",
-        LastName = "Crain",
-        Specialization = "Psychiatry",
-        Education = "MD, Stanford University",
-        ContactNumber = "5550100333",
-        Email = "theodora.crain@wellnessclinic.com",
-        ProfileImage = "/images/doctors/theodora_crain.png",
-        DoctorSince = new DateTime(2015, 11, 1),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
+                    new Doctor
+                    {
+                        //DoctorId = Guid.NewGuid().ToString(),
+                        FirstName = "Theodora",
+                        LastName = "Crain",
+                        Specialization = "Psychiatry",
+                        Education = "MD, Stanford University",
+                        ContactNumber = "5550100333",
+                        Email = "theodora.crain@wellnessclinic.com",
+                        ProfileImage = "/images/doctors/theodora_crain.png",
+                        DoctorSince = new DateTime(2015, 11, 1),
+                        Password = passwordHasher.HashPassword(null, "DoctorPass123")
+                    },
 
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Luke",
-        LastName = "Sanderson",
-        Specialization = "Family Medicine",
-        Education = "MD, Mayo Clinic Alix School of Medicine",
-        ContactNumber = "5550100444",
-        Email = "luke.sanderson@wellnessclinic.com",
-        ProfileImage = "/images/doctors/luke_sanderson.png",
-        DoctorSince = new DateTime(2018, 7, 30),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Jonas",
-        LastName = "Salk",
-        Specialization = "Pediatrics",
-        Education = "MD, New York University",
-        ContactNumber = "5550100555",
-        Email = "jonas.salk@wellnessclinic.com",
-        ProfileImage = "/images/doctors/jonas_salk.png",
-        DoctorSince = new DateTime(2002, 3, 12),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Marie",
-        LastName = "Curie",
-        Specialization = "Oncology",
-        Education = "MD, University of Paris",
-        ContactNumber = "5550100666",
-        Email = "marie.curie@wellnessclinic.com",
-        ProfileImage = "/images/doctors/marie_curie.png",
-        DoctorSince = new DateTime(1999, 10, 5),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Alexander",
-        LastName = "Fleming",
-        Specialization = "Immunology",
-        Education = "MD, St Mary's Hospital Medical School",
-        ContactNumber = "5550100777",
-        Email = "alexander.fleming@wellnessclinic.com",
-        ProfileImage = "/images/doctors/alexander_fleming.png",
-        DoctorSince = new DateTime(2008, 1, 25),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Rosalind",
-        LastName = "Franklin",
-        Specialization = "Genetics",
-        Education = "MD, University of Cambridge",
-        ContactNumber = "5550100888",
-        Email = "rosalind.franklin@wellnessclinic.com",
-        ProfileImage = "/images/doctors/rosalind_franklin.png",
-        DoctorSince = new DateTime(2012, 9, 18),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Edward",
-        LastName = "Jenner",
-        Specialization = "Dermatology",
-        Education = "MD, University of St Andrews",
-        ContactNumber = "5550100999",
-        Email = "edward.jenner@wellnessclinic.com",
-        ProfileImage = "/images/doctors/edward_jenner.png",
-        DoctorSince = new DateTime(2011, 4, 22),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Florence",
-        LastName = "Nightingale",
-        Specialization = "Internal Medicine",
-        Education = "MD, King's College London",
-        ContactNumber = "5550101010",
-        Email = "florence.nightingale@wellnessclinic.com",
-        ProfileImage = "/images/doctors/florence_nightingale.png",
-        DoctorSince = new DateTime(2007, 2, 28),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Joseph",
-        LastName = "Lister",
-        Specialization = "General Surgery",
-        Education = "MD, University College London",
-        ContactNumber = "5550101111",
-        Email = "joseph.lister@wellnessclinic.com",
-        ProfileImage = "/images/doctors/joseph_lister.png",
-        DoctorSince = new DateTime(2001, 12, 3),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Clara",
-        LastName = "Barton",
-        Specialization = "Emergency Medicine",
-        Education = "MD, Clinton Liberal Institute",
-        ContactNumber = "5550101212",
-        Email = "clara.barton@wellnessclinic.com",
-        ProfileImage = "/images/doctors/clara_barton.png",
-        DoctorSince = new DateTime(2014, 5, 9),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Elizabeth",
-        LastName = "Blackwell",
-        Specialization = "Obstetrics and Gynecology",
-        Education = "MD, Geneva Medical College",
-        ContactNumber = "5550101313",
-        Email = "elizabeth.blackwell@wellnessclinic.com",
-        ProfileImage = "/images/doctors/elizabeth_blackwell.png",
-        DoctorSince = new DateTime(2000, 1, 1),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Charles",
-        LastName = "Drew",
-        Specialization = "Hematology",
-        Education = "MD, McGill University",
-        ContactNumber = "5550101414",
-        Email = "charles.drew@wellnessclinic.com",
-        ProfileImage = "/images/doctors/charles_drew.png",
-        DoctorSince = new DateTime(2009, 8, 19),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Virginia",
-        LastName = "Apgar",
-        Specialization = "Anesthesiology",
-        Education = "MD, Columbia University",
-        ContactNumber = "5550101515",
-        Email = "virginia.apgar@wellnessclinic.com",
-        ProfileImage = "/images/doctors/virginia_apgar.png",
-        DoctorSince = new DateTime(2013, 10, 29),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Benjamin",
-        LastName = "Spock",
-        Specialization = "Pediatrics",
-        Education = "MD, Yale University",
-        ContactNumber = "5550101616",
-        Email = "benjamin.spock@wellnessclinic.com",
-        ProfileImage = "/images/doctors/benjamin_spock.png",
-        DoctorSince = new DateTime(1998, 5, 14),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Christiaan",
-        LastName = "Barnard",
-        Specialization = "Cardiothoracic Surgery",
-        Education = "MD, University of Cape Town",
-        ContactNumber = "5550101717",
-        Email = "christiaan.barnard@wellnessclinic.com",
-        ProfileImage = "/images/doctors/christiaan_barnard.png",
-        DoctorSince = new DateTime(2003, 11, 7),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "William",
-        LastName = "Osler",
-        Specialization = "Internal Medicine",
-        Education = "MD, McGill University",
-        ContactNumber = "5550101818",
-        Email = "william.osler@wellnessclinic.com",
-        ProfileImage = "/images/doctors/william_osler.png",
-        DoctorSince = new DateTime(1995, 2, 21),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Michael",
-        LastName = "DeBakey",
-        Specialization = "Vascular Surgery",
-        Education = "MD, Tulane University",
-        ContactNumber = "5550101919",
-        Email = "michael.debakey@wellnessclinic.com",
-        ProfileImage = "/images/doctors/michael_debakey.png",
-        DoctorSince = new DateTime(2006, 7, 16),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    },
-    new Doctor
-    {
-        DoctorId = Guid.NewGuid().ToString(),
-        FirstName = "Gertrude",
-        LastName = "Elion",
-        Specialization = "Pharmacology",
-        Education = "MSc, New York University",
-        ContactNumber = "5550102020",
-        Email = "gertrude.elion@wellnessclinic.com",
-        ProfileImage = "/images/doctors/gertrude_elion.png",
-        DoctorSince = new DateTime(2017, 3, 25),
-        Password = passwordHasher.HashPassword(null, "DoctorPass123")
-    }
-};
+                    new Doctor
+                    {
+                        //DoctorId = Guid.NewGuid().ToString(),
+                        FirstName = "Luke",
+                        LastName = "Sanderson",
+                        Specialization = "Family Medicine",
+                        Education = "MD, Mayo Clinic Alix School of Medicine",
+                        ContactNumber = "5550100444",
+                        Email = "luke.sanderson@wellnessclinic.com",
+                        ProfileImage = "/images/doctors/luke_sanderson.png",
+                        DoctorSince = new DateTime(2018, 7, 30),
+                        Password = passwordHasher.HashPassword(null, "DoctorPass123")
+                    },
+                    new Doctor
+                    {
+                        //DoctorId = Guid.NewGuid().ToString(),
+                        FirstName = "Jonas",
+                        LastName = "Salk",
+                        Specialization = "Pediatrics",
+                        Education = "MD, New York University",
+                        ContactNumber = "5550100555",
+                        Email = "jonas.salk@wellnessclinic.com",
+                        ProfileImage = "/images/doctors/jonas_salk.png",
+                        DoctorSince = new DateTime(2002, 3, 12),
+                        Password = passwordHasher.HashPassword(null, "DoctorPass123")
+                    } 
+                };
 
                 context.Doctors.AddRange(doctors);
 
+                #endregion
+
+
+                #region Seeding Patients Data
                 // Seeding 'Patients' Table
 
-
                 var patients = new List<Patient>
-{
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Leia",
-        LastName = "Organa",
-        DateOfBirth = new DateTime(1977, 5, 25),
-        Gender = "Female",
-        ContactNumber = "9876543210",
-        Email = "leia.organa@resistance.com",
-        Address = "123 Alderaan Ave, Core Worlds",
-        EmergencyContactName = "Han Solo",
-        EmergencyContactNumber = "9876511111",
-        BloodGroup = "O+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/leia_organa.png",
-        Password = passwordHasher.HashPassword(null, "Leia123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Luke",
-        LastName = "Skywalker",
-        DateOfBirth = new DateTime(1977, 5, 25),
-        Gender = "Male",
-        ContactNumber = "9876543211",
-        Email = "luke.skywalker@jedicouncil.org",
-        Address = "456 Moisture Farm, Tatooine",
-        EmergencyContactName = "Obi-Wan Kenobi",
-        EmergencyContactNumber = "9876522222",
-          BloodGroup = "B+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/luke_skywalker.png",
-        Password = passwordHasher.HashPassword(null, "Luke123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Anakin",
-        LastName = "Skywalker",
-        DateOfBirth = new DateTime(1955, 1, 15),
-        Gender = "Male",
-        ContactNumber = "9876543212",
-        Email = "anakin.s@republic.gov",
-        Address = "789 Jedi Temple, Coruscant",
-        EmergencyContactName = "Padmé Amidala",
-        EmergencyContactNumber = "9876533333",
-          BloodGroup = "O-ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/anakin_skywalker.png",
-        Password = passwordHasher.HashPassword(null, "Anakin123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Padmé",
-        LastName = "Amidala",
-        DateOfBirth = new DateTime(1975, 11, 20),
-        Gender = "Female",
-        ContactNumber = "9876543213",
-        Email = "padme.a@naboo.gov",
-        Address = "101 Royal Palace, Theed, Naboo",
-        EmergencyContactName = "Captain Typho",
-        EmergencyContactNumber = "9876544444",
-          BloodGroup = "B+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/padme_amidala.png",
-        Password = passwordHasher.HashPassword(null, "Padme123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Han",
-        LastName = "Solo",
-        DateOfBirth = new DateTime(1970, 7, 3),
-        Gender = "Male",
-        ContactNumber = "9876543214",
-        Email = "han.solo@falcon.net",
-        Address = "Docking Bay 94, Mos Eisley",
-        EmergencyContactName = "Chewbacca",
-        EmergencyContactNumber = "9876555555",
-          BloodGroup = "A1+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/han_solo.png",
-        Password = passwordHasher.HashPassword(null, "Han123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Obi-Wan",
-        LastName = "Kenobi",
-        DateOfBirth = new DateTime(1945, 3, 10),
-        Gender = "Male",
-        ContactNumber = "9876543215",
-        Email = "ben.kenobi@jedicouncil.org",
-        Address = "Jundland Wastes, Tatooine",
-        EmergencyContactName = "Bail Organa",
-        EmergencyContactNumber = "9876566666",
-          BloodGroup = "B+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/obiwan_kenobi.png",
-        Password = passwordHasher.HashPassword(null, "ObiWan123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Ahsoka",
-        LastName = "Tano",
-        DateOfBirth = new DateTime(1982, 4, 1),
-        Gender = "Female",
-        ContactNumber = "9876543216",
-        Email = "ahsoka.tano@fulcrum.org",
-        Address = "Unknown",
-        EmergencyContactName = "Captain Rex",
-        EmergencyContactNumber = "9876577777",
-          BloodGroup = "B1+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/ahsoka_tano.png",
-        Password = passwordHasher.HashPassword(null, "Ahsoka123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Din",
-        LastName = "Djarin",
-        DateOfBirth = new DateTime(1980, 6, 22),
-        Gender = "Male",
-        ContactNumber = "9876543217",
-        Email = "mando@bountyhunter.guild",
-        Address = "Razor Crest, Outer Rim",
-        EmergencyContactName = "The Armorer",
-        EmergencyContactNumber = "9876588888",
-          BloodGroup = "O+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/din_djarin.png",
-        Password = passwordHasher.HashPassword(null, "Din123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Boba",
-        LastName = "Fett",
-        DateOfBirth = new DateTime(1968, 9, 30),
-        Gender = "Male",
-        ContactNumber = "9876543218",
-        Email = "boba.fett@kaminosolutions.com",
-        Address = "Jabba's Palace, Tatooine",
-        EmergencyContactName = "Fennec Shand",
-        EmergencyContactNumber = "9876599999",
-          BloodGroup = "A+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/boba_fett.png",
-        Password = passwordHasher.HashPassword(null, "Boba123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Jyn",
-        LastName = "Erso",
-        DateOfBirth = new DateTime(1988, 12, 12),
-        Gender = "Female",
-        ContactNumber = "9876543219",
-        Email = "jyn.erso@rebelalliance.org",
-        Address = "Wobani Imperial Labor Camp",
-        EmergencyContactName = "Cassian Andor",
-        EmergencyContactNumber = "9876510101",
-          BloodGroup = "B+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/jyn_erso.png",
-        Password = passwordHasher.HashPassword(null, "Jyn123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Cassian",
-        LastName = "Andor",
-        DateOfBirth = new DateTime(1984, 2, 18),
-        Gender = "Male",
-        ContactNumber = "9876543220",
-        Email = "cassian.andor@rebelalliance.org",
-        Address = "Ring of Kafrene, Outer Rim",
-        EmergencyContactName = "Luthen Rael",
-        EmergencyContactNumber = "9876512121",
-          BloodGroup = "A1+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/cassian_andor.png",
-        Password = passwordHasher.HashPassword(null, "Cassian123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Rey",
-        LastName = null,
-        DateOfBirth = new DateTime(2000, 10, 5),
-        Gender = "Female",
-        ContactNumber = "9876543221",
-        Email = "rey@resistance.com",
-        Address = "AT-AT Walker, Jakku",
-        EmergencyContactName = "Finn",
-        EmergencyContactNumber = "9876513131",
-          BloodGroup = "A1+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/rey.png",
-        Password = passwordHasher.HashPassword(null, "Rey123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Finn",
-        LastName = "FN-2187",
-        DateOfBirth = new DateTime(1998, 3, 28),
-        Gender = "Male",
-        ContactNumber = "9876543222",
-        Email = "finn.2187@resistance.com",
-        Address = "Starkiller Base",
-        EmergencyContactName = "Poe Dameron",
-        EmergencyContactNumber = "9876514141",
-          BloodGroup = "A2+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/finn.png",
-        Password = passwordHasher.HashPassword(null, "Finn123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Poe",
-        LastName = "Dameron",
-        DateOfBirth = new DateTime(1986, 1, 9),
-        Gender = "Male",
-        ContactNumber = "9876543223",
-        Email = "poe.dameron@resistance.com",
-        Address = "D'Qar, Ileenium System",
-        EmergencyContactName = "General Organa",
-        EmergencyContactNumber = "9876515151",
-          BloodGroup = "O+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/poe_dameron.png",
-        Password = passwordHasher.HashPassword(null, "Poe123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Mace",
-        LastName = "Windu",
-        DateOfBirth = new DateTime(1950, 8, 8),
-        Gender = "Male",
-        ContactNumber = "9876543224",
-        Email = "mace.windu@jedicouncil.org",
-        Address = "High Council Tower, Coruscant",
-        EmergencyContactName = "Yoda",
-        EmergencyContactNumber = "9876516161",
-          BloodGroup = "A2+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/mace_windu.png",
-        Password = passwordHasher.HashPassword(null, "Mace123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Sheev",
-        LastName = "Palpatine",
-        DateOfBirth = new DateTime(1932, 5, 20),
-        Gender = "Male",
-        ContactNumber = "9876543225",
-        Email = "chancellor@republic.gov",
-        Address = "500 Republica, Coruscant",
-        EmergencyContactName = "Mas Amedda",
-        EmergencyContactNumber = "9876517171",
-          BloodGroup = "B+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/sheev_palpatine.png",
-        Password = passwordHasher.HashPassword(null, "Sheev123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Mon",
-        LastName = "Mothma",
-        DateOfBirth = new DateTime(1952, 11, 11),
-        Gender = "Female",
-        ContactNumber = "9876543226",
-        Email = "mon.mothma@newrepublic.gov",
-        Address = "Chandrila",
-        EmergencyContactName = "Bail Organa",
-        EmergencyContactNumber = "9876518181",
-          BloodGroup = "A2+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/mon_mothma.png",
-        Password = passwordHasher.HashPassword(null, "Mon123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Lando",
-        LastName = "Calrissian",
-        DateOfBirth = new DateTime(1965, 4, 4),
-        Gender = "Male",
-        ContactNumber = "9876543227",
-        Email = "lando.c@cloudcity.bespin",
-        Address = "Cloud City, Bespin",
-        EmergencyContactName = "Lobot",
-        EmergencyContactNumber = "9876519191",
-          BloodGroup = "O+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/lando_calrissian.png",
-        Password = passwordHasher.HashPassword(null, "Lando123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Qui-Gon",
-        LastName = "Jinn",
-        DateOfBirth = new DateTime(1940, 2, 2),
-        Gender = "Male",
-        ContactNumber = "9876543228",
-        Email = "quigon.jinn@jedicouncil.org",
-        Address = "Jedi Temple, Coruscant",
-        EmergencyContactName = "Obi-Wan Kenobi",
-        EmergencyContactNumber = "9876520202",
-          BloodGroup = "O+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/quigon_jinn.png",
-        Password = passwordHasher.HashPassword(null, "QuiGon123")
-    },
-    new Patient
-    {
-        PatientId = Guid.NewGuid().ToString(),
-        FirstName = "Hera",
-        LastName = "Syndulla",
-        DateOfBirth = new DateTime(1978, 9, 9),
-        Gender = "Female",
-        ContactNumber = "9876543229",
-        Email = "hera.syndulla@rebelalliance.org",
-        Address = "The Ghost, Outer Rim",
-        EmergencyContactName = "Kanan Jarrus",
-        EmergencyContactNumber = "9876521212",
-          BloodGroup = "A1+ve",
-        RegistrationDate = DateTime.UtcNow,
-        ProfileImage = "/images/patients/hera_syndulla.png",
-        Password = passwordHasher.HashPassword(null, "Hera123")
-    }
-};
+                {
+                    new Patient
+                    {
+                        //PatientID = Guid.NewGuid().ToString(),
+                        FirstName = "Leia",
+                        LastName = "Organa",
+                        DateOfBirth = new DateTime(1977, 5, 25),
+                        Gender = "Female",
+                        ContactNumber = "9876543210",
+                        Email = "leia.organa@resistance.com",
+                        Address = "123 Alderaan Ave, Core Worlds",
+                        EmergencyContactName = "Han Solo",
+                        EmergencyContactNumber = "9876511111",
+                        BloodGroup = "O+ve",
+                        RegistrationDate = DateTime.UtcNow,
+                        ProfileImage = "/images/patients/leia_organa.png",
+                        Password = passwordHasher.HashPassword(null, "Leia123")
+                    },
+                    new Patient
+                    {
+                        //PatientID = Guid.NewGuid().ToString(),
+                        FirstName = "Luke",
+                        LastName = "Skywalker",
+                        DateOfBirth = new DateTime(1977, 5, 25),
+                        Gender = "Male",
+                        ContactNumber = "9876543211",
+                        Email = "luke.skywalker@jedicouncil.org",
+                        Address = "456 Moisture Farm, Tatooine",
+                        EmergencyContactName = "Obi-Wan Kenobi",
+                        EmergencyContactNumber = "9876522222",
+                          BloodGroup = "B+ve",
+                        RegistrationDate = DateTime.UtcNow,
+                        ProfileImage = "/images/patients/luke_skywalker.png",
+                        Password = passwordHasher.HashPassword(null, "Luke123")
+                    },
+                    new Patient
+                    {
+                        //PatientID = Guid.NewGuid().ToString(),
+                        FirstName = "Anakin",
+                        LastName = "Skywalker",
+                        DateOfBirth = new DateTime(1955, 1, 15),
+                        Gender = "Male",
+                        ContactNumber = "9876543212",
+                        Email = "anakin.s@republic.gov",
+                        Address = "789 Jedi Temple, Coruscant",
+                        EmergencyContactName = "Padmé Amidala",
+                        EmergencyContactNumber = "9876533333",
+                          BloodGroup = "O-ve",
+                        RegistrationDate = DateTime.UtcNow,
+                        ProfileImage = "/images/patients/anakin_skywalker.png",
+                        Password = passwordHasher.HashPassword(null, "Anakin123")
+                    },
+                    new Patient
+                    {
+                        //PatientID = Guid.NewGuid().ToString(),
+                        FirstName = "Padmé",
+                        LastName = "Amidala",
+                        DateOfBirth = new DateTime(1975, 11, 20),
+                        Gender = "Female",
+                        ContactNumber = "9876543213",
+                        Email = "padme.a@naboo.gov",
+                        Address = "101 Royal Palace, Theed, Naboo",
+                        EmergencyContactName = "Captain Typho",
+                        EmergencyContactNumber = "9876544444",
+                          BloodGroup = "B+ve",
+                        RegistrationDate = DateTime.UtcNow,
+                        ProfileImage = "/images/patients/padme_amidala.png",
+                        Password = passwordHasher.HashPassword(null, "Padme123")
+                    },
+                    new Patient
+                    {
+                        //PatientID = Guid.NewGuid().ToString(),
+                        FirstName = "Han",
+                        LastName = "Solo",
+                        DateOfBirth = new DateTime(1970, 7, 3),
+                        Gender = "Male",
+                        ContactNumber = "9876543214",
+                        Email = "han.solo@falcon.net",
+                        Address = "Docking Bay 94, Mos Eisley",
+                        EmergencyContactName = "Chewbacca",
+                        EmergencyContactNumber = "9876555555",
+                          BloodGroup = "A1+ve",
+                        RegistrationDate = DateTime.UtcNow,
+                        ProfileImage = "/images/patients/han_solo.png",
+                        Password = passwordHasher.HashPassword(null, "Han123")
+                    },
+                };
 
                 context.Patients.AddRange(patients);
 
+                #endregion
+
+
+                #region Seeding Diseases Data
                 // Seeding 'Diseases' Table
 
                 var diseases = new List<Disease>
-{
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Hypertension",
-        DiseaseDescription = "A condition in which the force of the blood against the artery walls is consistently too high."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Type 2 Diabetes",
-        DiseaseDescription = "A chronic condition that affects the way the body metabolizes sugar (glucose), its main source of fuel."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Asthma",
-        DiseaseDescription = "A respiratory condition where airways narrow and swell and may produce extra mucus, making breathing difficult."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Coronary Artery Disease",
-        DiseaseDescription = "Damage or disease in the heart's major blood vessels, typically caused by a buildup of plaque."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Migraine",
-        DiseaseDescription = "A type of headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Gastroesophageal Reflux Disease (GERD)",
-        DiseaseDescription = "A digestive disorder that affects the ring of muscle between the esophagus and stomach, causing acid reflux."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Major Depressive Disorder",
-        DiseaseDescription = "A mood disorder causing a persistent feeling of sadness and loss of interest."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Osteoarthritis",
-        DiseaseDescription = "The most common form of arthritis, occurring when the protective cartilage that cushions the ends of bones wears down over time."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Chronic Kidney Disease (CKD)",
-        DiseaseDescription = "A condition characterized by a gradual loss of kidney function over time."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Allergic Rhinitis",
-        DiseaseDescription = "An allergic response causing itchy, watery eyes, sneezing, and other similar symptoms, commonly known as hay fever."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Hypothyroidism",
-        DiseaseDescription = "A condition in which the thyroid gland doesn't produce enough of certain crucial hormones."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Iron Deficiency Anemia",
-        DiseaseDescription = "A condition in which blood lacks adequate healthy red blood cells due to insufficient iron."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Insomnia",
-        DiseaseDescription = "A common sleep disorder that can make it hard to fall asleep, hard to stay asleep, or cause you to wake up too early."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Influenza",
-        DiseaseDescription = "A viral infection that attacks your respiratory system — your nose, throat and lungs."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Pneumonia",
-       DiseaseDescription = "An infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Acne Vulgaris",
-        DiseaseDescription = "A common skin condition that occurs when hair follicles become plugged with oil and dead skin cells."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Eczema (Atopic Dermatitis)",
-        DiseaseDescription = "A condition that causes dry, itchy and inflamed skin. It's common in young children but can occur at any age."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Gout",
-        DiseaseDescription = "A common and complex form of arthritis characterized by sudden, severe attacks of pain, swelling, and redness in the joints."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Urinary Tract Infection (UTI)",
-        DiseaseDescription = "An infection in any part of the urinary system, the kidneys, bladder, or urethra."
-    },
-    new Disease
-    {
-        DiseaseId = Guid.NewGuid().ToString(),
-        DiseaseName = "Glaucoma",
-        DiseaseDescription = "A group of eye conditions that damage the optic nerve, the health of which is vital for good vision."
-    }
-};
+                {
+                    new Disease
+                    {
+                        DiseaseName = "Hypertension",
+                        DiseaseDescription = "A condition in which the force of the blood against the artery walls is consistently too high."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Type 2 Diabetes",
+                        DiseaseDescription = "A chronic condition that affects the way the body metabolizes sugar (glucose), its main source of fuel."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Asthma",
+                        DiseaseDescription = "A respiratory condition where airways narrow and swell and may produce extra mucus, making breathing difficult."
+                    },
+                    new Disease
+                    {
+       
+                        DiseaseName = "Coronary Artery Disease",
+                        DiseaseDescription = "Damage or disease in the heart's major blood vessels, typically caused by a buildup of plaque."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Migraine",
+                        DiseaseDescription = "A type of headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Gastroesophageal Reflux Disease (GERD)",
+                        DiseaseDescription = "A digestive disorder that affects the ring of muscle between the esophagus and stomach, causing acid reflux."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Major Depressive Disorder",
+                        DiseaseDescription = "A mood disorder causing a persistent feeling of sadness and loss of interest."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Osteoarthritis",
+                        DiseaseDescription = "The most common form of arthritis, occurring when the protective cartilage that cushions the ends of bones wears down over time."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Chronic Kidney Disease (CKD)",
+                        DiseaseDescription = "A condition characterized by a gradual loss of kidney function over time."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Allergic Rhinitis",
+                        DiseaseDescription = "An allergic response causing itchy, watery eyes, sneezing, and other similar symptoms, commonly known as hay fever."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Hypothyroidism",
+                        DiseaseDescription = "A condition in which the thyroid gland doesn't produce enough of certain crucial hormones."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Iron Deficiency Anemia",
+                        DiseaseDescription = "A condition in which blood lacks adequate healthy red blood cells due to insufficient iron."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Insomnia",
+                        DiseaseDescription = "A condition in a person is incapable of falling asleep."
+                    },
+                    new Disease
+                    {
+       
+                        DiseaseName = "Influenza",
+                        DiseaseDescription = "A viral infection that attacks your respiratory system — your nose, throat and lungs."
+                    },
+                    new Disease
+                    {
+       
+                        DiseaseName = "Pneumonia",
+                       DiseaseDescription = "An infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus."
+                    },
+                    new Disease
+                    {
+       
+                        DiseaseName = "Acne Vulgaris",
+                        DiseaseDescription = "A common skin condition that occurs when hair follicles become plugged with oil and dead skin cells."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Eczema (Atopic Dermatitis)",
+                        DiseaseDescription = "A condition that causes dry, itchy and inflamed skin. It's common in young children but can occur at any age."
+                    },
+                    new Disease
+                    {
+        
+                        DiseaseName = "Gout",
+                        DiseaseDescription = "A common and complex form of arthritis characterized by sudden, severe attacks of pain, swelling, and redness in the joints."
+                    },
+                    new Disease
+                    {
+       
+                        DiseaseName = "Urinary Tract Infection (UTI)",
+                        DiseaseDescription = "An infection in any part of the urinary system, the kidneys, bladder, or urethra."
+                    },
+                    new Disease
+                    {
+       
+                        DiseaseName = "Glaucoma",
+                        DiseaseDescription = "A group of eye conditions that damage the optic nerve, the health of which is vital for good vision."
+                    }
+                };
 
                 context.Diseases.AddRange(diseases);
 
+                #endregion
+
+
                 context.SaveChanges();
 
+
+                #region Seeding PatientDoctorMapper Data
                 // Seeding 'PatientDoctorMappers' Table
                 // ------------------------------------
-                // Randomly 5 doctors are chosen to be personlized doctors for all patients in the DB.
+                // Randomly 3 doctors are chosen to be personlized doctors for all patients in the DB.
 
-                var selectedPersonalizedDoctors = doctors.OrderBy(d => Guid.NewGuid()).Take(5).ToList();
+                var selectedPersonalizedDoctors = doctors.OrderBy(d => d.FirstName).Take(3).ToList();
 
                 var patientDoctorMaps = new List<PatientDoctorMapper>();
 
@@ -804,6 +368,10 @@ namespace Patient_Monitoring.Data
 
                 context.PatientDoctorMapper.AddRange(patientDoctorMaps);
 
+                #endregion
+
+
+                #region Seeding DoctorAvailability Data
                 // Seeding 'DoctorAvailabilties' Table
                 // -----------------------------------
                 // 4 Shift Patterns are defined. Each doctor may work 5 days or 6 days (by including Saturday)
@@ -812,12 +380,12 @@ namespace Patient_Monitoring.Data
                 var doctorAvailabilities = new List<DoctorAvailability>();
 
                 var shiftPatterns = new List<(TimeSpan StartTime, TimeSpan EndTime)>
-    {
-        (new TimeSpan(9, 0, 0), new TimeSpan(17, 0, 0)),   // 9:00 AM - 5:00 PM
-        (new TimeSpan(8, 30, 0), new TimeSpan(16, 30, 0)),  // 8:30 AM - 4:30 PM
-        (new TimeSpan(10, 0, 0), new TimeSpan(18, 0, 0)),  // 10:00 AM - 6:00 PM
-        (new TimeSpan(9, 0, 0), new TimeSpan(13, 0, 0))    // 09:00 AM - 1:00 PM
-    };
+                {
+                    (new TimeSpan(9, 0, 0), new TimeSpan(17, 0, 0)),   // 9:00 AM - 5:00 PM
+                    (new TimeSpan(8, 30, 0), new TimeSpan(16, 30, 0)),  // 8:30 AM - 4:30 PM
+                    (new TimeSpan(10, 0, 0), new TimeSpan(18, 0, 0)),  // 10:00 AM - 6:00 PM
+                    (new TimeSpan(9, 0, 0), new TimeSpan(13, 0, 0))    // 09:00 AM - 1:00 PM
+                };
 
                 foreach (var doctor in doctors)
                 {
@@ -844,6 +412,11 @@ namespace Patient_Monitoring.Data
 
                 context.DoctorAvailabilities.AddRange(doctorAvailabilities);
 
+                #endregion
+
+
+                #region Seeding DoctorTimeOff Data
+
                 // Seeding 'DoctorTimeOff' Table
                 // ---------------------------------
                 // We will assign leaves to doctors for next week (for ease of showcasing using postman)
@@ -859,7 +432,7 @@ namespace Patient_Monitoring.Data
                 daysUntilMonday = daysUntilMonday == 0 ? 7 : daysUntilMonday;
                 var targetDay = today.AddDays(daysUntilMonday);
 
-                var doctorsOnLeave = doctors.OrderBy(d => Guid.NewGuid()).Take(4).ToList();
+                var doctorsOnLeave = doctors.OrderBy(d => d.Education).Take(2).ToList();
                 foreach (var leaveDoctor in doctorsOnLeave)
                 {
                     var leaveDayAvailability = doctorAvailabilities
@@ -880,20 +453,23 @@ namespace Patient_Monitoring.Data
 
                 context.DoctorTimeOffs.AddRange(doctorTimeOffs);
 
+                #endregion
 
+
+                #region Seeding AppointmentSlots Data
                 // Seeding 'AppointmentSlots' Table
                 // --------------------------------
-                // Here dummy appointment slots will be created for 6 days starting next monday.
+                // Here dummy appointment slots will be created for 8 days starting today, except Saturday & Sunday
                 // Each slot will be of 20 minutes and will respect the doctor availability schedule and
                 // break times (which is assumed to be fixed at 11:00 AM - 11:20 AM and 4:00 PM - 4:20 PM).
 
                 var appointmentSlots = new List<AppointmentSlot>();
                 var slotDuration = TimeSpan.FromMinutes(20);
-                var endDate = targetDay.AddDays(6);
+                var endDate = targetDay.AddDays(8);
 
                 foreach (var doctor in doctors)
                 {
-                    for (var day = targetDay.Date; day < endDate.Date; day = day.AddDays(1))
+                    for (var day = today; day < endDate.Date; day = day.AddDays(1))
                     {
                         var availability = doctorAvailabilities.FirstOrDefault(a =>
                             a.DoctorId == doctor.DoctorId &&
@@ -935,17 +511,19 @@ namespace Patient_Monitoring.Data
 
                 context.AppointmentSlots.AddRange(appointmentSlots);
 
+                #endregion
 
 
+                #region Seeding WellnessPlan Data
                 // Seeding 'WellnessPlan' Table
                 // ----------------------------
-                // Here we are creating 5 template plans & 4 general plans & 15 Custom plans.
+                // Here we are creating 5 template plans & 4 general plans & 8 Custom plans.
 
                 var wellnessPlans = new List<WellnessPlan>();
 
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "DASH Diet Template",
                     Goal = "Blueprint for Lowering BP",
                     ImageUrl = "/images/wellness/template_diet.png",
@@ -955,7 +533,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Cardio Start Template",
                     Goal = "Blueprint for Heart Health",
                     ImageUrl = "/images/wellness/template_cardio.png",
@@ -965,7 +543,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Stress Relief Templ.",
                     Goal = "Blueprint for Mindfulness",
                     ImageUrl = "/images/wellness/template_mindfulness.png",
@@ -975,7 +553,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Strength Base Templ.",
                     Goal = "Blueprint for Muscle Gain",
                     ImageUrl = "/images/wellness/template_strength.png",
@@ -985,7 +563,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Post-Op Recovery T.",
                     Goal = "Blueprint for Healing",
                     ImageUrl = "/images/wellness/template_recovery.png",
@@ -996,7 +574,7 @@ namespace Patient_Monitoring.Data
 
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Hydration Challenge",
                     Goal = "Drink 8 Glasses of Water Daily",
                     ImageUrl = "/images/wellness/general_hydration.png",
@@ -1006,7 +584,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                   
                     PlanName = "Sleep Hygiene Basics",
                     Goal = "Achieve 7-8 Hours of Sleep",
                     ImageUrl = "/images/wellness/general_sleep.png",
@@ -1016,7 +594,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Daily Stretching",
                     Goal = "Improve Flexibility",
                     ImageUrl = "/images/wellness/general_stretching.png",
@@ -1026,7 +604,7 @@ namespace Patient_Monitoring.Data
                 });
                 wellnessPlans.Add(new WellnessPlan
                 {
-                    PlanId = Guid.NewGuid().ToString(),
+                    
                     PlanName = "Balanced Plate Guide",
                     Goal = "Eat a Balanced Meal",
                     ImageUrl = "/images/wellness/general_diet.png",
@@ -1040,14 +618,13 @@ namespace Patient_Monitoring.Data
                 //var customPlanAuthors = doctors.OrderBy(d => Guid.NewGuid()).Take(8).ToList();
                 var categories = new[] { "Diet", "Exercise", "Recovery", "Mental Wellness" };
 
-                for (int i = 0; i < 11; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     var author = customPlanAuthors[random.Next(customPlanAuthors.Count)];
                     var category = categories[random.Next(categories.Length)];
 
                     wellnessPlans.Add(new WellnessPlan
                     {
-                        PlanId = Guid.NewGuid().ToString(),
                         PlanName = $"Flu Recovery #{i + 1}",
                         Goal = $"Regain strength after illness",
                         ImageUrl = $"/images/wellness/custom_plan_{i + 1}.png",
@@ -1059,8 +636,13 @@ namespace Patient_Monitoring.Data
 
                 context.WellnessPlans.AddRange(wellnessPlans);
 
+                #endregion
+
+
                 context.SaveChanges();
 
+
+                #region Seeding Appointment Data
                 // Seed 'Appointment' Table
                 // Here we have some pre-defined appointment reasons and rejection reasons. We first find
                 // all slots that are booked. For each booked slot we create an appointment which could take
@@ -1070,15 +652,16 @@ namespace Patient_Monitoring.Data
                 var appointments = new List<Appointment>();
 
                 var appointmentReasons = new[] {
-        "Annual physical checkup", "Follow-up on recent test results", "Persistent headache and fatigue",
-        "Request for prescription renewal", "Consultation for a recurring skin rash", "Seasonal allergy symptoms",
-        "General wellness consultation", "Minor injury assessment"
-    };
+                    "Annual physical checkup", "Follow-up on recent test results", "Persistent headache and fatigue",
+                    "Request for prescription renewal", "Consultation for a recurring skin rash", "Seasonal allergy symptoms",
+                    "General wellness consultation", "Minor injury assessment"
+                };
+
                 var rejectionReasons = new[] {
-        "Doctor has an emergency. Please reschedule for a later date.",
-        "This concern requires a specialist. Please book an appointment with Cardiology.",
-        "The doctor suggests a video consultation instead. Please re-book accordingly."
-    };
+                    "Doctor has an emergency. Please reschedule for a later date.",
+                    "This concern requires a specialist. Please book an appointment with Cardiology.",
+                    "The doctor suggests a video consultation instead. Please re-book accordingly."
+                };
 
                 foreach (var slot in bookedSlots)
                 {
@@ -1104,20 +687,23 @@ namespace Patient_Monitoring.Data
 
                     appointments.Add(new Appointment
                     {
-                        AppointmentId = Guid.NewGuid().ToString(),
                         PatientId = patient.PatientId,
                         DoctorId = slot.DoctorId,
                         AppointmentDate = slot.StartDateTime,
                         Reason = appointmentReasons[random.Next(appointmentReasons.Length)],
                         SlotId = slot.SlotId,
                         Status = status,
-                        RejectionReason = rejectionReason
+                        RejectionReason = rejectionReason,
+                        RequestedOn = DateTime.Now.AddDays(-random.Next(15))
                     });
                 }
 
                 context.Appointments.AddRange(appointments);
 
+                #endregion
 
+
+                #region Seeding WellnessPlanDetails
                 // Seeding 'WellnessPlanDetails' Table
                 // ------------------------------------
                 // Details are fed in for plans that are templates or general plans. We have some pre-defined
@@ -1140,7 +726,7 @@ namespace Patient_Monitoring.Data
 
                     wellnessPlanDetails.Add(new WellnessPlanDetail
                     {
-                        DetailId = Guid.NewGuid().ToString(),
+                        
                         PlanId = plan.PlanId,
                         DetailType = "Description",
                         Content = $"A comprehensive plan designed to help you achieve your goal of '{plan.Goal}'. {generalDescription}"
@@ -1152,7 +738,7 @@ namespace Patient_Monitoring.Data
                     {
                         wellnessPlanDetails.Add(new WellnessPlanDetail
                         {
-                            DetailId = Guid.NewGuid().ToString(),
+                            
                             PlanId = plan.PlanId,
                             DetailType = "Instruction",
                             Content = dietInstructions[random.Next(dietInstructions.Length)]
@@ -1164,7 +750,7 @@ namespace Patient_Monitoring.Data
                     {
                         wellnessPlanDetails.Add(new WellnessPlanDetail
                         {
-                            DetailId = Guid.NewGuid().ToString(),
+                            
                             PlanId = plan.PlanId,
                             DetailType = "Benefit",
                             Content = exerciseBenefits[random.Next(exerciseBenefits.Length)]
@@ -1176,7 +762,7 @@ namespace Patient_Monitoring.Data
                     {
                         wellnessPlanDetails.Add(new WellnessPlanDetail
                         {
-                            DetailId = Guid.NewGuid().ToString(),
+                           
                             PlanId = plan.PlanId,
                             DetailType = "Safety",
                             Content = mentalWellnessSafety[random.Next(mentalWellnessSafety.Length)]
@@ -1186,16 +772,21 @@ namespace Patient_Monitoring.Data
 
                 context.WellnessPlanDetails.AddRange(wellnessPlanDetails);
 
+                #endregion
 
+
+                #region Seeding PatientPlanAssignment Data
                 // Seeding 'PatientPlanAssignment' Table
                 // -------------------------------------
                 // Here we are assigning every custom plans to one of the authoring doctor's patient.
-                // And we are randomly picking 2 template plans to be assigned to 3 random patients
+                // And we are randomly picking 2 template plans to be assigned to  random patients
                 // from the PatientDoctorMapper table.
 
                 var patientPlanAssignments = new List<PatientPlanAssignment>();
 
                 var customPlans = wellnessPlans.Where(p => p.CreatedByDoctorId != null).ToList();
+
+                var frequencyUnits = new[] { "Daily", "Weekly", "Monthly" };
 
                 foreach (var plan in customPlans)
                 {
@@ -1209,12 +800,12 @@ namespace Patient_Monitoring.Data
 
                         patientPlanAssignments.Add(new PatientPlanAssignment
                         {
-                            AssignmentId = Guid.NewGuid().ToString(),
+                            
                             PatientId = patientToAssign.PatientId,
                             PlanId = plan.PlanId,
                             AssignedByDoctorId = plan.CreatedByDoctorId!, // The author is also the first assigner.
-                            FrequencyCount = 1,
-                            FrequencyUnit = "Daily",
+                            FrequencyCount = random.Next(1,4),
+                            FrequencyUnit = frequencyUnits[random.Next(frequencyUnits.Length)],
                             StartDate = DateTime.Today,
                             EndDate = DateTime.Today.AddMonths(3),
                             IsActive = true
@@ -1222,7 +813,7 @@ namespace Patient_Monitoring.Data
                     }
                 }
 
-                var templatePlans = wellnessPlans.Where(p => p.CreatedByDoctorId == null && p.IsTemplate).OrderBy(p => Guid.NewGuid()).Take(2).ToList();
+                var templatePlans = wellnessPlans.Where(p => p.CreatedByDoctorId == null && p.IsTemplate).OrderBy(p => p.Category).Take(2).ToList();
 
                 foreach (var plan in templatePlans)
                 {
@@ -1234,12 +825,12 @@ namespace Patient_Monitoring.Data
 
                         patientPlanAssignments.Add(new PatientPlanAssignment
                         {
-                            AssignmentId = Guid.NewGuid().ToString(),
+                            
                             PatientId = patient,
                             PlanId = plan.PlanId,
                             AssignedByDoctorId = assigner!.DoctorId,
-                            FrequencyCount = 1,
-                            FrequencyUnit = "Daily",
+                            FrequencyCount = random.Next(1, 4),
+                            FrequencyUnit = frequencyUnits[random.Next(frequencyUnits.Length)],
                             StartDate = DateTime.Today,
                             EndDate = DateTime.Today.AddMonths(6),
                             IsActive = true
@@ -1249,58 +840,57 @@ namespace Patient_Monitoring.Data
 
                 context.PatientPlanAssignments.AddRange(patientPlanAssignments);
 
+                #endregion
 
                 context.SaveChanges();
+
+
+                #region Seeding Prescription Data
 
                 // Seeding 'Prescriptions' Table
                 // -----------------------------
                 // Medication names, dosages and instruction are predefined here. We have randomly chosen
-                // 15 doctors & 8 patients who have records of prescription being assigned by and assigned to.
+                // doctors & patients who have records of prescription being assigned by and assigned to.
                 // The following is defined such that each patient will intake atmost 3 prescription (upper limit
                 // of random is 3)
 
                 var medicationNames = new[] {
-        "Lisinopril", "Atorvastatin", "Metformin", "Amoxicillin", "Amlodipine",
-        "Ibuprofen", "Paracetamol", "Omeprazole", "Sertraline", "Albuterol"
-    };
+                    "Lisinopril", "Atorvastatin", "Metformin", "Amoxicillin", "Amlodipine",
+                    "Ibuprofen", "Paracetamol", "Omeprazole", "Sertraline", "Albuterol"
+                };
+
                 var dosages = new[] { "10mg", "20mg", "40mg", "250mg", "500mg", "5mg", "600mg" };
+
                 var instructions = new[] {
-        "Take one tablet daily in the morning with water.",
-        "Take one tablet twice a day with meals.",
-        "As needed for pain, not to exceed 4 doses in 24 hours.",
-        "Take one capsule every 8 hours for 7 days. Finish all medication.",
-        "Take one tablet 30 minutes before breakfast."
-    };
+                    "Take one tablet daily in the morning with water.",
+                    "Take one tablet twice a day with meals.",
+                    "As needed for pain, not to exceed 4 doses in 24 hours.",
+                    "Take one capsule every 8 hours for 7 days. Finish all medication.",
+                    "Take one tablet 30 minutes before breakfast."
+                };
 
                 var prescriptions = new List<Prescription>();
 
-                // 1. Start with a list of all confirmed appointments.
                 var confirmedAppointments = appointments.Where(a => a.Status == "Confirmed").ToList();
 
-                // 2. Select a random subset of these appointments (e.g., 80%) to generate prescriptions for.
                 var appointmentsWithPrescriptions = confirmedAppointments
-                    .OrderBy(a => Guid.NewGuid())
+                    .OrderBy(a => a.DoctorId)
                     .Take((int)(confirmedAppointments.Count * 0.8))
                     .ToList();
 
-                // 3. Loop through each selected appointment to create its associated prescriptions.
                 foreach (var appointment in appointmentsWithPrescriptions)
                 {
-                    // Each selected appointment will get between 1 and 3 random prescriptions.
                     int numberOfPrescriptions = random.Next(1, 4);
 
                     for (int i = 0; i < numberOfPrescriptions; i++)
                     {
-                        var startDate = appointment.AppointmentDate; // Prescription starts on the appointment day.
+                        var startDate = appointment.AppointmentDate;
 
                         prescriptions.Add(new Prescription
                         {
-                            PrescriptionId = Guid.NewGuid().ToString(),
-                            // All key IDs are now sourced directly from the appointment record.
                             PatientId = appointment.PatientId,
                             PrescribingDoctorId = appointment.DoctorId,
                             AppointmentId = appointment.AppointmentId,
-                            // Randomly select medication details.
                             MedicationName = medicationNames[random.Next(medicationNames.Length)],
                             Dosage = dosages[random.Next(dosages.Length)],
                             Instructions = instructions[random.Next(instructions.Length)],
@@ -1312,7 +902,10 @@ namespace Patient_Monitoring.Data
 
                 context.Prescriptions.AddRange(prescriptions);
 
+                #endregion
 
+
+                #region Seeding Diagnosis Data
 
                 // Seeding 'Diagnosis' Table
                 // --------------------------
@@ -1322,34 +915,32 @@ namespace Patient_Monitoring.Data
                 // (25% Chance) diseases.
 
                 var diagnosisDescriptions = new[] {
-        "Patient presents with classic symptoms. Prescribing medication as per guidelines.",
-        "Initial diagnosis based on physical examination. Recommending further blood tests for confirmation.",
-        "The condition appears to be chronic and stable. Advised to continue the current treatment plan and monitor symptoms.",
-        "Acute onset of symptoms. This requires immediate attention and a follow-up visit next week.",
-        "Mild case identified. Lifestyle and dietary changes are recommended as the first line of treatment."
-    };
+                    "Patient presents with classic symptoms. Prescribing medication as per guidelines.",
+                    "Initial diagnosis based on physical examination. Recommending further blood tests for confirmation.",
+                    "The condition appears to be chronic and stable. Advised to continue the current treatment plan and monitor symptoms.",
+                    "Acute onset of symptoms. This requires immediate attention and a follow-up visit next week.",
+                    "Mild case identified. Lifestyle and dietary changes are recommended as the first line of treatment."
+                };
 
                 var diagnoses = new List<Diagnosis>();
 
                 var confirmedAppointment = appointments.Where(a => a.Status == "Confirmed").ToList();
 
                 var appointmentsToDiagnose = confirmedAppointment
-                    .OrderBy(a => Guid.NewGuid())
+                    .OrderBy(a => a.DoctorId)
                     .Take((int)(confirmedAppointment.Count * 0.8))
                     .ToList();
 
                 foreach (var appointment in appointmentsToDiagnose)
-                {
-
+                { 
                     int numberOfDiagnoses = random.Next(1, 101) <= 75 ? 1 : 2;
 
-                    var selectedDiseases = diseases.OrderBy(d => Guid.NewGuid()).Take(numberOfDiagnoses).ToList();
+                    var selectedDiseases = diseases.OrderBy(d => d.DiseaseName).Take(numberOfDiagnoses).ToList();
 
                     foreach (var disease in selectedDiseases)
                     {
                         diagnoses.Add(new Diagnosis
                         {
-                            DiagnosisId = Guid.NewGuid().ToString(),
                             AppointmentId = appointment.AppointmentId,
                             PatientId = appointment.PatientId,
                             DiseaseId = disease.DiseaseId,
@@ -1360,40 +951,44 @@ namespace Patient_Monitoring.Data
 
                 context.Diagnoses.AddRange(diagnoses);
 
+                #endregion
 
+
+                #region Seeding AssignmentPlanDetails Data
                 // Seeding 'AssignmentPlanDetails' Table
                 // -------------------------------------
 
                 var assignmentPlanDetails = new List<AssignmentPlanDetail>();
 
-                // Create pools of sample content, prefixed to show they are custom overrides.
                 var customInstructions = new[] {
-        "Reduce sodium intake specifically to under 1500mg per day.",
-        "Walk for at least 45 minutes, focusing on maintaining a brisk pace.",
-        "Incorporate the provided resistance bands into your morning stretch routine.",
-        "Ensure you take the supplement with your evening meal, not in the morning."
-    };
+                    "Reduce sodium intake specifically to under 1500mg per day.",
+                    "Walk for at least 45 minutes, focusing on maintaining a brisk pace.",
+                    "Incorporate the provided resistance bands into your morning stretch routine.",
+                    "Ensure you take the supplement with your evening meal, not in the morning."
+                };
+
                 var customBenefits = new[] {
-        "Specifically tailored to improve recovery time for your recent procedure.",
-        "Aims to directly address your LDL cholesterol levels within the next 3 months.",
-        "Helps build foundational strength in your lower back to prevent future strain."
-    };
+                    "Specifically tailored to improve recovery time for your recent procedure.",
+                    "Aims to directly address your LDL cholesterol levels within the next 3 months.",
+                    "Helps build foundational strength in your lower back to prevent future strain."
+                };
+
                 var customSafety = new[] {
-        "Do not exceed a heart rate of 140 bpm during cardio sessions.",
-        "Stop immediately if you feel any sharp pain in your left knee and report it.",
-        "Monitor your blood sugar 30 minutes after each main meal and log the results."
-    };
+                    "Do not exceed a heart rate of 140 bpm during cardio sessions.",
+                    "Stop immediately if you feel any sharp pain in your left knee and report it.",
+                    "Monitor your blood sugar 30 minutes after each main meal and log the results."
+                };
 
 
                 var plans = wellnessPlans.Where(wp => !wp.IsTemplate & wp.CreatedByDoctor != null).Select(wp => wp.PlanId).ToList();
 
-                var assignmentsToCustomize = patientPlanAssignments.Where(p => plans.Contains(p.PlanId)).ToList();
+                var assignmentsToCustomize = patientPlanAssignments.Where(p => p.PlanId.HasValue && plans.Contains(p.PlanId.Value)).ToList();
 
                 foreach (var assignment in assignmentsToCustomize)
                 {
                     assignmentPlanDetails.Add(new AssignmentPlanDetail
                     {
-                        CustomDetailId = Guid.NewGuid().ToString(),
+                        
                         AssignmentId = assignment.AssignmentId,
                         DetailType = "Description",
                         Content = "This is a personalized version of the plan, modified by your doctor to better suit your specific health goals and current condition."
@@ -1404,7 +999,7 @@ namespace Patient_Monitoring.Data
                     {
                         assignmentPlanDetails.Add(new AssignmentPlanDetail
                         {
-                            CustomDetailId = Guid.NewGuid().ToString(),
+                            
                             AssignmentId = assignment.AssignmentId,
                             DetailType = "Instruction",
                             Content = customInstructions[random.Next(customInstructions.Length)]
@@ -1416,7 +1011,7 @@ namespace Patient_Monitoring.Data
                     {
                         assignmentPlanDetails.Add(new AssignmentPlanDetail
                         {
-                            CustomDetailId = Guid.NewGuid().ToString(),
+                            
                             AssignmentId = assignment.AssignmentId,
                             DetailType = "Benefit",
                             Content = customBenefits[random.Next(customBenefits.Length)]
@@ -1428,7 +1023,7 @@ namespace Patient_Monitoring.Data
                     {
                         assignmentPlanDetails.Add(new AssignmentPlanDetail
                         {
-                            CustomDetailId = Guid.NewGuid().ToString(),
+                            
                             AssignmentId = assignment.AssignmentId,
                             DetailType = "Safety",
                             Content = customSafety[random.Next(customSafety.Length)]
@@ -1438,18 +1033,21 @@ namespace Patient_Monitoring.Data
 
                 context.AssignmentPlanDetails.AddRange(assignmentPlanDetails);
 
+                #endregion
 
+
+                #region Seeding TaskLogs Data
                 // Seeding 'TaskLogs' Table
                 // -----------------------------
                 var taskLogs = new List<TaskLog>();
 
                 var patientNotes = new[] {
-        "Felt great today, the routine was easy to follow.",
-        "A bit tired, but managed to complete the task.",
-        "Feeling more energetic since starting this plan.",
-        "Forgot to do this in the morning, but got it done in the evening.",
-        "I think this is really helping."
-    };
+                    "Felt great today, the routine was easy to follow.",
+                    "A bit tired, but managed to complete the task.",
+                    "Feeling more energetic since starting this plan.",
+                    "Forgot to do this in the morning, but got it done in the evening.",
+                    "I think this is really helping."
+                };
 
                 var todayDate = DateTime.Today;
                 var historyStartDate = todayDate.AddMonths(-1);
@@ -1498,11 +1096,11 @@ namespace Patient_Monitoring.Data
                 context.TaskLogs.AddRange(taskLogs);
 
                 // Helper function to create a TaskLog instance. (This remains unchanged)
-                TaskLog CreateTaskLog(string assignmentId, DateTime dueDate, string status, DateTime? completedAt, string? note)
+                TaskLog CreateTaskLog(int assignmentId, DateTime dueDate, string status, DateTime? completedAt, string? note)
                 {
                     return new TaskLog
                     {
-                        LogId = Guid.NewGuid().ToString(),
+                       
                         AssignmentId = assignmentId,
                         DueDate = dueDate,
                         Status = status,
@@ -1543,8 +1141,13 @@ namespace Patient_Monitoring.Data
                     }
                 }
 
+                #endregion
+
+
                 context.SaveChanges();
 
+
+                #region Seeding MedicationSchedule Data
                 // Seeding 'MedicationSchedule' Table
                 // ----------------------------------
                 // Here 5 possible times in a day is predefined - times when a patient takes their prescriptions.
@@ -1561,13 +1164,13 @@ namespace Patient_Monitoring.Data
                 {
                     int frequency = random.Next(1, 4);
 
-                    var selectedTimes = timesOfDay.OrderBy(t => Guid.NewGuid()).Take(frequency).ToList();
+                    var selectedTimes = timesOfDay.OrderBy(t => t).Take(frequency).ToList();
 
                     foreach (var time in selectedTimes)
                     {
                         medicationSchedules.Add(new MedicationSchedule
                         {
-                            ScheduleId = Guid.NewGuid().ToString(),
+                            
                             PrescriptionId = prescription.PrescriptionId,
                             TimeOfDay = time,
                             Quantity = commonQuantities[random.Next(commonQuantities.Length)]
@@ -1576,6 +1179,9 @@ namespace Patient_Monitoring.Data
                 }
 
                 context.MedicationSchedules.AddRange(medicationSchedules);
+
+                #endregion
+
 
                 context.SaveChanges();
             }

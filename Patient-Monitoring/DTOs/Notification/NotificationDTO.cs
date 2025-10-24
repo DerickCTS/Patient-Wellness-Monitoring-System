@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Patient_Monitoring.Enums;
 
 namespace Patient_Monitoring.DTOs.Notification
@@ -22,6 +21,6 @@ namespace Patient_Monitoring.DTOs.Notification
         public NotificationType Type { get; set; }
 
         [Required]
-        public required string PatientId { get; set; }
+        public required int PatientId { get; set; }
     }
 }

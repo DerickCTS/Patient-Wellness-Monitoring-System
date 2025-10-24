@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Patient_Monitoring.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
-using Patient_Monitoring.Models;
+
 namespace Patient_Monitoring.Models
 {
     public class Patient
@@ -10,7 +9,7 @@ namespace Patient_Monitoring.Models
 
         [Key]
         [Display(Name = "Patient ID")]
-        public required string PatientId { get; set; } // Primary Key
+        public int PatientId { get; set; } // Primary Key
 
 
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]

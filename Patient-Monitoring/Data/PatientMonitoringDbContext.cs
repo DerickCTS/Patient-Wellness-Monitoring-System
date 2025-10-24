@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Models;
+using System.Composition.Hosting.Core;
 
 namespace Patient_Monitoring.Data
 {
@@ -9,6 +10,7 @@ namespace Patient_Monitoring.Data
         {
         }
 
+ 
 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<WellnessPlan> WellnessPlans { get; set; }
@@ -35,10 +37,10 @@ namespace Patient_Monitoring.Data
         {
 
             modelBuilder.Entity<PatientPlanAssignment>()
-.HasOne(ppa => ppa.AssigningDoctor)
-.WithMany(d => d.PatientPlanAssignments) // Assuming Doctor has a collection named PatientPlanAssignments
-.HasForeignKey(ppa => ppa.AssignedByDoctorId)
-.OnDelete(DeleteBehavior.Restrict);
+             .HasOne(ppa => ppa.AssigningDoctor)
+             .WithMany(d => d.PatientPlanAssignments) // Assuming Doctor has a collection named PatientPlanAssignments
+             .HasForeignKey(ppa => ppa.AssignedByDoctorId)
+             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Diagnosis>()
                 .HasOne(d => d.Patient)
@@ -57,12 +59,18 @@ namespace Patient_Monitoring.Data
                 .WithMany(p => p.Prescriptions)
                 .HasForeignKey(p => p.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Doctor)
+                .WithMany(d => d.Appointments)
+                .HasForeignKey(a => a.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+              
         }
 
     }
 
 }
-
 
 
 

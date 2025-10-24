@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +10,7 @@ namespace Patient_Monitoring.Models
     {
         [Key]
         [DisplayName("Plan Id")]
-        public required string PlanId { get; set; }
+        public int PlanId { get; set; }
 
 
         [Required]
@@ -29,18 +29,17 @@ namespace Patient_Monitoring.Models
         [DataType(DataType.Url)]
         public required string ImageUrl { get; set; }
 
-
         [Required]
         [StringLength(30)]
         public required string Category { get; set; }
 
-        [Required]
+
         [Display(Name = "Is Template")]
-        public required bool IsTemplate { get; set; }
+        public bool IsTemplate { get; set; }
 
 
         [DisplayName("Created By")]
-        public string? CreatedByDoctorId { get; set; }
+        public int? CreatedByDoctorId { get; set; }
 
 
         public ICollection<WellnessPlanDetail>? WellnessPlanDetails { get; set; }

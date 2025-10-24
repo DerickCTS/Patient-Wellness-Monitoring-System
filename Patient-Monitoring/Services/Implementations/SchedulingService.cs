@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Patient_Monitoring.Data;
 using Patient_Monitoring.Models;
+using Patient_Monitoring.Services.Interfaces;
 
-namespace Patient_Monitoring.Services
+namespace Patient_Monitoring.Services.Implementations
 {
-    public class SchedulingService
+    public class SchedulingService 
     {
         private readonly PatientMonitoringDbContext _context;
 
@@ -26,7 +27,7 @@ namespace Patient_Monitoring.Services
             }
         }
 
-        private async Task GenerateSlotsForDoctor(string doctorId, DateTime start, DateTime end)
+        private async Task GenerateSlotsForDoctor(int doctorId, DateTime start, DateTime end)
         {
             var availabilities = await _context.DoctorAvailabilities
                                                 .Where(da => da.DoctorId == doctorId)

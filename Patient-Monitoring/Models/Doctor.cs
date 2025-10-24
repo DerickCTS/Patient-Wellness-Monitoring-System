@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Permissions;
 
-
 namespace Patient_Monitoring.Models
 {
     public class Doctor
@@ -10,7 +9,7 @@ namespace Patient_Monitoring.Models
         [Required]
         [Display(Name = "Doctor ID")]
         [Key]
-        public required string DoctorId { get; set; }
+        public int DoctorId { get; set; }
 
 
         [Required]
@@ -70,11 +69,10 @@ namespace Patient_Monitoring.Models
         public ICollection<Prescription>? PrescribedMedications { get; set; }
 
         public ICollection<WellnessPlan>? FormulatedWellnessPlans { get; set; }
-
         public ICollection<PatientPlanAssignment>? PatientPlanAssignments { get; set; }
 
         public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; } = null!;
 
-        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; } = null!;
+        public ICollection<DoctorTimeOff>? DoctorTimeOffs { get; set; }
     }
 }

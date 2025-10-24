@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
+
 namespace Patient_Monitoring.Models
 {
     public class MedicationSchedule
@@ -9,11 +10,11 @@ namespace Patient_Monitoring.Models
         [Key]
         [Display(Name = "Schedule ID")]
         [Required]
-        public required string ScheduleId { get; set; }
+        public int ScheduleId { get; set; }
 
         [Required]
         [Display(Name = "Prescription ID")]
-        public required string PrescriptionId { get; set; } // FK to Prescriptions table
+        public required int PrescriptionId { get; set; } // FK to Prescriptions table
 
         [Required]
         [MaxLength(20)]

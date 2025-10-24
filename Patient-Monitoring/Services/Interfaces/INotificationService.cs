@@ -1,7 +1,7 @@
 ﻿using Patient_Monitoring.DTOs.Notification;
 using Patient_Monitoring.Models;
 
-namespace Patient_Monitoring.Services
+namespace Patient_Monitoring.Services.Interfaces
 {
     /// <summary>
     /// Interface for notification business logic.
@@ -10,7 +10,7 @@ namespace Patient_Monitoring.Services
     {
         Task ScheduleNotificationAsync(NotificationDTO dto);
         Task SendNotificationAsync(NotificationDTO dto);
-        Task<IEnumerable<Notification>> GetNotificationsAsync(string patientId);
+        Task<IEnumerable<Notification>> GetNotificationsAsync(int patientId);
         Task<Notification?> GetByIdAsync(int id);
         Task MarkAsReadAsync(int id);
         Task MarkAsTakenAsync(int id);

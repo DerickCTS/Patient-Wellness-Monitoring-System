@@ -8,17 +8,17 @@ namespace Patient_Monitoring.Models
         [Key]
         [Required]
         [Display(Name = "Appointment ID")]
-        public required string AppointmentId { get; set; }
+        public int AppointmentId { get; set; }
 
 
         [Required]
         [Display(Name = "Patient ID")]
-        public required string PatientId { get; set; }
+        public required int PatientId { get; set; }
 
 
         [Required]
         [Display(Name = "Doctor ID")]
-        public required string DoctorId { get; set; }
+        public required int DoctorId { get; set; }
 
 
         [Required]
@@ -26,29 +26,39 @@ namespace Patient_Monitoring.Models
         [Display(Name = "Appointment Date & Time")]
         public DateTime AppointmentDate { get; set; }
 
-
+        
         [Required]
         [StringLength(1000, ErrorMessage = "Reason cannot exceed 1000 characters.")]
         public required string Reason { get; set; }
 
 
+        //[StringLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
+        //public string? Notes { get; set; } // Nullable for optional notes
+
         [Required]
         [Display(Name = "Slot ID")]
-        public int SlotId { get; set; }
+        public int? SlotId { get; set; }
 
 
-        // 3. Status for approval workflow: 'Pending Approval', 'Confirmed', 'Rejected', etc.
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Requested On")]
+        public required DateTime RequestedOn { get; set; }
+
+
         [Required]
         [StringLength(100)]
-        public string Status { get; set; } = "Pending Approval";
-
+        public required string Status { get; set; } = "Pending Approval";
+        
 
         [StringLength(1000, ErrorMessage = "Rejection reason cannot exceed 1000 characters.")]
         [Display(Name = "Rejection Reason")]
         public string? RejectionReason { get; set; }
 
+
         [ForeignKey("SlotId")]
         public AppointmentSlot? AppointmentSlot { get; set; }
+        public ICollection<Prescription>? Prescriptions { get; set; }
         public ICollection<Diagnosis> Diagnoses { get; set; } = null!;
         public Patient Patient { get; set; } = null!;
         public Doctor Doctor { get; set; } = null!;

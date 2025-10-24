@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Numerics;
 
 namespace Patient_Monitoring.Models
 {
@@ -14,7 +12,7 @@ namespace Patient_Monitoring.Models
 
         [Required]
         [Display(Name = "Doctor ID")]
-        public required string DoctorId { get; set; } // Foreign Key to Doctor
+        public required int DoctorId { get; set; } // Foreign Key to Doctor
 
 
         [Required]
