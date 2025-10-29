@@ -1,4 +1,5 @@
-﻿namespace Patient_Monitoring.DTOs
+﻿
+namespace Patient_Monitoring.DTOs
 {
     public class AppointmentBookingDto
     {

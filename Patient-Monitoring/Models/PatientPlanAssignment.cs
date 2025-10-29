@@ -52,7 +52,7 @@ namespace Patient_Monitoring.Models
 
 
         [Required]
-        [DisplayName("Patient Id")]
+        [DisplayName("Is Active")]
         public bool IsActive { get; set; }
 
 
