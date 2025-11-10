@@ -59,7 +59,7 @@ namespace Patient_Monitoring.Jobs
                         PatientId = m.Prescription.PatientId,
                         Title = "Medicine Reminder",
                         Message = $"Take {m.Quantity} units of {m.Prescription.MedicationName} ({m.TimeOfDay})",
-                        Type = NotificationType.MedicineReminder,
+                        Type = NotificationType.Medication,
                         ScheduledAt = DateTime.Now
                     };
 
@@ -86,7 +86,7 @@ namespace Patient_Monitoring.Jobs
                     PatientId = a.PatientId,
                     Title = "Appointment Reminder",
                     Message = $"You have an appointment scheduled tomorrow. Reason: {a.Reason}",
-                    Type = NotificationType.AppointmentReminder,
+                    Type = NotificationType.Appointment,
                     ScheduledAt = DateTime.Now
                 };
 
@@ -124,7 +124,7 @@ namespace Patient_Monitoring.Jobs
                         PatientId = assignment.PatientId,
                         Title = "Today's Wellness Activity",
                         Message = $"Activity: {detail.Content} (Plan: {assignment.AssignedWellnessPlan.PlanName})",
-                        Type = NotificationType.DailyScheduleSummary,
+                        Type = NotificationType.WellnessActivity,
                         ScheduledAt = DateTime.Now
                     };
 

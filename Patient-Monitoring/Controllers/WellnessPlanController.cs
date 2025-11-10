@@ -9,7 +9,7 @@ namespace Patient_Monitoring.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Patient")]
+    //[Authorize(Roles = "Doctor")]
     public class WellnessPlanController : ControllerBase
     {
         private readonly IWellnessPlanService _service;

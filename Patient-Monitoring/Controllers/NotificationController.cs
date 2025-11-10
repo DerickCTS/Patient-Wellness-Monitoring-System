@@ -7,7 +7,7 @@ namespace Patient_Monitoring.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Patient")]
+    //[Authorize(Roles = "Patient")]
     public class NotificationController(INotificationService service) : ControllerBase
     {
         private readonly INotificationService _service = service;

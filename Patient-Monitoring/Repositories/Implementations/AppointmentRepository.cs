@@ -65,25 +65,18 @@ namespace Patient_Monitoring.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
         /// <summary>
         /// Retrieves the highest sequential Appointment ID (e.g., A109) from the database.
         /// </summary>
         public async Task<int> GetLastSequentialAppointmentIdAsync()
         {
-            //// Step 1: Filter to get all AppointmentIDs that start with 'A'. (SQL translation is easy)
-            //var sequentialIds = await _context.Appointments
-            //    .Select(a => a.AppointmentId)
-            //    .Where(id => id.StartsWith("A"))
-            //    .ToListAsync(); // <-- Query executed here, bringing IDs into memory
-
-            //// Step 2: Now that data is in memory, use C# logic to find the highest valid sequential ID.
-            //return sequentialIds
-            //    .Where(id => id.Length > 1 && id.Skip(1).All(char.IsDigit))
-            //    .OrderByDescending(id => int.Parse(id.Substring(1))) // Order by the numeric part
-            //    .FirstOrDefault();
-
             var maxId = await _context.Appointments
-                            .MaxAsync(a => a.AppointmentId);
+                             .MaxAsync(a => a.AppointmentId);
 
             return maxId;
         }
@@ -94,10 +87,13 @@ namespace Patient_Monitoring.Repositories.Implementations
             await _context.Appointments.AddAsync(appointment);
         }
 
-        public async Task UpdateAppointmentSlot(AppointmentSlot slot)
+        /// <summary>
+        /// Updates an appointment slot state without calling SaveChanges,
+        /// relying on the calling service layer's transaction to commit.
+        /// </summary>
+        public void UpdateAppointmentSlot(AppointmentSlot slot) // MODIFIED: Changed to void, removed SaveChangesAsync
         {
             _context.AppointmentSlots.Update(slot);
-            await _context.SaveChangesAsync();
         }
 
         public void UpdateAppointment(Appointment appointment)
@@ -105,10 +101,6 @@ namespace Patient_Monitoring.Repositories.Implementations
             _context.Appointments.Update(appointment);
         }
 
-        public void SaveChanges() 
-        {             
-            _context.SaveChanges();
-        }
         // ============================ METRICS/SCHEDULE QUERIES ============================
         public Task<int> CountAppointmentsAsync(Expression<Func<Appointment, bool>> predicate)
         {
@@ -131,6 +123,15 @@ namespace Patient_Monitoring.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public async Task<List<Appointment>> GetUpcomingAppointmentDetailsByDate(DateTime date, int doctorId)
+        {
+            return await _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.AppointmentSlot)
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Date == date)
+                .ToListAsync();
+        }
+
         // ============================ PATIENT/DOCTOR LISTS ============================
 
         /// <summary>
@@ -141,9 +142,6 @@ namespace Patient_Monitoring.Repositories.Implementations
             return await _context.AppointmentSlots
                 .Where(s => s.DoctorId == doctorId && s.StartDateTime.Date == date.Date)
                 .OrderBy(s => s.StartDateTime)
-                // Assuming navigation properties:
-                // AppointmentSlot has a property named 'Appointment' (1:0 or 1:1)
-                // Appointment has a property named 'Patient' (Foreign Key)
                 .Include(s => s.Appointment)
                     .ThenInclude(a => a.Patient)
                 .ToListAsync();
@@ -153,7 +151,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         {
             return await _context.Appointments
                 .Where(a => a.PatientId == patientId && a.AppointmentDate >= DateTime.Today)
-                .Include(a => a.Doctor) // Assuming a navigation property to Doctor_Details
+                .Include(a => a.Doctor)
                 .OrderBy(a => a.AppointmentDate)
                 .ToListAsync();
         }
@@ -164,7 +162,7 @@ namespace Patient_Monitoring.Repositories.Implementations
                 .Where(a => a.PatientId == patientId &&
                             (a.Status == "Confirmed" || a.Status == "Completed") &&
                             a.AppointmentDate < DateTime.Today)
-                .Include(a => a.Doctor) // Assuming a navigation property
+                .Include(a => a.Doctor)
                 .OrderByDescending(a => a.AppointmentDate)
                 .ToListAsync();
         }
@@ -173,15 +171,13 @@ namespace Patient_Monitoring.Repositories.Implementations
         {
             return await _context.Appointments
                 .Where(a => a.DoctorId == doctorId && a.Status == "Pending Approval")
-                .Include(a => a.Patient) // Assuming a navigation property to Patient_Details
+                .Include(a => a.Patient)
                 .OrderBy(a => a.AppointmentDate)
                 .ToListAsync();
         }
 
         public async Task<List<AppointmentSlot>> GetDoctorSlotsByDateAsync(int doctorId, DateTime date)
         {
-            // Note: This method is less useful for the Schedule API now.
-            // Consider renaming it or replacing its usage with GetDoctorSlotsWithAppointmentDetailsAsync.
             return await _context.AppointmentSlots
                 .Where(s => s.DoctorId == doctorId && s.StartDateTime.Date == date.Date)
                 .OrderBy(s => s.StartDateTime)
@@ -203,6 +199,79 @@ namespace Patient_Monitoring.Repositories.Implementations
         public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync()
         {
             return _context.Database.BeginTransactionAsync();
+        }
+
+        // ====================================================================
+        // NEW: DOCTOR SCHEDULE MANAGEMENT IMPLEMENTATIONS
+        // ====================================================================
+
+        // --- DOCTOR AVAILABILITY (Recurring Schedule) CRUD ---
+
+        public async Task AddDoctorAvailability(DoctorAvailability availability)
+        {
+            await _context.DoctorAvailabilities.AddAsync(availability);
+        }
+
+        public void UpdateDoctorAvailability(DoctorAvailability availability)
+        {
+            _context.DoctorAvailabilities.Update(availability);
+        }
+
+        public Task<DoctorAvailability> GetAvailabilityByIdAsync(int availabilityId)
+        {
+            return _context.DoctorAvailabilities.FirstOrDefaultAsync(a => a.AvailabilityId == availabilityId);
+        }
+
+        public async Task<List<DoctorAvailability>> GetDoctorAvailabilityAsync(int doctorId)
+        {
+            return await _context.DoctorAvailabilities
+                .Where(a => a.DoctorId == doctorId)
+                .OrderBy(a => a.DayOfWeek)
+                .ThenBy(a => a.StartTime)
+                .ToListAsync();
+        }
+
+        public async Task DeleteDoctorAvailability(int availabilityId)
+        {
+            var availability = await _context.DoctorAvailabilities.FindAsync(availabilityId);
+            if (availability != null)
+            {
+                _context.DoctorAvailabilities.Remove(availability);
+            }
+        }
+
+        // --- DOCTOR TIME OFF (Non-Recurring Blocks) CRUD ---
+
+        public async Task AddDoctorTimeOff(DoctorTimeOff timeOff)
+        {
+            await _context.DoctorTimeOffs.AddAsync(timeOff);
+        }
+
+        public void UpdateDoctorTimeOff(DoctorTimeOff timeOff)
+        {
+            _context.DoctorTimeOffs.Update(timeOff);
+        }
+
+        public Task<DoctorTimeOff> GetTimeOffByIdAsync(int timeOffId)
+        {
+            return _context.DoctorTimeOffs.FirstOrDefaultAsync(t => t.TimeOffId == timeOffId);
+        }
+
+        public async Task<List<DoctorTimeOff>> GetDoctorTimeOffAsync(int doctorId)
+        {
+            return await _context.DoctorTimeOffs
+                .Where(t => t.DoctorId == doctorId)
+                .OrderBy(t => t.StartDateTime)
+                .ToListAsync();
+        }
+
+        public async Task DeleteDoctorTimeOff(int timeOffId)
+        {
+            var timeOff = await _context.DoctorTimeOffs.FindAsync(timeOffId);
+            if (timeOff != null)
+            {
+                _context.DoctorTimeOffs.Remove(timeOff);
+            }
         }
     }
 }

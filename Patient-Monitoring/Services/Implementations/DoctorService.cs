@@ -1,10 +1,11 @@
 ﻿
+using Patient_Monitoring.DTOs.DoctorDashboard;
 using Patient_Monitoring.DTOs.WellnessPlan;
 using Patient_Monitoring.Models;
 
 using Patient_Monitoring.Repositories.Interfaces;
 using Patient_Monitoring.Services.Interfaces;
-
+using System.Runtime.CompilerServices;
 
 namespace Patient_Monitoring.Services.Implementations
 {
@@ -12,10 +13,12 @@ namespace Patient_Monitoring.Services.Implementations
 
     {
         private readonly IPatientRepository _patientRepository;
+        private readonly IDoctorRepository _doctorRepo;
 
-        public DoctorService(IPatientRepository patientRepository)
+        public DoctorService(IPatientRepository patientRepository, IDoctorRepository doctorRepository)
         {
             _patientRepository = patientRepository;
+            _doctorRepo = doctorRepository;
         }
 
         #region Search Patient By Name or Id
@@ -29,8 +32,10 @@ namespace Patient_Monitoring.Services.Implementations
             {
                 PatientId = p.PatientId,
                 FirstName = p.FirstName,
-                LastName = p.LastName,
-                Gender = p.Gender
+                LastName = p.LastName ?? string.Empty,
+                Gender = p.Gender,
+                ProfileImage = p.ProfileImage ?? string.Empty,
+                BloodGroup = p.BloodGroup
             }).ToList();
 
             return searchResults;
@@ -63,23 +68,17 @@ namespace Patient_Monitoring.Services.Implementations
                     DiagnosedDate = diagnosis.Appointment.AppointmentDate
                 }).ToList();
 
-            var medications = patient.Prescriptions.Select(p => new MedicationDetailDto
-            {
-                MedicationName = p.MedicationName,
 
-
-                IsActive = p.EndDate >= DateTime.UtcNow,
-                Dosage = p.Dosage,
-                StartDate = p.StartDate,
-                EndDate = p.EndDate
-            }).ToList();
 
             var wellnessPlans = patient.AssignedPlans.Select(
                 plan => new WellnessPlanDetailDto
                 {
+                    PlanId = plan.PlanId,
                     PlanName = plan.AssignedWellnessPlan.PlanName,
-                    FrequencyCount = plan.FrequencyCount,
-                    FrequencyUnit = plan.FrequencyUnit,
+                    Goal = plan.AssignedWellnessPlan.Goal,
+                    Status = plan.IsActive ? "Active" : "Inactive",
+                    PlanImage = plan.AssignedWellnessPlan.ImageUrl,
+                    Category = plan.AssignedWellnessPlan.Category,
                     WellnessType = plan.AssignedWellnessPlan.CreatedByDoctor == null ? "General" : "Custom"
                 }).ToList();
 
@@ -96,7 +95,8 @@ namespace Patient_Monitoring.Services.Implementations
                 BloodGroup = patient.BloodGroup,
                 ContactNumber = patient.ContactNumber,
                 Address = patient.Address,
-                EmergencyContact = patient.EmergencyContactNumber,
+                EmergencyContactNumber = patient.EmergencyContactNumber,
+                EmergencyContactName = patient.EmergencyContactName,
                 PersonalizedDoctor = personalizedDoctorName,
                 Diagnoses = diagnoses.Select(item => new DiagnosisDetailDto
                 {
@@ -105,7 +105,6 @@ namespace Patient_Monitoring.Services.Implementations
                     DiseaseName = item.DiseaseName,
                     DoctorName = item.DiagnosedBy
                 }).ToList(),
-                Medications = medications,
                 WellnessPlans = wellnessPlans
             };
             return dto;
@@ -113,8 +112,9 @@ namespace Patient_Monitoring.Services.Implementations
         }
 
         #endregion
-        
 
+
+        #region Assign New Wellness Plan
         // Implementations for GetWellnessPlanDetailsAsync would go here.
         public async Task AssignPlanAsync(AssignPlanRequest request)
         {
@@ -183,34 +183,137 @@ namespace Patient_Monitoring.Services.Implementations
             }
 
         }
+        #endregion
+
+
+        #region Get Diagnosis Details
         public async Task<DiagnosisDetailsDto> GetDiagnosisDetailsAsync(int diagnosisId)
         {
-            // 1. Fetch data from the repository (uses .Include() to get Disease)
             var diagnosis = await _patientRepository.GetDiagnosisWithDiseaseAsync(diagnosisId);
 
-            // 2. Handle 'Not Found' Case
             if (diagnosis == null)
             {
                 throw new KeyNotFoundException($"Diagnosis with ID {diagnosisId} not found.");
             }
 
-            // 3. Handle Data Integrity Check
-            if (diagnosis.Disease == null)
-            {
-                throw new InvalidOperationException($"Diagnosis found (ID: {diagnosisId}), but the associated disease data is missing or corrupted.");
-            }
-
-            // 4. Map the entities to the simplified DTO
             return new DiagnosisDetailsDto
             {
-                // Maps the three required fields:
-              
+                DiagnosedBy = diagnosis.Appointment.Doctor.FirstName + diagnosis.Appointment.Doctor.LastName,
                 DiagnosisDescription = diagnosis.DiagnosisDescription,
-               DiseaseDescription=diagnosis.Disease.DiseaseDescription,
-
-                // DoctorName and DiagnosisDate are intentionally excluded
+                DiseaseDescription = diagnosis.Disease.DiseaseDescription,
+                MedicationDetails = diagnosis.Appointment.Prescriptions.Select(
+                    prescription => new MedicationDetailDto
+                    {
+                        MedicationName = prescription.MedicationName,
+                        Dosage = prescription.Dosage,
+                        StartDate = prescription.StartDate,
+                        EndDate = prescription.EndDate,
+                    }).ToList()
             };
         }
+        #endregion
+
+        #region DoctorDashboard
+        public async Task<DoctorDashboardDto> GetDashboardStatsAsync(int doctorId)
+        {
+            var stats = new DashboardStatsDto
+            {
+                TotalPatients = await _doctorRepo.GetTotalPatientsCountAsync(doctorId),
+                ActivePrescriptions = await _doctorRepo.GetTotalActivePrescriptionsCountAsync(doctorId),
+                TotalWellnessPlans = await _doctorRepo.GetTotalWellnessPlansCountAsync(doctorId),
+                TodaysAppointments = await _doctorRepo.GetTodaysAppointmentsCountAsync(doctorId),
+                CompletedToday = await _doctorRepo.GetAppointmentsCompletedTodayAsync(doctorId)
+            };
+
+            DateTime startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+
+            var weeklyAppointmentSummary = await _doctorRepo.GetWeeklyAppointmentSummaryAsync(doctorId, startOfWeek);
+            
+            var groupedSummary = weeklyAppointmentSummary
+                .GroupBy(a => a.AppointmentDate.DayOfWeek)
+                .Select(g => new WeeklyAppointmentSummaryItem
+                {
+                    Day = g.Key.ToString(),
+                    Approved = g.Count(a => a.Status == "Approved"),
+                    Rejected = g.Count(a => a.Status == "Rejected")
+                }).ToList();
+
+            var weeklySchedule = (await _doctorRepo.GetWeeklyScheduleAsync(doctorId))
+                .Select(da => new WeeklyScheduleItem
+                {
+                    Day = da.DayOfWeek.ToString(),
+                    StartTime = da.StartTime,
+                    EndTime = da.EndTime
+                }).ToList();
+
+            var todaysAppointments = await _doctorRepo.GetTodaysAppointmentsAsync(doctorId);
+            var todaysAppointmentSummary = todaysAppointments
+                .Select(a => new TodaysAppointmentSummaryItem
+                {
+                    ProfileUrl = a.Patient.ProfileImage ?? string.Empty,
+                    PatientName = $"{a.Patient.FirstName} {a.Patient.LastName}",
+                    PatientAge = DateTime.Today.Year - a.Patient.DateOfBirth.Year,
+                    AppointmentStartTime = a.AppointmentDate.TimeOfDay,
+                    Reason = a.Reason,
+                }).ToList();
+
+            var recentPrescriptions = await _doctorRepo.GetRecentPrescriptionsAsync(doctorId);
+            var recentPrescriptionSummary = recentPrescriptions
+                .Select(p => new RecentPrescriptionSummaryItem
+                {
+                    MedicationName = p.MedicationName,
+                    PatientName = $"{p.Patient.FirstName} {p.Patient.LastName}",
+                    Dosage = p.Dosage,
+                    Frequency = p.MedicationSchedules.Count,
+                    MedicationStartDate = p.StartDate.ToString("yyyy-MM-dd"),
+                    MedicationEndDate = p.EndDate.ToString("yyyy-MM-dd"),
+                }).ToList();
+
+            return new DoctorDashboardDto
+            {
+                Stats = stats,
+                WeeklyAppointmentSummary = groupedSummary,
+                WeeklyScheduleSummary = weeklySchedule,
+                TodaysAppointment = todaysAppointmentSummary,
+                RecentPrescriptions = recentPrescriptionSummary
+            };
+        }
+
+        Task<DailyAppointmentSummaryDto> IDoctorService.GetAppointmentsCompletedTodayAsync(int doctorId, DateTime date)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<WeeklyAppointmentSummaryItem>> IDoctorService.GetWeeklyAppointmentDataAsync(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<RecentPrescriptionDto>> IDoctorService.GetRecentPrescriptionsAsync(int doctorId, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<object> IDoctorService.GetPatientsBreakdownAsync(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<object> IDoctorService.GetPrescriptionsBreakdownAsync(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<object> IDoctorService.GetWellnessPlansBreakdownAsync(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<DoctorProfileDto> IDoctorService.GetDoctorProfileAsync(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
 

@@ -1,9 +1,9 @@
-﻿using Patient_Monitoring.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore.Storage; // Added for IDbContextTransaction
+using Patient_Monitoring.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Storage; // Added for IDbContextTransaction
+using System.Threading.Tasks;
 
 namespace Patient_Monitoring.Repositories.Interfaces
 {
@@ -19,7 +19,7 @@ namespace Patient_Monitoring.Repositories.Interfaces
         void SaveChanges();
         // Appointment Management
         Task AddAppointment(Appointment appointment);
-        Task UpdateAppointmentSlot(AppointmentSlot slot);
+        void UpdateAppointmentSlot(AppointmentSlot slot);
         void UpdateAppointment(Appointment appointment);
 
         // --- NEW METHOD FOR SEQUENTIAL ID GENERATION ---
@@ -43,5 +43,23 @@ namespace Patient_Monitoring.Repositories.Interfaces
 
         // Transaction Management
         Task<IDbContextTransaction> BeginTransactionAsync();
+        Task<List<Appointment>> GetUpcomingAppointmentDetailsByDate(DateTime date, int doctorId);
+
+        // NEW: DOCTOR SCHEDULE MANAGEMENT
+        // ====================================================================
+
+        // Doctor Availability (Recurring Schedule) CRUD
+        Task AddDoctorAvailability(DoctorAvailability availability);
+        void UpdateDoctorAvailability(DoctorAvailability availability);
+        Task<DoctorAvailability> GetAvailabilityByIdAsync(int availabilityId);
+        Task<List<DoctorAvailability>> GetDoctorAvailabilityAsync(int doctorId);
+        Task DeleteDoctorAvailability(int availabilityId);
+
+        // Doctor Time Off (Non-Recurring Blocks) CRUD
+        Task AddDoctorTimeOff(DoctorTimeOff timeOff);
+        void UpdateDoctorTimeOff(DoctorTimeOff timeOff);
+        Task<DoctorTimeOff> GetTimeOffByIdAsync(int timeOffId);
+        Task<List<DoctorTimeOff>> GetDoctorTimeOffAsync(int doctorId);
+        Task DeleteDoctorTimeOff(int timeOffId);
     }
 }

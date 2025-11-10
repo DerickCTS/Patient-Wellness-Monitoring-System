@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using Patient_Monitoring.DTOs.Appointment; // ADDED: Required for Regex in ID generation
+using Patient_Monitoring.DTOs.Appointment;
 
 namespace Patient_Monitoring.Services.Implementations
 {
@@ -40,35 +40,6 @@ namespace Patient_Monitoring.Services.Implementations
             }
             return experience;
         }
-
-        /// <summary>
-        /// Generates the next sequential Appointment ID (e.g., A100, A101, ...).
-        /// Note: This is a simple implementation and requires a fully thread-safe 
-        /// mechanism in a high-concurrency production environment.
-        /// </summary>
-        //private async Task<string> GenerateNextAppointmentId()
-        //{
-        //    const string prefix = "A";
-        //    const int initialId = 100;
-
-        //    // Get the highest existing ID in the required format from the repository
-        //    string lastId = await _repository.GetLastSequentialAppointmentIdAsync();
-
-        //    int nextNumber = initialId;
-
-        //    if (!string.IsNullOrEmpty(lastId))
-        //    {
-        //        // Use regex to extract the number part from IDs like 'A109'
-        //        var match = Regex.Match(lastId, @"^" + prefix + @"(\d+)$");
-
-        //        if (match.Success && int.TryParse(match.Groups[1].Value, out int currentNumber))
-        //        {
-        //            nextNumber = currentNumber + 1;
-        //        }
-        //    }
-
-        //    return prefix + nextNumber;
-        //}
 
         // ====================================================================
         // 1. PATIENT FLOW
@@ -134,11 +105,9 @@ namespace Patient_Monitoring.Services.Implementations
 
             var requestedOn = DateTime.Now;
 
-            // --- FIX: Generate the next sequential ID ---
-            //int newAppointmentId = await GenerateNextAppointmentId();
             // 1. Mark the slot as booked/reserved
             slot.IsBooked = true;
-            await _repository.UpdateAppointmentSlot(slot);
+            _repository.UpdateAppointmentSlot(slot); // FIX: Removed 'await' since the repository method is now synchronous (void)
 
             // 2. Create the new Appointment record
             var appointment = new Appointment
@@ -203,7 +172,7 @@ namespace Patient_Monitoring.Services.Implementations
         }
 
         // ====================================================================
-        // 2. DOCTOR FLOW
+        // 2. DOCTOR FLOW (Appointment Management & Metrics)
         // ====================================================================
 
         public async Task<ActionResult<object>> GetDoctorMetricsAsync(int doctorId)
@@ -241,7 +210,6 @@ namespace Patient_Monitoring.Services.Implementations
             return new OkObjectResult(pendingListDto);
         }
 
-        // 🎯 CRITICAL FIX: Changed repository method call and simplified mapping.
         public async Task<ActionResult<IEnumerable<DoctorSlotViewDto>>> GetDoctorScheduleAsync(int doctorId, DateTime date)
         {
             // 1. CALL THE NEW REPOSITORY METHOD THAT INCLUDES APPOINTMENT AND PATIENT
@@ -294,8 +262,6 @@ namespace Patient_Monitoring.Services.Implementations
             var allSlotsTask = await _repository.CountAppointmentSlotsAsync(s => s.DoctorId == doctorId && s.StartDateTime >= startDate && s.StartDateTime < endDate);
             var confirmedAppointmentsTask = await _repository.GetConfirmedAppointmentsForDoctor(doctorId, startDate, endDate);
 
-           // await Task.WhenAll(allSlotsTask, confirmedAppointmentsTask);
-
             var allAppointments = confirmedAppointmentsTask;
 
             // FIX: Simplified logic to group the retrieved appointments by date.
@@ -306,11 +272,8 @@ namespace Patient_Monitoring.Services.Implementations
                 {
                     Date = g.Key.ToString("MMMM dd, yyyy"),
                     DayOfWeek = g.Key.DayOfWeek.ToString(),
-                    // Counting all pending/confirmed appointments for the day
                     Booked = g.Count(),
-                    // Cannot accurately calculate available/total slots without a dedicated repo method,
-                    // so retaining minimal logic based on available data.
-                    Available = 0,
+                    Available = 0, // This logic assumes full slot counting happens elsewhere
                     TotalSlots = g.Count()
                 })
                 .ToList();
@@ -318,43 +281,7 @@ namespace Patient_Monitoring.Services.Implementations
             return new OkObjectResult(summary);
         }
 
-        public async Task<IActionResult> ManuallyCreateSlotsAsync(ManualSlotCreationDto model)
-        {
-            const int slotDurationMinutes = 30;
-            var startDateTime = model.Date.Add(model.StartTime);
-            var endDateTime = model.Date.Add(model.EndTime);
-            var currentTime = startDateTime;
-            var newSlots = new List<AppointmentSlot>();
-
-            while (currentTime < endDateTime)
-            {
-                var slotEnd = currentTime.AddMinutes(slotDurationMinutes);
-                if (slotEnd > endDateTime) break;
-
-                // Crucial: Check if the slot already exists 
-                var exists = await _repository.AppointmentSlotExistsAsync(model.DoctorId, currentTime);
-
-                if (!exists)
-                {
-                    newSlots.Add(new AppointmentSlot
-                    {
-                        DoctorId = model.DoctorId,
-                        StartDateTime = currentTime,
-                        EndDateTime = slotEnd,
-                        IsBooked = false
-                    });
-                }
-                currentTime = slotEnd;
-            }
-
-            if (newSlots.Any())
-            {
-                _repository.AddAppointmentSlots(newSlots);
-                await _repository.SaveChangesAsync();
-            }
-
-            return new OkObjectResult(new { message = $"{newSlots.Count} new slot(s) created successfully for {model.Date.ToShortDateString()}." });
-        }
+        // --- ManuallyCreateSlotsAsync removed to align with the interface ---
 
         public async Task<IActionResult> UpdateAppointmentStatusAsync(AppointmentStatusUpdateDto updateDto)
         {
@@ -410,6 +337,191 @@ namespace Patient_Monitoring.Services.Implementations
                 await transaction.RollbackAsync();
                 return new StatusCodeResult(500);
             }
+        }
+
+        // ====================================================================
+        // 3. DOCTOR SCHEDULE MANAGEMENT (AVAILABILITY AND TIME OFF)
+        // ====================================================================
+
+        // --- DOCTOR AVAILABILITY (RECURRING SCHEDULE) ---
+
+        public async Task<IActionResult> SetDoctorAvailabilityAsync(DoctorAvailabilityDto model)
+        {
+            if (model.AvailabilityId.HasValue)
+            {
+                // Update existing availability
+                var existing = await _repository.GetAvailabilityByIdAsync(model.AvailabilityId.Value);
+
+                if (existing == null)
+                {
+                    return new NotFoundObjectResult($"Availability with ID {model.AvailabilityId} not found.");
+                }
+
+                existing.DoctorId = model.DoctorId;
+                existing.DayOfWeek = model.DayOfWeek;
+                existing.StartTime = model.StartTime;
+                existing.EndTime = model.EndTime;
+                existing.IsRecurring = model.IsRecurring;
+
+                _repository.UpdateDoctorAvailability(existing);
+                await _repository.SaveChangesAsync();
+
+                return new OkObjectResult(new { message = "Availability updated successfully." });
+            }
+            else
+            {
+                // Create new availability
+                var newAvailability = new DoctorAvailability
+                {
+                    DoctorId = model.DoctorId,
+                    DayOfWeek = model.DayOfWeek,
+                    StartTime = model.StartTime,
+                    EndTime = model.EndTime,
+                    IsRecurring = model.IsRecurring
+                };
+
+                await _repository.AddDoctorAvailability(newAvailability);
+                await _repository.SaveChangesAsync();
+
+                return new CreatedResult(string.Empty, new { id = newAvailability.AvailabilityId, message = "Availability created successfully." });
+            }
+        }
+
+        public async Task<ActionResult<IEnumerable<DoctorAvailabilityDto>>> GetDoctorAvailabilityAsync(int doctorId)
+        {
+            var availabilityRecords = await _repository.GetDoctorAvailabilityAsync(doctorId);
+
+            if (!availabilityRecords.Any())
+            {
+                return new OkObjectResult(Enumerable.Empty<DoctorAvailabilityDto>());
+            }
+
+            var dtos = availabilityRecords.Select(a => new DoctorAvailabilityDto
+            {
+                AvailabilityId = a.AvailabilityId,
+                DoctorId = a.DoctorId,
+                DayOfWeek = a.DayOfWeek,
+                StartTime = a.StartTime,
+                EndTime = a.EndTime,
+                IsRecurring = a.IsRecurring
+            }).ToList();
+
+            return new OkObjectResult(dtos);
+        }
+
+        public async Task<IActionResult> DeleteDoctorAvailabilityAsync(int availabilityId)
+        {
+            try
+            {
+                await _repository.DeleteDoctorAvailability(availabilityId);
+                await _repository.SaveChangesAsync();
+                return new OkObjectResult(new { message = $"Availability ID {availabilityId} deleted successfully." });
+            }
+            catch (Exception)
+            {
+                // Assuming the repository throws an exception if the ID is not found
+                return new NotFoundObjectResult($"Availability ID {availabilityId} not found or could not be deleted.");
+            }
+        }
+
+        // --- DOCTOR TIME OFF (NON-RECURRING BLOCKS) ---
+
+        public async Task<IActionResult> SetDoctorTimeOffAsync(DoctorTimeOffDto model)
+        {
+            if (model.TimeOffId.HasValue)
+            {
+                // Update existing time off
+                var existing = await _repository.GetTimeOffByIdAsync(model.TimeOffId.Value);
+
+                if (existing == null)
+                {
+                    return new NotFoundObjectResult($"Time Off entry with ID {model.TimeOffId} not found.");
+                }
+
+                existing.DoctorId = model.DoctorId;
+                existing.StartDateTime = model.StartDateTime;
+                existing.EndDateTime = model.EndDateTime;
+                existing.Reason = model.Reason;
+
+                _repository.UpdateDoctorTimeOff(existing);
+                await _repository.SaveChangesAsync();
+
+                return new OkObjectResult(new { message = "Time Off entry updated successfully." });
+            }
+            else
+            {
+                // Create new time off
+                var newTimeOff = new DoctorTimeOff
+                {
+                    DoctorId = model.DoctorId,
+                    StartDateTime = model.StartDateTime,
+                    EndDateTime = model.EndDateTime,
+                    Reason = model.Reason
+                };
+
+                await _repository.AddDoctorTimeOff(newTimeOff);
+                await _repository.SaveChangesAsync();
+
+                return new CreatedResult(string.Empty, new { id = newTimeOff.TimeOffId, message = "Time Off entry created successfully." });
+            }
+        }
+
+        public async Task<ActionResult<IEnumerable<DoctorTimeOffDto>>> GetDoctorTimeOffAsync(int doctorId)
+        {
+            var timeOffRecords = await _repository.GetDoctorTimeOffAsync(doctorId);
+
+            if (!timeOffRecords.Any())
+            {
+                return new OkObjectResult(Enumerable.Empty<DoctorTimeOffDto>());
+            }
+
+            var dtos = timeOffRecords.Select(t => new DoctorTimeOffDto
+            {
+                TimeOffId = t.TimeOffId,
+                DoctorId = t.DoctorId,
+                StartDateTime = t.StartDateTime,
+                EndDateTime = t.EndDateTime,
+                Reason = t.Reason
+            }).ToList();
+
+            return new OkObjectResult(dtos);
+        }
+
+        public async Task<IActionResult> DeleteDoctorTimeOffAsync(int timeOffId)
+        {
+            try
+            {
+                await _repository.DeleteDoctorTimeOff(timeOffId);
+                await _repository.SaveChangesAsync();
+                return new OkObjectResult(new { message = $"Time Off ID {timeOffId} deleted successfully." });
+            }
+            catch (Exception)
+            {
+                // Assuming the repository throws an exception if the ID is not found
+                return new NotFoundObjectResult($"Time Off ID {timeOffId} not found or could not be deleted.");
+            }
+        }
+
+        public async Task<List<UpcomingAppointmentDto>> GetUpcomingAppointmentDetailsByDate(DateTime date, int doctorId)
+        {
+            var upcomingAppointment = await _repository.GetUpcomingAppointmentDetailsByDate(date, doctorId);
+
+            var upcomingAppointmentData = upcomingAppointment
+                .Where(appointment => appointment.AppointmentDate > DateTime.UtcNow)
+                .Select(
+                appointment => new UpcomingAppointmentDto
+                {
+                    PatientName = $"{appointment.Patient.FirstName} {appointment.Patient.LastName}",
+                    PatientId = appointment.PatientId,
+                    PatientAge = (DateTime.Today.Year - appointment.Patient.DateOfBirth.Year).ToString(),
+                    PatientGender = appointment.Patient.Gender,
+                    AppointmentReason = appointment.Reason,
+                    AppointmentTime = appointment.AppointmentDate
+                })
+                
+                .ToList();
+
+            return upcomingAppointmentData;
         }
     }
 }

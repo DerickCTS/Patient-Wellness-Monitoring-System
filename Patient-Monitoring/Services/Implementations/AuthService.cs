@@ -115,7 +115,7 @@ namespace Patient_Monitoring.Services.Implementations
 
 
         #region Login
-        public async Task<(bool success, string? message, string? token, string? refreshToken)> Login(UserLoginDTO user)
+        public async Task<(bool success, string? message, string? token, string? refreshToken, int? id)> Login(UserLoginDTO user)
         {
             if (user.Role == "Patient")
             {
@@ -123,21 +123,21 @@ namespace Patient_Monitoring.Services.Implementations
 
                 if (patient == null)
                 {
-                    return (false, "Patient does not exists!", null, null);
+                    return (false, "Patient does not exists!", null, null, null);
                 }
 
                 var result = _patientPasswordHasher.VerifyHashedPassword(patient, patient.Password, user.Password);
 
                 if (result == PasswordVerificationResult.Failed)
                 {
-                    return (false, "Verification failed! Please enter correct password.", null, null);
+                    return (false, "Verification failed! Please enter correct password.", null, null, null);
                 }
 
                 var token = _jwtService.GenerateAccessToken(patient, "Patient", out string jwtId);
 
                 var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, patient.PatientId, Enums.UserType.Patient);
 
-                return (true, null, token, refreshToken);
+                return (true, null, token, refreshToken, patient.PatientId);
             }
             else
             {
@@ -145,21 +145,21 @@ namespace Patient_Monitoring.Services.Implementations
 
                 if (doctor == null)
                 {
-                    return (false, "Doctor does not exists!", null, null);
+                    return (false, "Doctor does not exists!", null, null, null);
                 }
 
                 var result = _doctorPasswordHasher.VerifyHashedPassword(doctor, doctor.Password, user.Password);
 
                 if (result == PasswordVerificationResult.Failed)
                 {
-                    return (false, "Verification failed! Please enter correct password.", null, null);
+                    return (false, "Verification failed! Please enter correct password.", null, null, null);
                 }
 
                 var token = _jwtService.GenerateAccessToken(doctor, "Doctor", out string jwtId);
 
                 var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, doctor.DoctorId, Enums.UserType.Doctor);
 
-                return (true, null, token, refreshToken);
+                return (true, null, token, refreshToken, doctor.DoctorId);
             }
         }
 

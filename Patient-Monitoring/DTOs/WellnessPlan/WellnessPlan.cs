@@ -6,9 +6,6 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
         public string detail_type { get; set; } // Instructions, Safety, Benefits, etc.
         public string content { get; set; }
 
-        //Reminde me to delete this later
-        public int display_order { get; set; }
-        public  int PlanID { get; set; }
     }
 
     public class AssignPlanRequestDto

@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Patient")] // You would add this to protect the endpoint
+//[Authorize(Roles = "Patient")] // You would add this to protect the endpoint
 public class ProgressController : ControllerBase
 {
     private readonly IProgressService _progressService;
@@ -46,7 +46,8 @@ public class ProgressController : ControllerBase
         [FromQuery] string category = "All",
         [FromQuery] string date = "Today")
     {
-        patientId = GetCurrentPatientId();
+        //patientId = GetCurrentPatientId();
+        patientId = 1;
         var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, status, category, date);
         return Ok(cards);
     }
@@ -85,7 +86,8 @@ public class ProgressController : ControllerBase
     [HttpGet("dashboard")]
     public async Task<IActionResult> GetDashboardData()
     {
-        patientId = GetCurrentPatientId();
+        //patientId = GetCurrentPatientId();
+        patientId = 1;
         var dashboardData = await _progressService.GetDashboardDataAsync(patientId);
         return Ok(dashboardData);
     }
@@ -96,7 +98,8 @@ public class ProgressController : ControllerBase
     [HttpGet("dashboard/{year}")]
     public async Task<IActionResult> GetActivityCalendarAsync(int year)
     {
-        patientId = GetCurrentPatientId();
+        //patientId = GetCurrentPatientId();
+        patientId = 1;
         var calendarData = await _progressService.GetActivityCalendarAsync(patientId, year);
         return Ok(calendarData);
     }

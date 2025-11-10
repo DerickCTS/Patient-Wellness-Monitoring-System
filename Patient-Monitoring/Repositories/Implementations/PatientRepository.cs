@@ -58,7 +58,6 @@ namespace Patient_Monitoring.Repositories.Implementations
         .Include(p => p.Diagnoses)
         .ThenInclude(pd => pd.Appointment)
         .ThenInclude(a => a.Doctor)
-        .Include(p => p.Prescriptions)
         .Include(p => p.AssignedPlans)
         .ThenInclude(ppa => ppa.AssignedWellnessPlan)
         .FirstOrDefaultAsync(p => p.PatientId == patientId);
@@ -97,24 +96,21 @@ namespace Patient_Monitoring.Repositories.Implementations
             // Adds all entities in the list and tells EF Core to track them
             await _context.AssignmentPlanDetails.AddRangeAsync(details);
         }
-
-        /// <summary>
-        /// Persists all tracked changes (from all Add* methods) to the database.
-        /// </summary>
         public async Task SaveChangesAsync()
         {
-            // This is the command that executes the database INSERT operations
             await _context.SaveChangesAsync();
         }
+
         public async Task<Diagnosis> GetDiagnosisWithDiseaseAsync(int diagnosisId)
         {
-            // 1. Access the Diagnoses DbSet
             return await _context.Diagnoses
                 .Include(d => d.Disease)
-                // 3. Find the specific diagnosis by its ID
+                .Include(d => d.Appointment)
+                .ThenInclude(a => a.Doctor)
+                .Include(d => d.Appointment)
+                .ThenInclude(a => a.Prescriptions)
                 .FirstOrDefaultAsync(d => d.DiagnosisId == diagnosisId);
         }
-        // Other repository methods...
     }
 
 }

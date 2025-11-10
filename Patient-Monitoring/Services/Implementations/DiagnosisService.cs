@@ -68,7 +68,7 @@ namespace Patient_Monitoring.Services.Implementations
                     DiseaseName = d.Disease.DiseaseName,
                     Description = d.DiagnosisDescription
                 }).ToList(),
-                ExistingPrescriptions = appointment.Patient.Prescriptions!.Select(p => new ExistingPrescriptionDto
+                ExistingPrescriptions = appointment.Prescriptions!.Select(p => new ExistingPrescriptionDto
                 {
                     MedicationName = p.MedicationName,
                     Dosage = p.Dosage
