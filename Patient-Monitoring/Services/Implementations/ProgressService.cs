@@ -10,7 +10,7 @@ public class ProgressService : IProgressService
     }
 
     #region Retrieving Assigned Plan Cards
-    public async Task<List<AssignedPlanCardDto>> GetAssignedPlanCardsAsync(int patientId, string statusFilter, string categoryFilter, string dateFilter)
+    public async Task<List<AssignedPlanCardDto>> GetAssignedPlanCardsAsync(int patientId, string dateFilter)
     {
         // Each card needs data from PatientPlanAssignement, WellnessPlan, DailyTaskLogs. All these tables are connected & hence all the data
         // can be accessed using PatientPlanAssignment table (acts as a central tables) & using its navigation properties.
@@ -62,7 +62,7 @@ public class ProgressService : IProgressService
                 break;
         }
 
-        finalCards.AddRange(cards.Where(c => c.DueDate >= startDate && (categoryFilter.ToLower() == "all")? true : c.Status.Equals(statusFilter, StringComparison.OrdinalIgnoreCase) && (categoryFilter.ToLower() == "all")? true: c.Category.Equals(categoryFilter, StringComparison.OrdinalIgnoreCase)));
+        finalCards.AddRange(cards.Where(c => c.DueDate.Date >= startDate.Date));
 
         return finalCards;
     }

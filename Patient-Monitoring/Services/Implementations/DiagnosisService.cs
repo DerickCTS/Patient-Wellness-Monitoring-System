@@ -25,6 +25,7 @@ namespace Patient_Monitoring.Services.Implementations
             {
                 AppointmentId = app.AppointmentId,
                 PatientName = $"{app.Patient.FirstName} {app.Patient.LastName}",
+                ImageUrl = app.Patient.ProfileImage,
                 Gender = app.Patient.Gender,
                 Age = (DateTime.Today.Year - app.Patient.DateOfBirth.Year - (app.Patient.DateOfBirth.DayOfYear > DateTime.Today.DayOfYear ? 1 : 0)),
                 AppointmentTime = $"{app.AppointmentDate:hh:mm tt} - {app.AppointmentSlot!.EndDateTime:hh:mm tt}",
@@ -56,6 +57,7 @@ namespace Patient_Monitoring.Services.Implementations
                     Age = (DateTime.Today.Year - appointment.Patient.DateOfBirth.Year - (appointment.Patient.DateOfBirth.DayOfYear > DateTime.Today.DayOfYear ? 1 : 0)),
                     DateOfBirth = appointment.Patient.DateOfBirth,
                     Gender = appointment.Patient.Gender,
+                    ImageUrl = appointment.Patient.ProfileImage,
                     ContactNumber = appointment.Patient.ContactNumber,
                     Email = appointment.Patient.Email,
                     Address = appointment.Patient.Address,

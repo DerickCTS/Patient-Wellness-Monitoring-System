@@ -11,6 +11,10 @@ namespace Patient_Monitoring.Services.Interfaces
 
         // Assignment Flow (Handles both Use Template and Create from Scratch)
         Task<string> AssignNewPlanAsync(AssignPlanRequestDto request);
+
+        //Task<string> AssignNewPlanScratchAsync(AssignPlanRequestDto request);
+
+        Task<string> AssignNewPlanScratchAsync(AssignPlanRequestScratchDto request);
     }
 }
 

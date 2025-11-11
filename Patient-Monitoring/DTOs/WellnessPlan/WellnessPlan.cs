@@ -10,7 +10,7 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
 
     public class AssignPlanRequestDto
     {
-
+        public IFormFile? ImageFile { get; set; }
         public int? PlanId { get; set; } 
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
@@ -35,7 +35,21 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
         public bool DetailsModified { get; set; }
     }
 
+    public class AssignPlanRequestScratchDto
+    {
+        public IFormFile ImageFile { get; set; }
+        public int PatientId { get; set; }
+        public int DoctorId { get; set; }
+        public string Category { get; set; }
+        public string PlanName { get; set; }
+        public string Goal { get; set; }
+        public int FrequencyCount { get; set; }
+        public string FrequencyUnit { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Details { get; set; } // JSON string
 
+    }
 
     public class TemplateDetailsDto : AssignPlanRequestDto
     {

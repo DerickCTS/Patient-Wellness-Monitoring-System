@@ -45,35 +45,61 @@ namespace Patient_Monitoring.Controllers
 
 
         #region Assigns a new plan (Template or Scratch) to a patient.
-                [HttpPost("assign")]
-                public async Task<IActionResult> AssignPlan([FromBody] AssignPlanRequestDto request)
+        [HttpPost("assign")]
+        public async Task<IActionResult> AssignPlan([FromBody] AssignPlanRequestDto request)
+        {
+            // Ensuring Frequency Count is > 0 & Start Date > EndDate
+            if (request.FrequencyCount <= 0 || request.StartDate >= request.EndDate)
+            {
+                return BadRequest("Invalid frequency or dates.");
+            }
+
+            // The first if is checks if the plan id is null or empty. If it is null, it means the plan was 
+            // created from scratch, so the plan name, goal, and details are required. Otherwise it is a template.
+            if (request.PlanId == null)
+            {
+                if (string.IsNullOrEmpty(request.PlanName) || string.IsNullOrEmpty(request.Goal) || !request.Details.Any())
                 {
-                    // Ensuring Frequency Count is > 0 & Start Date > EndDate
-                    if (request.FrequencyCount <= 0 || request.StartDate >= request.EndDate)
-                    {
-                        return BadRequest("Invalid frequency or dates.");
-                    }
-
-                    // The first if is checks if the plan id is null or empty. If it is null, it means the plan was 
-                    // created from scratch, so the plan name, goal, and details are required. Otherwise it is a template.
-                    if (request.PlanId == null)
-                    {
-                        if (string.IsNullOrEmpty(request.PlanName) || string.IsNullOrEmpty(request.Goal) || !request.Details.Any())
-                        {
-                            return BadRequest("Plan Name, Goal, and details are required for 'Create from Scratch'.");
-                        }
-                    }
-
-                    try
-                    {
-                        var assignmentId = await _service.AssignNewPlanAsync(request);
-                        return CreatedAtAction(nameof(AssignPlan), new { id = assignmentId }, new { message = "Plan assigned successfully." });
-                    }
-                    catch (Exception ex)
-                    {
-                        return StatusCode(500, "An error occurred while assigning the plan.");
-                    }
+                    return BadRequest("Plan Name, Goal, and details are required for 'Create from Scratch'.");
                 }
-                #endregion
+            }
+
+            try
+            {
+                var assignmentId = await _service.AssignNewPlanAsync(request);
+                return CreatedAtAction(nameof(AssignPlan), new { id = assignmentId }, new { message = "Plan assigned successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while assigning the plan.");
+            }
+        }
+        #endregion
+
+        [HttpPost("assign-with-image")]
+        public async Task<IActionResult> AssignPlanFromScratch([FromForm] AssignPlanRequestScratchDto request)
+        {
+            // Ensuring Frequency Count is > 0 & Start Date > EndDate
+            if (request.FrequencyCount <= 0 || request.StartDate >= request.EndDate)
+            {
+                return BadRequest("Invalid frequency or dates.");
+            }
+            
+            if (string.IsNullOrEmpty(request.PlanName) || string.IsNullOrEmpty(request.Goal) || !request.Details.Any())
+            {
+                return BadRequest("Plan Name, Goal, and details are required for 'Create from Scratch'.");
+            }
+      
+
+            try
+            {
+                var assignmentId = await _service.AssignNewPlanScratchAsync(request);
+                return CreatedAtAction(nameof(AssignPlan), new { id = assignmentId }, new { message = "Plan assigned successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while assigning the plan.");
+            }
+        }
     }
 }

@@ -48,7 +48,7 @@ public class ProgressController : ControllerBase
     {
         //patientId = GetCurrentPatientId();
         patientId = 1;
-        var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, status, category, date);
+        var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, date);
         return Ok(cards);
     }
     #endregion
