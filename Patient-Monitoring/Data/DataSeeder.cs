@@ -45,9 +45,11 @@ namespace Patient_Monitoring.Data
                         Education = "MD, Johns Hopkins University",
                         ContactNumber = "5550100111",
                         Email = "eleanor.vance@wellnessclinic.com",
-                        ProfileImage = "/images/doctors/eleanor_vance.png",
+                        ProfileImage = "/uploads/profiles/D1.jpg",
                         DoctorSince = new DateTime(2010, 8, 15),
-                        Password = passwordHasher.HashPassword(null, "DoctorPass123")
+                        Password = passwordHasher.HashPassword(null, "DoctorPass123"),
+                        
+                        
                     },
 
                     new Doctor
@@ -59,7 +61,7 @@ namespace Patient_Monitoring.Data
                         Education = "MD, Harvard Medical School",
                         ContactNumber = "5550100222",
                         Email = "john.montague@wellnessclinic.com",
-                        ProfileImage = "/images/doctors/john_montague.png",
+                        ProfileImage = "/uploads/profiles/D2.jpg",
                         DoctorSince = new DateTime(2005, 6, 20),
                         Password = passwordHasher.HashPassword(null, "DoctorPass123")
                     },
@@ -73,7 +75,7 @@ namespace Patient_Monitoring.Data
                         Education = "MD, Stanford University",
                         ContactNumber = "5550100333",
                         Email = "theodora.crain@wellnessclinic.com",
-                        ProfileImage = "/images/doctors/theodora_crain.png",
+                        ProfileImage = "/uploads/profiles/D3.jpg",
                         DoctorSince = new DateTime(2015, 11, 1),
                         Password = passwordHasher.HashPassword(null, "DoctorPass123")
                     },
@@ -87,7 +89,7 @@ namespace Patient_Monitoring.Data
                         Education = "MD, Mayo Clinic Alix School of Medicine",
                         ContactNumber = "5550100444",
                         Email = "luke.sanderson@wellnessclinic.com",
-                        ProfileImage = "/images/doctors/luke_sanderson.png",
+                        ProfileImage = "/uploads/profiles/D4.jpg",
                         DoctorSince = new DateTime(2018, 7, 30),
                         Password = passwordHasher.HashPassword(null, "DoctorPass123")
                     },
@@ -100,7 +102,7 @@ namespace Patient_Monitoring.Data
                         Education = "MD, New York University",
                         ContactNumber = "5550100555",
                         Email = "jonas.salk@wellnessclinic.com",
-                        ProfileImage = "/images/doctors/jonas_salk.png",
+                        ProfileImage = "/uploads/profiles/D5.png",
                         DoctorSince = new DateTime(2002, 3, 12),
                         Password = passwordHasher.HashPassword(null, "DoctorPass123")
                     } 
@@ -130,7 +132,7 @@ namespace Patient_Monitoring.Data
                         EmergencyContactNumber = "9876511111",
                         BloodGroup = "O+ve",
                         RegistrationDate = DateTime.UtcNow,
-                        ProfileImage = "/images/patients/leia_organa.png",
+                        ProfileImage = "/uploads/profiles/P1.jpg",
                         Password = passwordHasher.HashPassword(null, "Leia123")
                     },
                     new Patient
@@ -147,7 +149,7 @@ namespace Patient_Monitoring.Data
                         EmergencyContactNumber = "9876522222",
                           BloodGroup = "B+ve",
                         RegistrationDate = DateTime.UtcNow,
-                        ProfileImage = "/images/patients/luke_skywalker.png",
+                        ProfileImage = "/uploads/profiles/P2.jpg",
                         Password = passwordHasher.HashPassword(null, "Luke123")
                     },
                     new Patient
@@ -164,7 +166,7 @@ namespace Patient_Monitoring.Data
                         EmergencyContactNumber = "9876533333",
                           BloodGroup = "O-ve",
                         RegistrationDate = DateTime.UtcNow,
-                        ProfileImage = "/images/patients/anakin_skywalker.png",
+                        ProfileImage = "/uploads/profiles/P3.jpg",
                         Password = passwordHasher.HashPassword(null, "Anakin123")
                     },
                     new Patient
@@ -181,7 +183,7 @@ namespace Patient_Monitoring.Data
                         EmergencyContactNumber = "9876544444",
                           BloodGroup = "B+ve",
                         RegistrationDate = DateTime.UtcNow,
-                        ProfileImage = "/images/patients/padme_amidala.png",
+                        ProfileImage = "/uploads/profiles/P4.jpg",
                         Password = passwordHasher.HashPassword(null, "Padme123")
                     },
                     new Patient
@@ -198,7 +200,7 @@ namespace Patient_Monitoring.Data
                         EmergencyContactNumber = "9876555555",
                           BloodGroup = "A1+ve",
                         RegistrationDate = DateTime.UtcNow,
-                        ProfileImage = "/images/patients/han_solo.png",
+                        ProfileImage = "/uploads/profiles/P5.jpg",
                         Password = passwordHasher.HashPassword(null, "Han123")
                     },
                 };
@@ -526,7 +528,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "DASH Diet Template",
                     Goal = "Blueprint for Lowering BP",
-                    ImageUrl = "/images/wellness/template_diet.png",
+                    ImageUrl = "/uploads/wellness_plans/WP1.jpg",
                     Category = "Diet",
                     IsTemplate = true,
                     CreatedByDoctorId = null
@@ -536,7 +538,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "Cardio Start Template",
                     Goal = "Blueprint for Heart Health",
-                    ImageUrl = "/images/wellness/template_cardio.png",
+                    ImageUrl = "/uploads/wellness_plans/WP2.jpg",
                     Category = "Exercise",
                     IsTemplate = true,
                     CreatedByDoctorId = null
@@ -546,7 +548,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "Stress Relief Templ.",
                     Goal = "Blueprint for Mindfulness",
-                    ImageUrl = "/images/wellness/template_mindfulness.png",
+                    ImageUrl = "/uploads/wellness_plans/WP3.jpg",
                     Category = "Mental Wellness",
                     IsTemplate = true,
                     CreatedByDoctorId = null
@@ -556,7 +558,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "Strength Base Templ.",
                     Goal = "Blueprint for Muscle Gain",
-                    ImageUrl = "/images/wellness/template_strength.png",
+                    ImageUrl = "/uploads/wellness_plans/WP4.jpg",
                     Category = "Exercise",
                     IsTemplate = true,
                     CreatedByDoctorId = null
@@ -566,7 +568,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "Post-Op Recovery T.",
                     Goal = "Blueprint for Healing",
-                    ImageUrl = "/images/wellness/template_recovery.png",
+                    ImageUrl = "/uploads/wellness_plans/WP5.jpg",
                     Category = "Recovery",
                     IsTemplate = true,
                     CreatedByDoctorId = null
@@ -577,7 +579,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "Hydration Challenge",
                     Goal = "Drink 8 Glasses of Water Daily",
-                    ImageUrl = "/images/wellness/general_hydration.png",
+                    ImageUrl = "/uploads/wellness_plans/WP6.jpg",
                     Category = "Habit Building",
                     IsTemplate = false,
                     CreatedByDoctorId = null
@@ -587,7 +589,7 @@ namespace Patient_Monitoring.Data
                    
                     PlanName = "Sleep Hygiene Basics",
                     Goal = "Achieve 7-8 Hours of Sleep",
-                    ImageUrl = "/images/wellness/general_sleep.png",
+                    ImageUrl = "/uploads/wellness_plans/WP7.jpg",
                     Category = "Sleep",
                     IsTemplate = false,
                     CreatedByDoctorId = null
@@ -597,7 +599,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "Daily Stretching",
                     Goal = "Improve Flexibility",
-                    ImageUrl = "/images/wellness/general_stretching.png",
+                    ImageUrl = "/uploads/wellness_plans/WP8.jpg",
                     Category = "Exercise",
                     IsTemplate = false,
                     CreatedByDoctorId = null
@@ -607,7 +609,7 @@ namespace Patient_Monitoring.Data
                     
                     PlanName = "Balanced Plate Guide",
                     Goal = "Eat a Balanced Meal",
-                    ImageUrl = "/images/wellness/general_diet.png",
+                    ImageUrl = "/uploads/wellness_plans/WP9.jpg",
                     Category = "Diet",
                     IsTemplate = false,
                     CreatedByDoctorId = null
@@ -627,7 +629,7 @@ namespace Patient_Monitoring.Data
                     {
                         PlanName = $"Flu Recovery #{i + 1}",
                         Goal = $"Regain strength after illness",
-                        ImageUrl = $"/images/wellness/custom_plan_{i + 1}.png",
+                        ImageUrl = $"/uploads/wellness_plans/F{i + 1}.jpg",
                         Category = category,
                         IsTemplate = false,
                         CreatedByDoctorId = author

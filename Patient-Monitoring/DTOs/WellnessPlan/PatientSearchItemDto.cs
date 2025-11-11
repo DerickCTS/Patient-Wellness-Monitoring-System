@@ -25,11 +25,12 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
         public string Dosage { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public bool IsActive => DateTime.Now > EndDate;
+        public bool IsActive;
     }
     
     public class WellnessPlanDetailDto
     {
+        public int AssignmentId { get; set; }
         public int? PlanId { get; set; }
         public string PlanName { get; set; } = string.Empty;
         public string Goal { get; set; } = string.Empty;
@@ -54,6 +55,7 @@ namespace Patient_Monitoring.DTOs.WellnessPlan
         public string EmergencyContactNumber { get; set; } = string.Empty;
         public string EmergencyContactName { get; set; } = string.Empty;
         public string PersonalizedDoctor { get; set; } = string.Empty;
+        public string ProfileImage { get; set; } = string.Empty;
 
         // Diagnosis (from Diagnosis Model)
         public List<DiagnosisDetailDto> Diagnoses { get; set; } = new List<DiagnosisDetailDto>();

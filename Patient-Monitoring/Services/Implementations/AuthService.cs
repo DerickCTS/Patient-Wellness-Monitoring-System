@@ -115,51 +115,71 @@ namespace Patient_Monitoring.Services.Implementations
 
 
         #region Login
-        public async Task<(bool success, string? message, string? token, string? refreshToken, int? id)> Login(UserLoginDTO user)
+        public async Task<(bool success, string? token, string? refreshToken, AuthResponseDto response)> Login(UserLoginDTO user)
         {
             if (user.Role == "Patient")
             {
                 var patient = await _patientRepository.GetPatientByEmailAsync(user.Email);
-
+                var response = new AuthResponseDto();
                 if (patient == null)
                 {
-                    return (false, "Patient does not exists!", null, null, null);
+                    response.message = "Patient does not exists!";
+                    return (false, null, null, response);
                 }
 
                 var result = _patientPasswordHasher.VerifyHashedPassword(patient, patient.Password, user.Password);
 
                 if (result == PasswordVerificationResult.Failed)
                 {
-                    return (false, "Verification failed! Please enter correct password.", null, null, null);
+                    response.message = "Verification failed! Please enter correct password.";
+                    return (false, null, null, response);
                 }
 
                 var token = _jwtService.GenerateAccessToken(patient, "Patient", out string jwtId);
 
                 var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, patient.PatientId, Enums.UserType.Patient);
 
-                return (true, null, token, refreshToken, patient.PatientId);
+                response.message = "Login successful";
+                response.firstName = patient.FirstName;
+                response.lastName = patient.LastName;
+                response.userId = patient.PatientId;
+                response.imageUrl = patient.ProfileImage;
+                
+                return (true, token, refreshToken, response);
             }
             else
             {
                 var doctor = await _doctorRepository.GetDoctorByEmailAsync(user.Email);
+                var response = new AuthResponseDto();
 
                 if (doctor == null)
                 {
-                    return (false, "Doctor does not exists!", null, null, null);
+                    response.message = "Doctor does not exists!";
+                    return (false, null, null, response);
+                    
                 }
 
                 var result = _doctorPasswordHasher.VerifyHashedPassword(doctor, doctor.Password, user.Password);
 
                 if (result == PasswordVerificationResult.Failed)
                 {
-                    return (false, "Verification failed! Please enter correct password.", null, null, null);
+                    response.message = "Verification failed! Please enter correct password.";
+                    return (false, null, null, response);
                 }
 
                 var token = _jwtService.GenerateAccessToken(doctor, "Doctor", out string jwtId);
 
                 var refreshToken = await _jwtService.GenerateRefreshToken(jwtId, doctor.DoctorId, Enums.UserType.Doctor);
 
-                return (true, null, token, refreshToken, doctor.DoctorId);
+                response.message = "Login successful";
+                response.firstName = doctor.FirstName;
+                response.lastName = doctor.LastName;
+                response.userId = doctor.DoctorId;
+                response.specialization = doctor.Specialization;
+                response.imageUrl = doctor.ProfileImage;
+
+                return (true, token, refreshToken, response);
+               
             }
         }
 

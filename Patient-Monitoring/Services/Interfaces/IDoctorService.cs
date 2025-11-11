@@ -14,14 +14,7 @@ namespace Patient_Monitoring.Services.Interfaces
         #region DoctorDashboard
 
         public Task<DoctorDashboardDto> GetDashboardStatsAsync(int doctorId);
-        public Task<DailyAppointmentSummaryDto> GetAppointmentsCompletedTodayAsync(int doctorId, System.DateTime date);
-        public Task<IEnumerable<WeeklyAppointmentSummaryItem>> GetWeeklyAppointmentDataAsync(int doctorId);
-        public Task<IEnumerable<RecentPrescriptionDto>> GetRecentPrescriptionsAsync(int doctorId, int count = 3);
-
-        // Returns dynamic object for detailed card pop-ups
-        public Task<object> GetPatientsBreakdownAsync(int doctorId);
-        public Task<object> GetPrescriptionsBreakdownAsync(int doctorId);
-        public Task<object> GetWellnessPlansBreakdownAsync(int doctorId);
+        
         public Task<DoctorProfileDto> GetDoctorProfileAsync(int doctorId);
 
         #endregion

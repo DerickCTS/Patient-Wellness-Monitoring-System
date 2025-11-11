@@ -97,55 +97,5 @@ public class DoctorController : ControllerBase
         return Ok(dashboardData);
     }
 
-    [HttpGet("dashboard/weekly-appointments")]
-    public async Task<IActionResult> GetWeeklyAppointments()
-    {
-        var CurrentDoctorId = 2; // Replace with actual logic to get current doctor's ID
-        var weeklyData = await _doctorService.GetWeeklyAppointmentDataAsync(CurrentDoctorId);
-        return Ok(weeklyData);
-    }
-
-    [HttpGet("dashboard/recent-prescriptions")]
-    public async Task<IActionResult> GetRecentPrescriptions()
-    {
-        var CurrentDoctorId = 2; // Replace with actual logic to get current doctor's ID
-        var prescriptions = await _doctorService.GetRecentPrescriptionsAsync(CurrentDoctorId);
-        return Ok(prescriptions);
-    }
-
-    // --- 3. Detailed Pop-up Breakdown Endpoints ---
-
-    [HttpGet("dashboard/patients/breakdown")]
-    public async Task<IActionResult> GetPatientsBreakdown()
-    {
-        var CurrentDoctorId = 2; // Replace with actual logic to get current doctor's ID
-        var breakdown = await _doctorService.GetPatientsBreakdownAsync(CurrentDoctorId);
-        return Ok(breakdown);
-    }
-
-    [HttpGet("dashboard/prescriptions/breakdown")]
-    public async Task<IActionResult> GetPrescriptionsBreakdown()
-    {
-        var CurrentDoctorId = 2; // Replace with actual logic to get current doctor's ID
-        var breakdown = await _doctorService.GetPrescriptionsBreakdownAsync(CurrentDoctorId);
-        return Ok(breakdown);
-    }
-
-    [HttpGet("dashboard/wellness-plans/breakdown")]
-    public async Task<IActionResult> GetWellnessPlansBreakdown()
-    {
-        var CurrentDoctorId = 2; // Replace with actual logic to get current doctor's ID
-        var breakdown = await _doctorService.GetWellnessPlansBreakdownAsync(CurrentDoctorId);
-        return Ok(breakdown);
-    }
-    [HttpGet("dashboard/appointments")]
-    public async Task<ActionResult<Tuple<int, int>>> GetAppointmentsCompletedToday()
-    {
-        // The service method signature is: Task<Tuple<int, int>> GetAppointmentsCompletedTodayAsync(int doctorId, DateTime date)
-        var CurrentDoctorId = 2; // Replace with actual logic to get current doctor's ID
-        var result = await _doctorService.GetAppointmentsCompletedTodayAsync(CurrentDoctorId, DateTime.Today);
-        return Ok(result);
-    }
-
     #endregion
 }

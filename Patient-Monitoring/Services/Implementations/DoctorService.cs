@@ -73,6 +73,7 @@ namespace Patient_Monitoring.Services.Implementations
             var wellnessPlans = patient.AssignedPlans.Select(
                 plan => new WellnessPlanDetailDto
                 {
+                    AssignmentId = plan.AssignmentId,
                     PlanId = plan.PlanId,
                     PlanName = plan.AssignedWellnessPlan.PlanName,
                     Goal = plan.AssignedWellnessPlan.Goal,
@@ -98,6 +99,7 @@ namespace Patient_Monitoring.Services.Implementations
                 EmergencyContactNumber = patient.EmergencyContactNumber,
                 EmergencyContactName = patient.EmergencyContactName,
                 PersonalizedDoctor = personalizedDoctorName,
+                ProfileImage = patient.ProfileImage ?? string.Empty,
                 Diagnoses = diagnoses.Select(item => new DiagnosisDetailDto
                 {
                     DiagnosisId = item.DiagnosisId,
@@ -208,10 +210,12 @@ namespace Patient_Monitoring.Services.Implementations
                         Dosage = prescription.Dosage,
                         StartDate = prescription.StartDate,
                         EndDate = prescription.EndDate,
+                        IsActive = DateTime.Now < prescription.EndDate
                     }).ToList()
             };
         }
         #endregion
+
 
         #region DoctorDashboard
         public async Task<DoctorDashboardDto> GetDashboardStatsAsync(int doctorId)
@@ -275,43 +279,24 @@ namespace Patient_Monitoring.Services.Implementations
                 WeeklyAppointmentSummary = groupedSummary,
                 WeeklyScheduleSummary = weeklySchedule,
                 TodaysAppointment = todaysAppointmentSummary,
-                RecentPrescriptions = recentPrescriptionSummary
+                RecentPrescription = recentPrescriptionSummary
             };
         }
 
-        Task<DailyAppointmentSummaryDto> IDoctorService.GetAppointmentsCompletedTodayAsync(int doctorId, DateTime date)
+        public async Task<DoctorProfileDto> GetDoctorProfileAsync(int doctorId)
         {
-            throw new NotImplementedException();
-        }
+            var doctor = await _doctorRepo.GetDoctorProfileAsync(doctorId);
 
-        Task<IEnumerable<WeeklyAppointmentSummaryItem>> IDoctorService.GetWeeklyAppointmentDataAsync(int doctorId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<RecentPrescriptionDto>> IDoctorService.GetRecentPrescriptionsAsync(int doctorId, int count)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<object> IDoctorService.GetPatientsBreakdownAsync(int doctorId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<object> IDoctorService.GetPrescriptionsBreakdownAsync(int doctorId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<object> IDoctorService.GetWellnessPlansBreakdownAsync(int doctorId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<DoctorProfileDto> IDoctorService.GetDoctorProfileAsync(int doctorId)
-        {
-            throw new NotImplementedException();
+            return new DoctorProfileDto
+            {
+                firstName = doctor.FirstName,
+                lastName = doctor.LastName,
+                Specialty = doctor.Specialization,
+                Email = doctor.Email,
+                ContactNumber = doctor.ContactNumber,
+                Joined = doctor.DoctorSince,
+                Education = doctor.Education,
+            };
         }
         #endregion
     }
