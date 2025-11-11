@@ -23,21 +23,26 @@ namespace Patient_Monitoring.Controllers
         }
 
         // Helper method to retrieve and validate the Patient ID from claims
-        private ActionResult<int> GetPatientIdFromClaims()
+        private int GetCurrentPatientId()
         {
-            var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
 
-            if (string.IsNullOrEmpty(idClaim))
-            {
-                return Unauthorized("User ID claim missing.");
-            }
+            //if (userIdClaim == null)
+            //{
+            //    throw new UnauthorizedAccessException("User ID claim not found in token.");
+            //}
 
-            if (!int.TryParse(idClaim, out int patientId))
-            {
-                return Unauthorized("Invalid user ID format.");
-            }
+            //if (int.TryParse(userIdClaim.Value, out int patientId))
+            //{
+            //    return patientId;
+            //}
+            //else
+            //{
+            //    throw new UnauthorizedAccessException("Invalid User ID claim value.");
+            //}
 
-            return patientId;
+            // Use this to hard code a doctor id for testing purposes. But comment the above codes.
+            return 1;
         }
 
         // 1. MONOLITHIC ENDPOINT: GET: api/PatientDashboard/Data
@@ -56,7 +61,8 @@ namespace Patient_Monitoring.Controllers
             //if (patientIdResult.Result != null) return patientIdResult.Result;
             //int patientId = patientIdResult.Value;
 
-            int patientId = 3;
+            //int patientId = 3;
+            int patientId = GetCurrentPatientId();
             var dashboardData = await _dashboardService.GetDashboardData(patientId);
 
             if (dashboardData == null)
@@ -90,7 +96,9 @@ namespace Patient_Monitoring.Controllers
             //if (patientIdResult.Result != null) return patientIdResult.Result;
             //int patientId = patientIdResult.Value;
 
-            int patientId = 3;
+            //int patientId = 3;
+
+            int patientId = GetCurrentPatientId();
 
             // 3. Call Service
             var success = await _dashboardService.UpdatePatientProfile(patientId, updateDto);
@@ -114,9 +122,11 @@ namespace Patient_Monitoring.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<AppointmentSummaryDto>>> GetUpcomingAppointments()
         {
-            var patientIdResult = GetPatientIdFromClaims();
-            if (patientIdResult.Result != null) return patientIdResult.Result;
-            int patientId = patientIdResult.Value;
+            //var patientIdResult = GetPatientIdFromClaims();
+            //if (patientIdResult.Result != null) return patientIdResult.Result;
+            //int patientId = patientIdResult.Value;
+
+            int patientId = GetCurrentPatientId();
 
             var appointments = await _dashboardService.GetUpcomingAppointments(patientId);
 
@@ -133,9 +143,11 @@ namespace Patient_Monitoring.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<PrescriptionSummaryDto>>> GetActivePrescriptions()
         {
-            var patientIdResult = GetPatientIdFromClaims();
-            if (patientIdResult.Result != null) return patientIdResult.Result;
-            int patientId = patientIdResult.Value;
+            //var patientIdResult = GetPatientIdFromClaims();
+            //if (patientIdResult.Result != null) return patientIdResult.Result;
+            //int patientId = patientIdResult.Value;
+
+            int patientId = GetCurrentPatientId();
 
             var prescriptions = await _dashboardService.GetActivePrescriptions(patientId);
 
@@ -151,9 +163,11 @@ namespace Patient_Monitoring.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<TaskLogSummaryDto>>> GetRecentActivities()
         {
-            var patientIdResult = GetPatientIdFromClaims();
-            if (patientIdResult.Result != null) return patientIdResult.Result;
-            int patientId = patientIdResult.Value;
+            //var patientIdResult = GetPatientIdFromClaims();
+            //if (patientIdResult.Result != null) return patientIdResult.Result;
+            //int patientId = patientIdResult.Value;
+
+            int patientId = GetCurrentPatientId();
 
             var activities = await _dashboardService.GetRecentActivities(patientId);
 

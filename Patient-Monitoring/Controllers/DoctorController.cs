@@ -19,6 +19,28 @@ public class DoctorController : ControllerBase
         _doctorService = doctorService;
     }
 
+    private int GetCurrentDoctorId()
+    {
+        //var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+        //if (userIdClaim == null)
+        //{
+        //    throw new UnauthorizedAccessException("User ID claim not found in token.");
+        //}
+
+        //if (int.TryParse(userIdClaim.Value, out int doctorId))
+        //{
+        //    return doctorId;
+        //}
+        //else
+        //{
+        //    throw new UnauthorizedAccessException("Invalid User ID claim value.");
+        //}
+
+        // Use this to hard code a doctor id for testing purposes. But comment the above codes.
+        return 1;
+    }
+
     #region Search For A Patient By Name or Id
     [HttpGet("patient/search")]
     public async Task<ActionResult<List<PatientSearchItemDto>>> SearchPatients([FromQuery] string? patientName, [FromQuery] int? patientId)
@@ -91,7 +113,8 @@ public class DoctorController : ControllerBase
     public async Task<IActionResult> GetDashboardStats()
     {
 
-        int doctorId = 2;
+        //int doctorId = 2;
+        int doctorId = GetCurrentDoctorId();
         var dashboardData = await _doctorService.GetDashboardStatsAsync(doctorId);
 
         return Ok(dashboardData);

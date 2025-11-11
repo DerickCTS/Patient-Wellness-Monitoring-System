@@ -17,24 +17,24 @@ public class ProgressController : ControllerBase
     #region Initialize - Get Current Patient Id from JWT Token
     private int GetCurrentPatientId()
     {
-        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+        //var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
 
-        if (userIdClaim == null)
-        {
-            throw new UnauthorizedAccessException("User ID claim not found in token.");
-        }
+        //if (userIdClaim == null)
+        //{
+        //    throw new UnauthorizedAccessException("User ID claim not found in token.");
+        //}
 
-        if (int.TryParse(userIdClaim.Value, out int patientId))
-        {
-            return patientId;
-        }
-        else
-        {
-            throw new UnauthorizedAccessException("Invalid User ID claim value.");
-        }
+        //if (int.TryParse(userIdClaim.Value, out int patientId))
+        //{
+        //    return patientId;
+        //}
+        //else
+        //{
+        //    throw new UnauthorizedAccessException("Invalid User ID claim value.");
+        //}
 
         // Use this to hard code a doctor id for testing purposes. But comment the above codes.
-        //return 1;
+        return 1;
     }
     #endregion
 
@@ -46,8 +46,8 @@ public class ProgressController : ControllerBase
         [FromQuery] string category = "All",
         [FromQuery] string date = "Today")
     {
-        //patientId = GetCurrentPatientId();
-        patientId = 1;
+        patientId = GetCurrentPatientId();
+        //patientId = 1;
         var cards = await _progressService.GetAssignedPlanCardsAsync(patientId, date);
         return Ok(cards);
     }
@@ -86,8 +86,8 @@ public class ProgressController : ControllerBase
     [HttpGet("dashboard")]
     public async Task<IActionResult> GetDashboardData()
     {
-        //patientId = GetCurrentPatientId();
-        patientId = 1;
+        patientId = GetCurrentPatientId();
+        //patientId = 1;
         var dashboardData = await _progressService.GetDashboardDataAsync(patientId);
         return Ok(dashboardData);
     }
@@ -98,8 +98,8 @@ public class ProgressController : ControllerBase
     [HttpGet("dashboard/{year}")]
     public async Task<IActionResult> GetActivityCalendarAsync(int year)
     {
-        //patientId = GetCurrentPatientId();
-        patientId = 1;
+        patientId = GetCurrentPatientId();
+        //patientId = 1;
         var calendarData = await _progressService.GetActivityCalendarAsync(patientId, year);
         return Ok(calendarData);
     }

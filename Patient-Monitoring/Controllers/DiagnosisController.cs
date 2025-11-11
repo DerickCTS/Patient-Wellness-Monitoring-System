@@ -18,24 +18,24 @@ public class DiagnosisController : ControllerBase
     #region Initialize - Get Current Doctor Id from JWT Token
     private int GetCurrentDoctorId()
     {
-        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+        //var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
 
-        if (userIdClaim == null)
-        {
-            throw new UnauthorizedAccessException("User ID claim not found in token.");
-        }
+        //if (userIdClaim == null)
+        //{
+        //    throw new UnauthorizedAccessException("User ID claim not found in token.");
+        //}
 
-        if (int.TryParse(userIdClaim.Value, out int doctorId))
-        {
-            return doctorId;
-        } 
-        else
-        {
-            throw new UnauthorizedAccessException("Invalid User ID claim value.");
-        }
+        //if (int.TryParse(userIdClaim.Value, out int doctorId))
+        //{
+        //    return doctorId;
+        //} 
+        //else
+        //{
+        //    throw new UnauthorizedAccessException("Invalid User ID claim value.");
+        //}
 
         // Use this to hard code a doctor id for testing purposes. But comment the above codes.
-        //return 1;
+        return 1;
     }
     #endregion
 
@@ -44,8 +44,8 @@ public class DiagnosisController : ControllerBase
     [HttpGet("today")]
     public async Task<IActionResult> GetTodaysAppointments()
     {
-        //doctorId = GetCurrentDoctorId();
-        doctorId = 1;
+        doctorId = GetCurrentDoctorId();
+        //doctorId = 1;
         var appointments = await _diagnosisService.GetTodaysAppointmentsAsync(doctorId);
         return Ok(appointments);
     }
@@ -77,8 +77,8 @@ public class DiagnosisController : ControllerBase
     [HttpPost("appointment/{appointmentId}/save")]
     public async Task<IActionResult> SaveDiagnosis(int appointmentId, [FromBody] SaveDiagnosisDto data)
     {
-        //doctorId = GetCurrentDoctorId();
-        doctorId = 1;
+        doctorId = GetCurrentDoctorId();
+        //doctorId = 1;
         var success = await _diagnosisService.SaveDiagnosisAndPrescriptionsAsync(appointmentId, doctorId, data);
         if (!success)
         {

@@ -160,7 +160,7 @@ namespace Patient_Monitoring.Repositories.Implementations
         {
             return await _context.Appointments
                 .Where(a => a.PatientId == patientId &&
-                            (a.Status == "Confirmed" || a.Status == "Completed") &&
+                            (a.Status == "Confirmed") &&
                             a.AppointmentDate < DateTime.Today)
                 .Include(a => a.Doctor)
                 .OrderByDescending(a => a.AppointmentDate)
